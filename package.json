@@ -1,0 +1,36 @@
+{
+  "name": "react-hardware",
+  "version": "0.9.0",
+  "description": "React bindings for your hardware through firmata.",
+  "main": "index.js",
+  "scripts": {
+    "test": "BABEL_JEST_STAGE=0 jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iamdustan/react-hardware"
+  },
+  "keywords": [
+    "reactjs",
+    "hardware",
+    "arduino"
+  ],
+  "author": "Dustan Kasten <dustan@skookum.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/iamdustan/react-hardware/issues"
+  },
+  "homepage": "https://github.com/iamdustan/react-hardware",
+  "dependencies": {
+    "react": "^0.13.2"
+  },
+  "devDependencies": {
+    "babel": "^5.2.15",
+    "babel-jest": "^5.2.0"
+  },
+  "jest": {
+    "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
+    "testFileExtensions": ["js"],
+    "moduleFileExtensions": ["js", "json"]
+  }
+}

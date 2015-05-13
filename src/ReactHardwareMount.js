@@ -7,10 +7,9 @@ import instantiateReactComponent from 'react/lib/instantiateReactComponent';
 
 import emptyObject from 'react/lib/emptyObject';
 import shouldUpdateReactComponent from 'react/lib/shouldUpdateReactComponent';
+import HardwareManager from './HardwareManager';
 
 /*
-var RCTUIManager = require('NativeModules').UIManager;
-
 var ReactPerf = require('ReactPerf');
 
 var invariant = require('invariant');
@@ -81,59 +80,62 @@ var ReactHardwareMount = {
     containerTag: number,
     callback?: ?(() => void)
   ): ?ReactComponent {
-    var topRootNodeID = ReactHardwareTagHandles.tagToRootNodeID[containerTag];
-    if (topRootNodeID) {
-      var prevComponent = ReactHardwareMount._instancesByContainerID[topRootNodeID];
-      if (prevComponent) {
-        var prevElement = prevComponent._currentElement;
-        if (shouldUpdateReactComponent(prevElement, nextElement)) {
-          ReactUpdateQueue.enqueueElementInternal(prevComponent, nextElement);
-          if (callback) {
-            ReactUpdateQueue.enqueueCallbackInternal(prevComponent, callback);
+    HardwareManager.createConnection(containerTag, () => {
+      var topRootNodeID = ReactHardwareTagHandles.tagToRootNodeID[containerTag];
+      if (topRootNodeID) {
+        var prevComponent = ReactHardwareMount._instancesByContainerID[topRootNodeID];
+        if (prevComponent) {
+          var prevElement = prevComponent._currentElement;
+          if (shouldUpdateReactComponent(prevElement, nextElement)) {
+            ReactUpdateQueue.enqueueElementInternal(prevComponent, nextElement);
+            if (callback) {
+              ReactUpdateQueue.enqueueCallbackInternal(prevComponent, callback);
+            }
+            return prevComponent;
+          } else {
+            ReactHardwareMount.unmountComponentAtNode(containerTag);
           }
-          return prevComponent;
-        } else {
-          ReactHardwareMount.unmountComponentAtNode(containerTag);
         }
       }
-    }
 
-    console.log('containerTag', containerTag);
-    if (!ReactHardwareTagHandles.reactTagIsHardwareTopRootID(containerTag)) {
-      console.error('You cannot render into anything but a top root');
-      return;
-    }
+      if (!ReactHardwareTagHandles.reactTagIsHardwareTopRootID(containerTag)) {
+        console.error('You cannot render into anything but a SerialPort connection.');
+        return;
+      }
 
-    var topRootNodeID = ReactHardwareTagHandles.allocateRootNodeIDForTag(containerTag);
-    ReactHardwareTagHandles.associateRootNodeIDWithMountedNodeHandle(
-      topRootNodeID,
-      containerTag
-    );
+      var topRootNodeID = ReactHardwareTagHandles.allocateRootNodeIDForTag(containerTag);
+      ReactHardwareTagHandles.associateRootNodeIDWithMountedNodeHandle(
+        topRootNodeID,
+        containerTag
+      );
 
-    var instance = instantiateReactComponent(nextElement);
-    ReactHardwareMount._instancesByContainerID[topRootNodeID] = instance;
+      var instance = instantiateReactComponent(nextElement);
+      ReactHardwareMount._instancesByContainerID[topRootNodeID] = instance;
 
-    var childRootNodeID = instanceNumberToChildRootID(
-      topRootNodeID,
-      ReactHardwareMount.instanceCount++
-    );
+      HardwareManager.createConnection(containerTag);
 
-    // The initial render is synchronous but any updates that happen during
-    // rendering, in componentWillMount or componentDidMount, will be batched
-    // according to the current batching strategy.
+      var childRootNodeID = instanceNumberToChildRootID(
+        topRootNodeID,
+        ReactHardwareMount.instanceCount++
+      );
 
-    ReactUpdates.batchedUpdates(
-      batchedMountComponentIntoNode,
-      instance,
-      childRootNodeID,
-      topRootNodeID
-    );
-    var component = instance.getPublicInstance();
-    if (callback) {
-      callback.call(component);
-    }
-    return component;
+      // TODO: make the initial render asynchrounous as well
+      // The initial render is synchronous but any updates that happen during
+      // rendering, in componentWillMount or componentDidMount, will be batched
+      // according to the current batching strategy.
 
+      ReactUpdates.batchedUpdates(
+        batchedMountComponentIntoNode,
+        instance,
+        childRootNodeID,
+        topRootNodeID
+      );
+      var component = instance.getPublicInstance();
+      if (callback) {
+        callback.call(component);
+      }
+      return component;
+    });
   },
 
   /**
@@ -163,18 +165,26 @@ var ReactHardwareMount = {
 
   /**
    * @param {view} mountImage view tree image
-   * @param {string} node node to insert sub-view into
+   * @param {string} containerID node to insert sub-view into
    */
-  _mountImageIntoNode(mountImage, node) {
+  _mountImageIntoNode(mountImage, containerID) {
     ReactHardwareTagHandles.associateRootNodeIDWithMountedNodeHandle(
       mountImage.rootNodeID,
       mountImage.tag
     );
-    console.log('_mountImageIntoNode');
-    console.log(mountImage);
-    console.log(node);
+    var addChildTags = [mountImage.tag];
+    var addAtIndices = [0];
+
+    HardwareManager.manageChildren(
+      ReactHardwareTagHandles.mostRecentMountedNodeHandleForRootNodeID(containerID),
+      null, // moveFromIndices
+      null, // moveToIndices
+      addChildTags,
+      addAtIndices,
+      null  // removeAtIndices
+    );
   }
 };
 
-export default ReactHardwareMount
+export default ReactHardwareMount;
 

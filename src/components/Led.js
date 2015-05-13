@@ -11,7 +11,6 @@ var viewConfig = {
 
 class Led extends React.Component {
   render() {
-    // console.log('Should be connected to board somehow');
     return <Hardware {...this.props} />
   }
 }

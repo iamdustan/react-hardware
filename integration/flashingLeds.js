@@ -23,7 +23,7 @@ class FlashingLed extends React.Component {
     this.state._interval = setInterval(_ => {
       var voltage = this.state.voltage === HIGH ? LOW : HIGH;
       this.setState({voltage});
-    }, 2000);
+    }, this.props.interval);
   }
 
   componentWillUnmount() {
@@ -37,18 +37,23 @@ class FlashingLed extends React.Component {
   }
 }
 
+FlashingLed.defaultProps = {
+  pin: 13,
+  interval: 2000,
+};
+
 class Application extends React.Component {
   render(): ?ReactElement {
     return (
-      <Board port="/dev/tty-usbserial1">
-        <FlashingLed pin={13} initialVoltage={HIGH} />
-        <FlashingLed pin={14} initialVoltage={LOW} />
+      <Board port="/dev/cu.usbmodem1411">
+        <FlashingLed pin={2} interval={500} initialVoltage={HIGH} />
+        <FlashingLed pin={3} interval={500} initialVoltage={LOW} />
       </Board>
     );
   }
 }
 
-ReactHardware.render(<Application initialVoltage={255} />, '/dev/tty-usbserial1', _ => (
+ReactHardware.render(<Application initialVoltage={255} />, '/dev/cu.usbmodem1411', _ => (
   console.log('ReactHardware mounted'/*, arguments*/)
 ));
 

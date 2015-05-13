@@ -12,11 +12,9 @@ import ReactMultiChild from 'react/lib/ReactMultiChild';
 import diffRawProperties from './diffRawProperties';
 import warning from 'react/lib//warning';
 import deepFreezeAndThrowOnMutationInDev from './deepFreezeAndThrowOnMutationInDev';
+import HardwareManager from './HardwareManager';
 
 /*
-var RCTUIManager = require('NativeModules').UIManager;
-
-
 var registrationNames = ReactIOSEventEmitter.registrationNames;
 var putListener = ReactIOSEventEmitter.putListener;
 var deleteAllListeners = ReactIOSEventEmitter.deleteAllListeners;
@@ -121,10 +119,8 @@ ReactHardwareNativeComponent.Mixin = {
         createdTags,
         indexes
       );
-      /*
-      RCTUIManager
+      HardwareManager
         .manageChildren(containerTag, null, null, createdTags, indexes, null);
-      */
     }
   },
 
@@ -177,17 +173,11 @@ ReactHardwareNativeComponent.Mixin = {
     );
 
     if (updatePayload) {
-      console.log(
-        'updatePayload',
-        updatePayload
-      );
-      /*
-      RCTUIManager.updateView(
+      HardwareManager.updateView(
         ReactHardwareTagHandles.mostRecentMountedNodeHandleForRootNodeID(this._rootNodeID),
         this.viewConfig.uiViewClassName,
         updatePayload
       );
-      */
     }
 
     this._reconcileListenersUponUpdate(
@@ -241,17 +231,7 @@ ReactHardwareNativeComponent.Mixin = {
       this._currentElement.props, // next props
       this.viewConfig.validAttributes
     );
-    console.log(
-      'TODO: HardwareManager.createView\n  `%s` in tag `%s` with\n  ',
-      this.viewConfig.uiViewClassName,
-      tag,
-      (_ => Object.keys(this._currentElement.props).reduce((o, k) => (
-        (k !== 'children' && (o[k] = this._currentElement.props[k])),
-        o
-      ), {}))(),
-      '\n'
-    );
-    // RCTUIManager.createView(tag, this.viewConfig.uiViewClassName, updatePayload);
+    HardwareManager.createView(tag, this.viewConfig.uiViewClassName, updatePayload);
 
     this._registerListenersUponCreation(this._currentElement.props);
     this.initializeChildren(

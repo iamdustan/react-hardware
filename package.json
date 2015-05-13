@@ -22,7 +22,9 @@
   },
   "homepage": "https://github.com/iamdustan/react-hardware",
   "dependencies": {
-    "react": "^0.13.2"
+    "firmata": "^0.5.0",
+    "react": "^0.13.2",
+    "serialport": "^1.7.1"
   },
   "devDependencies": {
     "babel": "^5.2.15",
@@ -30,7 +32,12 @@
   },
   "jest": {
     "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
-    "testFileExtensions": ["js"],
-    "moduleFileExtensions": ["js", "json"]
+    "testFileExtensions": [
+      "js"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "json"
+    ]
   }
 }

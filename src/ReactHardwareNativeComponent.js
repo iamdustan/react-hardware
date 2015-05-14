@@ -113,12 +113,6 @@ ReactHardwareNativeComponent.Mixin = {
         );
         createdTags[i] = mountImage.tag;
       }
-      console.log(
-        'TODO: HardwareManager.manageChildren',
-        containerTag,
-        createdTags,
-        indexes
-      );
       HardwareManager
         .manageChildren(containerTag, null, null, createdTags, indexes, null);
     }

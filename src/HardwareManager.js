@@ -3,6 +3,15 @@ import ReactHardwareMount from './ReactHardwareMount';
 import ReactHardwareTagHandles from './ReactHardwareTagHandles';
 import warning from 'react/lib/warning';
 
+var WRITE_TYPE = {
+  [0x00]: 'analog', // input
+  [0x01]: 'digital', //output
+  [0x02]: 'analog', // analog
+  [0x03]: 'analog', // pwm
+  [0x04]: 'analog', // servo
+};
+
+
 var Registry = {
   children: [],
 };
@@ -47,7 +56,7 @@ var HardwareManager = {
     addAtIndices,
     removeAtIndices
   ) {
-    console.log('TODO: manageChildren');
+    console.log('TODO: HardwareManager#manageChildren');
     // console.log('TODO: manageChildren', arguments);
     // console.log(Registry[componentTag]);
   },
@@ -59,22 +68,21 @@ var HardwareManager = {
   ) {
     if (!payload || typeof payload.pin === 'undefined') {
       warning(
-        name !== 'Board',
-        'A component must have a pin to be rendered. %s'
+        name === 'Board',
+        'A component must have a pin to be rendered. %s', name
       );
       return;
     }
 
-    var board = Registry.board;
+    var {board} = Registry;
 
     Registry.children[tag] = {
       name: name,
       props: payload,
     },
 
-    // TODO: support more boards;
-    board.pinMode(payload.pin, board.MODES.OUTPUT);
-    board.digitalWrite(payload.pin, payload.voltage);
+    // TODO: support more payload modes?
+    board[`${WRITE_TYPE[payload.mode]}Write`](payload.pin, payload.voltage);
   },
 
   updateView(
@@ -82,7 +90,6 @@ var HardwareManager = {
     name: string,
     payload: Object
   ) {
-    if (payload.port) { return; /* connectToBoard */ }
     var board = Registry.board;
 
     var {
@@ -90,9 +97,17 @@ var HardwareManager = {
       props,
     } = Registry.children[tag];
 
-    // TODO: support more boards
-    board.pinMode(props.pin, board.MODES.OUTPUT);
-    board.digitalWrite(props.pin, payload.voltage);
+
+    // TODO: Make this much less ugly
+    if (typeof payload.mode !== 'undefined') {
+      board.pinMode(props.pin, payload.mode);
+      props.mode = payload.mode;
+    }
+
+    if (typeof payload.voltage !== 'undefined') {
+      board[`${WRITE_TYPE[props.mode]}Write`](props.pin, payload.voltage);
+    }
+
     Object.assign(props, payload);
   },
 };

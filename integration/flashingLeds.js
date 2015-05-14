@@ -53,7 +53,8 @@ class Application extends React.Component {
   }
 }
 
-ReactHardware.render(<Application initialVoltage={255} />, '/dev/cu.usbmodem1411', _ => (
+var PORT = '/dev/cu.usbmodem1411';
+ReactHardware.render(<Application initialVoltage={255} />, PORT, _ => (
   console.log('ReactHardware mounted'/*, arguments*/)
 ));
 

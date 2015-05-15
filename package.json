@@ -4,7 +4,9 @@
   "description": "React bindings for your hardware through firmata.",
   "main": "index.js",
   "scripts": {
-    "test": "BABEL_JEST_STAGE=0 jest"
+    "lint": "eslint .",
+    "jest": "BABEL_JEST_STAGE=0 jest",
+    "test": "npm run lint"
   },
   "repository": {
     "type": "git",

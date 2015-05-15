@@ -35,6 +35,8 @@ var createReactIOSNativeComponentClass = require('createReactIOSNativeComponentC
 */
 import invariant from 'react/lib/invariant';
 
+var noop = () => {};
+
 function inject() {
   ReactUpdates.injection.injectReconcileTransaction(
     ReactHardwareComponentEnvironment.ReactReconcileTransaction
@@ -66,6 +68,17 @@ function inject() {
   });
 
   NodeHandle.injection.injectImplementation(UniversalWorkerNodeHandle);
+
+  // TODO: maybe possibly find a better way to do this.
+  // Ask @vjeux or @zpao about it
+  // Ensure that react’s default stuff doesn’t inject into our world
+  ReactUpdates.injection.injectReconcileTransaction = noop;
+  ReactUpdates.injection.injectBatchingStrategy = noop;
+  ReactComponentEnvironment.injection.injectEnvironment = noop;
+  EventPluginUtils.injection.injectMount = noop;
+  ReactClass.injection.injectMixin = noop;
+  ReactNativeComponent.injection.injectAutoWrapper = noop;
+  NodeHandle.injection.injectImplementation = noop;
 }
 
 module.exports = {

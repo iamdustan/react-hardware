@@ -34,7 +34,8 @@
     "babel-jest": "^5.2.0",
     "board-io": "^3.0.4",
     "eslint": "^0.21.0",
-    "eslint-plugin-react": "^2.3.0"
+    "eslint-plugin-react": "^2.3.0",
+    "react-tween-state": "0.0.5"
   },
   "jest": {
     "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",

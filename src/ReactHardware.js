@@ -2,9 +2,11 @@
 import * as polys from './JSPolyfills';
 /*eslint-enable*/
 
-import React from 'react';
-import ReactHardwareMount from './ReactHardwareMount';
 import ReactHardwareDefaultInjection from './ReactHardwareDefaultInjection';
+
+ReactHardwareDefaultInjection.inject();
+
+import ReactHardwareMount from './ReactHardwareMount';
 import ReactHardwareComponents from './components';
 import inputModes from './components/inputModes';
 
@@ -27,8 +29,6 @@ var {
   cloneElement,
 } = ReactElement;
 
-ReactHardwareDefaultInjection.inject();
-
 var render = function(
   element: ReactElement,
   mountInto: string,
@@ -37,6 +37,7 @@ var render = function(
   return ReactHardwareMount.renderComponent(element, mountInto, callback);
 };
 
+import React from 'react';
 var ReactHardware = Object.assign(Object.create(React), {
   hasReactHardwareInitialized: false,
   Component: ReactComponent,

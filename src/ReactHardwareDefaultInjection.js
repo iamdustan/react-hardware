@@ -1,7 +1,7 @@
 /*
 require('InitializeJavaScriptAppEngine');
-*/
 import EventPluginHub from 'react/lib/EventPluginHub';
+*/
 import EventPluginUtils from 'react/lib/EventPluginUtils';
 /*
 var IOSDefaultEventPluginOrder = require('IOSDefaultEventPluginOrder');

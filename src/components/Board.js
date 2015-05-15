@@ -10,7 +10,9 @@ var viewConfig = {
 
 class Board extends React.Component {
   render() {
-    return <Hardware {...this.props} />
+    return (
+      <Hardware {...this.props} />
+    );
   }
 }
 

@@ -62,7 +62,7 @@ var ReactHardwareComponentMixin = {
     return ReactHardwareTagHandles.rootNodeIDToTag[
       (ReactInstanceMap.get(this) || this)._rootNodeID
     ];
-  }
+  },
 };
 
 export default ReactHardwareComponentMixin;

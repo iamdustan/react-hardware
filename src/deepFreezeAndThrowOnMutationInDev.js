@@ -1,4 +1,3 @@
-var __DEV__ = true;
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -12,6 +11,8 @@ var __DEV__ = true;
  */
 
 'use strict';
+
+var __DEV__ = true;
 
 /**
  * If your application is accepting different values for the same field over

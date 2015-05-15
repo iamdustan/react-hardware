@@ -1,4 +1,4 @@
-import ReactElement from 'react/lib/ReactElement';
+// import ReactElement from 'react/lib/ReactElement';
 import ReactHardwareNativeComponent from './ReactHardwareNativeComponent';
 
 // See also ReactHardwareNativeComponent

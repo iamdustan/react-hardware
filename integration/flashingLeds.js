@@ -1,10 +1,12 @@
-import React from 'react';
-import ReactHardware from '../';
+/*eslint react/no-multi-comp:0, no-console:0*/
+
+import React from '../';
 
 const {
   Board,
   Led,
-} = ReactHardware;
+  mode,
+} = React;
 
 const HIGH = 255;
 const LOW = 0;
@@ -40,21 +42,21 @@ class FlashingLed extends React.Component {
 FlashingLed.defaultProps = {
   pin: 13,
   interval: 2000,
+  mode: mode.OUTPUT,
 };
 
 class Application extends React.Component {
   render(): ?ReactElement {
     return (
-      <Board port="/dev/cu.usbmodem1411">
-        <FlashingLed pin={2} interval={500} initialVoltage={HIGH} />
-        <FlashingLed pin={3} interval={500} initialVoltage={LOW} />
+      <Board>
+        <FlashingLed pin={9} delay={400} interval={[200, 400]} initialVoltage={LOW} />
       </Board>
     );
   }
 }
 
 var PORT = '/dev/cu.usbmodem1411';
-ReactHardware.render(<Application initialVoltage={255} />, PORT, _ => (
+React.render(<Application initialVoltage={255} />, PORT, _ => (
   console.log('ReactHardware mounted'/*, arguments*/)
 ));
 

@@ -1,7 +1,8 @@
+/*eslint no-console:0*/
 import {Board} from 'firmata';
-import ReactHardwareMount from './ReactHardwareMount';
-import ReactHardwareTagHandles from './ReactHardwareTagHandles';
+// import ReactHardwareTagHandles from './ReactHardwareTagHandles';
 import warning from 'react/lib/warning';
+import invariant from 'react/lib/invariant';
 
 var WRITE_TYPE = {
   [0x00]: 'analog', // input
@@ -11,13 +12,15 @@ var WRITE_TYPE = {
   [0x04]: 'analog', // servo
 };
 
+var METHOD = 'analogWrite';
 
 var Registry = {
   children: [],
 };
 
+var noop = () => {};
 var HardwareManager = {
-  createConnection(containerTag, callback = (() => {})) {
+  createConnection(containerTag, callback = noop) {
     var onConnect = (err) => {
       if (err) {
         throw err;
@@ -26,7 +29,7 @@ var HardwareManager = {
       Registry[containerTag].isConnected = true;
       Registry[containerTag].onReadyQueue.forEach(fn => fn());
       callback();
-    }
+    };
 
     if (Registry[containerTag]) {
       if (Registry[containerTag].isConnected) {
@@ -69,43 +72,49 @@ var HardwareManager = {
     if (!payload || typeof payload.pin === 'undefined') {
       warning(
         name === 'Board',
-        'A component must have a pin to be rendered. %s', name
+        'A component `%s` must have a pin to render.', name
       );
       return;
     }
 
-    var {board} = Registry;
-
     Registry.children[tag] = {
       name: name,
       props: payload,
-    },
+    };
 
     // TODO: support more payload modes?
-    board[`${WRITE_TYPE[payload.mode]}Write`](payload.pin, payload.voltage);
+    Registry.board.pinMode(payload.pin, payload.mode);
+
+    Registry.board[`${WRITE_TYPE[payload.mode]}Write`](payload.pin, payload.voltage);
   },
 
   updateView(
     tag: number,
-    name: string,
+    _name: string,
     payload: Object
   ) {
-    var board = Registry.board;
 
     var {
       name,
       props,
     } = Registry.children[tag];
 
+    invariant(
+      name === _name,
+      'It appears like you’re trying to update a view in pin %s to a new ' +
+      'component type.',
+      tag, name, _name
+    );
 
     // TODO: Make this much less ugly
     if (typeof payload.mode !== 'undefined') {
-      board.pinMode(props.pin, payload.mode);
+      Registry.board.pinMode(props.pin, payload.mode);
       props.mode = payload.mode;
     }
 
+
     if (typeof payload.voltage !== 'undefined') {
-      board[`${WRITE_TYPE[props.mode]}Write`](props.pin, payload.voltage);
+      Registry.board[`${WRITE_TYPE[props.mode]}Write`](props.pin, payload.voltage);
     }
 
     Object.assign(props, payload);

@@ -33,9 +33,10 @@ function diffRawProperties(
   var prevProp;
   var isScalar;
   var shouldUpdate;
+  var propKey;
 
   if (nextProps) {
-    for (var propKey in nextProps) {
+    for (propKey in nextProps) {
       validAttributeConfig = validAttributes[propKey];
       if (!validAttributeConfig) {
         continue; // not a valid native prop
@@ -65,7 +66,7 @@ function diffRawProperties(
   // removed and make sure native gets the signal so it can reset them to the
   // default.
   if (prevProps) {
-    for (var propKey in prevProps) {
+    for (propKey in prevProps) {
       validAttributeConfig = validAttributes[propKey];
       if (!validAttributeConfig) {
         continue; // not a valid native prop

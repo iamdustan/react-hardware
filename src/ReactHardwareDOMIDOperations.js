@@ -64,7 +64,7 @@ var dangerouslyProcessChildrenUpdates = function(childrenUpdates, markupList) {
  * Operations used to process updates to DOM nodes. This is made injectable via
  * `ReactComponent.DOMIDOperations`.
  */
-var ReactIOSDOMIDOperations = {
+var ReactHardwareDOMIDOperations = {
   dangerouslyProcessChildrenUpdates: dangerouslyProcessChildrenUpdates,
 
   /**
@@ -74,10 +74,9 @@ var ReactIOSDOMIDOperations = {
    * @param {string} markup Mount image to replace child with id.
    */
   dangerouslyReplaceNodeWithMarkupByID: function(id, mountImage) {
-    var oldTag = ReactIOSTagHandles.mostRecentMountedNodeHandleForRootNodeID(id);
-    RCTUIManager.replaceExistingNonRootView(oldTag, mountImage.tag); ReactIOSTagHandles.associateRootNodeIDWithMountedNodeHandle(id, mountImage.tag);
+    throw new Error('dangerouslyReplaceNodeWithMarkupByID should not be called');
   },
 };
 
-module.exports = ReactIOSDOMIDOperations;
+module.exports = ReactHardwareDOMIDOperations;
 

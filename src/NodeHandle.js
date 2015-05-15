@@ -62,7 +62,7 @@ var NodeHandle = {
   injection: {
     injectImplementation: function(Impl) {
       NodeHandle._Implementation = Impl;
-    }
+    },
   },
 
   _Implementation: null,
@@ -73,7 +73,7 @@ var NodeHandle = {
    */
   getRootNodeID: function(nodeHandle) {
     return NodeHandle._Implementation.getRootNodeID(nodeHandle);
-  }
+  },
 };
 
 export default NodeHandle;

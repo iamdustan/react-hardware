@@ -13,7 +13,9 @@ var viewConfig = {
 
 class Led extends React.Component {
   render() {
-    return <Hardware {...this.props} />
+    return (
+      <Hardware {...this.props} />
+    );
   }
 }
 

@@ -1,24 +1,25 @@
+/*eslint-disable*/
 import * as polys from './JSPolyfills';
+/*eslint-enable*/
 
+import React from 'react';
 import ReactHardwareMount from './ReactHardwareMount';
 import ReactHardwareDefaultInjection from './ReactHardwareDefaultInjection';
-import Board from './components/Board';
 import ReactHardwareComponents from './components';
 import inputModes from './components/inputModes';
 
 /*
 var ReactChildren = require('ReactChildren');
-var ReactClass = require('ReactClass');
-var ReactComponent = require('ReactComponent');
+*/
+import ReactClass from 'react/lib/ReactClass';
+import ReactComponent from 'react/lib/ReactComponent';
+import ReactElement from 'react/lib/ReactElement';
+/*
 var ReactContext = require('ReactContext');
 var ReactCurrentOwner = require('ReactCurrentOwner');
-var ReactElement = require('ReactElement');
 var ReactElementValidator = require('ReactElementValidator');
-var ReactPropTypes = require('ReactPropTypes');
-
-var deprecated = require('deprecated');
-var invariant = require('invariant');
-var onlyChild = require('onlyChild');
+*/
+import ReactPropTypes from 'react/lib/ReactPropTypes';
 
 var {
   createElement,
@@ -26,7 +27,6 @@ var {
   cloneElement,
 } = ReactElement;
 
-*/
 ReactHardwareDefaultInjection.inject();
 
 var render = function(
@@ -37,19 +37,17 @@ var render = function(
   return ReactHardwareMount.renderComponent(element, mountInto, callback);
 };
 
-var ReactHardware = {
+var ReactHardware = Object.assign(Object.create(React), {
   hasReactHardwareInitialized: false,
-  /*
   Component: ReactComponent,
   PropTypes: ReactPropTypes,
   createClass: ReactClass.createClass,
   createElement: createElement,
   createFactory: createFactory,
   cloneElement: cloneElement,
-  */
   render: render,
   mode: inputModes,
-}
+});
 
 Object.assign(ReactHardware, ReactHardwareComponents);
 

@@ -13,17 +13,17 @@ class Application extends React.Component {
   render(): ?ReactElement {
     return (
       <Board>
-        <Led pin={9} voltage={this.props.voltage} />
+        <Led pin={9} value={this.props.value} />
       </Board>
     );
   }
 }
 
 var PORT = '/dev/tty.usbmodem1411';
-React.render(<Application voltage={HIGH} />, PORT, _ => {
+React.render(<Application value={HIGH} />, PORT, _ => {
   setTimeout(_ =>
     React.render(
-      <Application voltage={LOW} />,
+      <Application value={LOW} />,
       PORT,
       _ => console.log('ReactHardware mounted')
     ), 2000
@@ -31,7 +31,7 @@ React.render(<Application voltage={HIGH} />, PORT, _ => {
 
   setTimeout(_ =>
     React.render(
-      <Application voltage={HIGH} />,
+      <Application value={HIGH} />,
       PORT,
       _ => console.log('ReactHardware mounted')
     ), 4000

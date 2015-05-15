@@ -16,14 +16,14 @@ class FlashingLed extends React.Component {
     super(props, context);
 
     this.state = {
-      voltage: typeof props.initialVoltage !== 'undefined' ? props.initialVoltage : HIGH,
+      value: typeof props.initialValue !== 'undefined' ? props.initialValue : HIGH,
       _interval: null,
     };
   }
 
   next(time) {
-    var voltage = this.state.voltage === HIGH ? LOW : HIGH;
-    this.setState({voltage});
+    var value = this.state.value === HIGH ? LOW : HIGH;
+    this.setState({value});
     setTimeout(_ => {
       this.next(this.props.interval[0]);
     }, this.props.interval[1]);
@@ -42,7 +42,7 @@ class FlashingLed extends React.Component {
 
   render() {
     return (
-      <Led {...this.props} voltage={this.state.voltage} />
+      <Led {...this.props} value={this.state.value} />
     );
   }
 }
@@ -57,14 +57,14 @@ class Application extends React.Component {
   render(): ?ReactElement {
     return (
       <Board>
-        <FlashingLed pin={9} delay={400} interval={[200, 400]} initialVoltage={LOW} />
+        <FlashingLed pin={9} delay={400} interval={[200, 400]} initialValue={LOW} />
       </Board>
     );
   }
 }
 
 var PORT = '/dev/cu.usbmodem1411';
-React.render(<Application initialVoltage={255} />, PORT, _ => (
+React.render(<Application />, PORT, _ => (
   console.log('ReactHardware mounted'/*, arguments*/)
 ));
 

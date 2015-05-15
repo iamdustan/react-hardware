@@ -37,21 +37,21 @@ class Application extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      voltage: 0,
+      value: 0,
       _timer: null,
     };
   }
 
   componentDidMount() {
     this.state._timer = setInterval(_ => j
-      this.setState({voltage: this.state.voltage === HIGH ? LOW : HIGH})
+      this.setState({value: this.state.value === HIGH ? LOW : HIGH})
     ), this.props.interval);
   }
 
   render() {
     return (
       <Board>
-        <Led pin={10} voltage={this.state.voltage} />
+        <Led pin={10} value={this.state.value} />
       </Board>
     );
   }
@@ -84,20 +84,20 @@ class FlashingLed extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      voltage: 0,
+      value: 0,
       _timer: null,
     };
   }
 
   componentDidMount() {
     this.state._timer = setInterval(_ => (
-      this.setState({voltage: this.state.voltage === HIGH ? LOW : HIGH})
+      this.setState({value: this.state.value === HIGH ? LOW : HIGH})
     ), this.props.interval);
   }
 
   render() {
     return (
-      <Led {...this.props} voltage={this.state.voltage} />
+      <Led {...this.props} value={this.state.value} />
     );
   }
 }

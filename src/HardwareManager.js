@@ -83,8 +83,8 @@ var HardwareManager = {
     // TODO: support more payload modes?
     Registry.board.pinMode(payload.pin, payload.mode);
 
-    console.log(`${WRITE_TYPE[payload.mode]}Write`, payload.pin, payload.voltage);
-    Registry.board[`${WRITE_TYPE[payload.mode]}Write`](payload.pin, payload.voltage);
+    console.log(`${WRITE_TYPE[payload.mode]}Write`, payload.pin, payload.value);
+    Registry.board[`${WRITE_TYPE[payload.mode]}Write`](payload.pin, payload.value);
   },
 
   updateView(
@@ -93,7 +93,7 @@ var HardwareManager = {
     payload: Object
   ) {
 
-    console.log('write to %s %s', tag, _name, payload.voltage);
+    console.log('write to %s %s', tag, _name, payload.value);
 
     var {
       name,
@@ -114,9 +114,9 @@ var HardwareManager = {
     }
 
 
-    if (typeof payload.voltage !== 'undefined') {
-      console.log(`${WRITE_TYPE[props.mode]}Write`, props.pin, payload.voltage);
-      Registry.board[`${WRITE_TYPE[props.mode]}Write`](props.pin, payload.voltage);
+    if (typeof payload.value !== 'undefined') {
+      console.log(`${WRITE_TYPE[props.mode]}Write`, props.pin, payload.value);
+      Registry.board[`${WRITE_TYPE[props.mode]}Write`](props.pin, payload.value);
     }
 
     Object.assign(props, payload);

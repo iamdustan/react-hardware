@@ -6,7 +6,7 @@ var viewConfig = {
   uiViewClassName: 'Led',
   validAttributes: {
     pin: true,
-    voltage: true,
+    value: true,
     mode: true,
   },
 };

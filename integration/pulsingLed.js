@@ -29,8 +29,8 @@ var PulsingLed = React.createClass({
   },
 
   getInitialState() {
-    var {initialVoltage = LOW} = this.props;
-    return {voltage: initialVoltage};
+    var {initialValue = LOW} = this.props;
+    return {value: initialValue};
   },
 
   getDefaultProps() {
@@ -44,10 +44,10 @@ var PulsingLed = React.createClass({
   tween() {
     var {easing} = this.props;
 
-    this.tweenState('voltage', {
+    this.tweenState('value', {
       easing: typeof easing === 'string' ? tweenState.easingTypes[easing] : easing,
       duration: this.props.duration,
-      endValue: this.state.voltage === 0 ? HIGH : LOW,
+      endValue: this.state.value === 0 ? HIGH : LOW,
       onEnd: () => (setTimeout(() => this.tween()), 30),
     });
   },
@@ -62,7 +62,7 @@ var PulsingLed = React.createClass({
 
   render() {
     return (
-      <Led {...this.props} voltage={this.getTweeningValue('voltage')} />
+      <Led {...this.props} value={this.getTweeningValue('value')} />
     );
   },
 });
@@ -78,7 +78,7 @@ class Application extends React.Component {
 }
 
 var PORT = '/dev/cu.usbmodem1411';
-React.render(<Application initialVoltage={255} />, PORT, _ => (
+React.render(<Application initialValue={255} />, PORT, _ => (
   console.log('React mounted'/*, arguments*/)
 ));
 

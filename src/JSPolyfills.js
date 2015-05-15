@@ -1,7 +1,7 @@
 var lastTime = 0;
 
 var FRAME = 16;
-var FRAME = 50;
+var FRAME = 75;
 
 global.requestAnimationFrame = function(callback, element) {
   var currTime = new Date().getTime();

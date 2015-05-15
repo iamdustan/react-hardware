@@ -93,8 +93,6 @@ var HardwareManager = {
     payload: Object
   ) {
 
-    console.log('write to %s %s', tag, _name, payload.value);
-
     var {
       name,
       props,

@@ -83,7 +83,7 @@ var HardwareManager = {
     // TODO: support more payload modes?
     Registry.board.pinMode(payload.pin, payload.mode);
 
-    console.log(`${WRITE_TYPE[payload.mode]}Write`, payload.pin, payload.value);
+    // console.log(`${WRITE_TYPE[payload.mode]}Write`, payload.pin, payload.value);
     Registry.board[`${WRITE_TYPE[payload.mode]}Write`](payload.pin, payload.value);
   },
 
@@ -113,7 +113,7 @@ var HardwareManager = {
 
 
     if (typeof payload.value !== 'undefined') {
-      console.log(`${WRITE_TYPE[props.mode]}Write`, props.pin, payload.value);
+      // console.log(`${WRITE_TYPE[props.mode]}Write`, props.pin, payload.value);
       Registry.board[`${WRITE_TYPE[props.mode]}Write`](props.pin, payload.value);
     }
 

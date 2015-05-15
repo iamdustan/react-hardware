@@ -1,7 +1,10 @@
+import * as polys from './JSPolyfills';
+
 import ReactHardwareMount from './ReactHardwareMount';
 import ReactHardwareDefaultInjection from './ReactHardwareDefaultInjection';
 import Board from './components/Board';
 import ReactHardwareComponents from './components';
+import inputModes from './components/inputModes';
 
 /*
 var ReactChildren = require('ReactChildren');
@@ -11,7 +14,6 @@ var ReactContext = require('ReactContext');
 var ReactCurrentOwner = require('ReactCurrentOwner');
 var ReactElement = require('ReactElement');
 var ReactElementValidator = require('ReactElementValidator');
-var ReactInstanceHandles = require('ReactInstanceHandles');
 var ReactPropTypes = require('ReactPropTypes');
 
 var deprecated = require('deprecated');
@@ -46,6 +48,7 @@ var ReactHardware = {
   cloneElement: cloneElement,
   */
   render: render,
+  mode: inputModes,
 }
 
 Object.assign(ReactHardware, ReactHardwareComponents);
@@ -60,7 +63,9 @@ if (
     /*
     CurrentOwner: ReactCurrentOwner,
     InstanceHandles: ReactInstanceHandles,
-    Mount: ReactIOSMount,
+    */
+    Mount: ReactHardwareMount,
+    /*
     Reconciler: require('ReactReconciler'),
     TextComponent: require('ReactIOSTextComponent'),
     */

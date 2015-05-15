@@ -1,3 +1,4 @@
+/*eslint no-console:0, no-use-before-define:0*/
 
 import ReactHardwareTagHandles from './ReactHardwareTagHandles';
 import ReactReconciler from 'react/lib/ReactReconciler';
@@ -8,11 +9,10 @@ import instantiateReactComponent from 'react/lib/instantiateReactComponent';
 import emptyObject from 'react/lib/emptyObject';
 import shouldUpdateReactComponent from 'react/lib/shouldUpdateReactComponent';
 import HardwareManager from './HardwareManager';
+import invariant from 'react/lib/invariant';
 
 /*
 var ReactPerf = require('ReactPerf');
-
-var invariant = require('invariant');
 */
 
 var instanceNumberToChildRootID = function(rootNodeID, instanceNumber) {
@@ -98,12 +98,12 @@ var ReactHardwareMount = {
         }
       }
 
-      if (!ReactHardwareTagHandles.reactTagIsHardwareTopRootID(containerTag)) {
-        console.error('You cannot render into anything but a SerialPort connection.');
-        return;
-      }
+      invariant(
+        ReactHardwareTagHandles.reactTagIsHardwareTopRootID(containerTag),
+        'You cannot render into anything but a SerialPort connection.'
+      );
 
-      var topRootNodeID = ReactHardwareTagHandles.allocateRootNodeIDForTag(containerTag);
+      topRootNodeID = ReactHardwareTagHandles.allocateRootNodeIDForTag(containerTag);
       ReactHardwareTagHandles.associateRootNodeIDWithMountedNodeHandle(
         topRootNodeID,
         containerTag
@@ -175,6 +175,7 @@ var ReactHardwareMount = {
     var addChildTags = [mountImage.tag];
     var addAtIndices = [0];
 
+    // TODO: simplify this to just adding. Nothing can be removed.
     HardwareManager.manageChildren(
       ReactHardwareTagHandles.mostRecentMountedNodeHandleForRootNodeID(containerID),
       null, // moveFromIndices
@@ -183,7 +184,7 @@ var ReactHardwareMount = {
       addAtIndices,
       null  // removeAtIndices
     );
-  }
+  },
 };
 
 export default ReactHardwareMount;

@@ -96,9 +96,10 @@ var ReactHardwareTagHandles = {
     return ReactHardwareTagHandles.rootNodeIDToTag[rootNodeID];
   },
 
-  tagToRootNodeID: ([] : Array<string>),
+  /* es lint is currently eating it with these types*/
+  tagToRootNodeID: [], // ([] : Array<string>),
 
-  rootNodeIDToTag: ({} : {[key: string]: number})
+  rootNodeIDToTag: {}, // ({} : {[key: string]: number})
 };
 
 module.exports = ReactHardwareTagHandles;

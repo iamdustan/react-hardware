@@ -9,7 +9,7 @@ var UniversalWorkerNodeHandle = {
       'No node handle defined'
     );
     return ReactHardwareTagHandles.tagToRootNodeID[nodeHandle];
-  }
+  },
 };
 
 export default UniversalWorkerNodeHandle;

@@ -21,11 +21,19 @@ class FlashingLed extends React.Component {
     };
   }
 
+  next(time) {
+    var voltage = this.state.voltage === HIGH ? LOW : HIGH;
+    this.setState({voltage});
+    setTimeout(_ => {
+      this.next(this.props.interval[0]);
+    }, this.props.interval[1]);
+  }
+
   componentDidMount() {
-    this.state._interval = setInterval(_ => {
-      var voltage = this.state.voltage === HIGH ? LOW : HIGH;
-      this.setState({voltage});
-    }, this.props.interval);
+    setTimeout(_ => {
+      this.next(this.props.interval[0]);
+
+    }, this.props.delay);
   }
 
   componentWillUnmount() {

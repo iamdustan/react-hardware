@@ -5,14 +5,12 @@ import warning from 'react/lib/warning';
 import invariant from 'react/lib/invariant';
 
 var WRITE_TYPE = {
-  [0x00]: 'analog', // input
+  [0x00]: 'analog',  // input
   [0x01]: 'digital', //output
   [0x02]: 'analog', // analog
   [0x03]: 'analog', // pwm
-  [0x04]: 'analog', // servo
+  [0x04]: 'servo',  // servo
 };
-
-var METHOD = 'analogWrite';
 
 var Registry = {
   children: [],
@@ -85,6 +83,7 @@ var HardwareManager = {
     // TODO: support more payload modes?
     Registry.board.pinMode(payload.pin, payload.mode);
 
+    console.log(`${WRITE_TYPE[payload.mode]}Write`, payload.pin, payload.voltage);
     Registry.board[`${WRITE_TYPE[payload.mode]}Write`](payload.pin, payload.voltage);
   },
 
@@ -93,6 +92,8 @@ var HardwareManager = {
     _name: string,
     payload: Object
   ) {
+
+    console.log('write to %s %s', tag, _name, payload.voltage);
 
     var {
       name,
@@ -114,6 +115,7 @@ var HardwareManager = {
 
 
     if (typeof payload.voltage !== 'undefined') {
+      console.log(`${WRITE_TYPE[props.mode]}Write`, props.pin, payload.voltage);
       Registry.board[`${WRITE_TYPE[props.mode]}Write`](props.pin, payload.voltage);
     }
 

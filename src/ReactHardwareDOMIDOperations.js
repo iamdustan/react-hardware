@@ -1,3 +1,4 @@
+/*eslint no-console:0*/
 import ReactHardwareTagHandles from './ReactHardwareTagHandles';
 import ReactMultiChildUpdateTypes from 'react/lib/ReactMultiChildUpdateTypes';
 

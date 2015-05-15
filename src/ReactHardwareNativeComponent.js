@@ -1,3 +1,4 @@
+/*eslint no-console:0*/
 var __DEV__ = true;
 /*
 var NativeMethodsMixin = require('NativeMethodsMixin');
@@ -54,7 +55,8 @@ var cachedIndexArray = function(size) {
     for (var i = 0; i < size; i++) {
       arr[i] = i;
     }
-    return cachedIndexArray._cache[size] = arr;
+    cachedIndexArray._cache[size] = arr;
+    return cachedIndexArray._cache[size];
   } else {
     return cachedResult;
   }
@@ -76,9 +78,12 @@ ReactHardwareNativeComponent.Mixin = {
   },
 
   unmountComponent: function() {
+    console.warn('TODO: ReactHardwareNativeComponent.Mixin.unmountComponent');
+    /*
     deleteAllListeners(this._rootNodeID);
     this.unmountChildren();
     this._rootNodeID = null;
+    */
   },
 
   /**
@@ -185,7 +190,7 @@ ReactHardwareNativeComponent.Mixin = {
    * @param {object} initialProps Native component props.
    */
   _registerListenersUponCreation: function(initialProps) {
-    return;
+    /*
     for (var key in initialProps) {
       // NOTE: The check for `!props[key]`, is only possible because this method
       // registers listeners the *first* time a component is created.
@@ -194,6 +199,7 @@ ReactHardwareNativeComponent.Mixin = {
         putListener(this._rootNodeID, key, listener);
       }
     }
+    */
   },
 
   /**
@@ -202,12 +208,13 @@ ReactHardwareNativeComponent.Mixin = {
    * @param {object} nextProps Next native component props including events.
    */
   _reconcileListenersUponUpdate: function(prevProps, nextProps) {
-    return;
+    /*
     for (var key in nextProps) {
       if (registrationNames[key] && (nextProps[key] != prevProps[key])) {
         putListener(this._rootNodeID, key, nextProps[key]);
       }
     }
+    */
   },
 
   /**
@@ -236,9 +243,9 @@ ReactHardwareNativeComponent.Mixin = {
     );
     return {
       rootNodeID: rootID,
-      tag: tag
+      tag: tag,
     };
-  }
+  },
 };
 
 /**

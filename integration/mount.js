@@ -11,7 +11,6 @@ const LOW = 0;
 
 class Application extends React.Component {
   render(): ?ReactElement {
-    console.log("render", this.props);
     return (
       <Board>
         <Led pin={9} voltage={this.props.voltage} />

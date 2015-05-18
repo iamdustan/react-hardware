@@ -26,7 +26,8 @@
   "dependencies": {
     "firmata": "^0.5.0",
     "react": "^0.13.2",
-    "serialport": "^1.7.1"
+    "serialport": "^1.7.1",
+    "setimmediate": "^1.0.2"
   },
   "devDependencies": {
     "babel": "^5.2.15",

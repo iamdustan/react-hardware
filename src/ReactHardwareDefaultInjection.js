@@ -1,24 +1,25 @@
-/*
-require('InitializeJavaScriptAppEngine');
+/*eslint-disable*/
+require('./JSPolyfills');
+/*eslint-enable*/
+
 import EventPluginHub from 'react/lib/EventPluginHub';
-*/
 import EventPluginUtils from 'react/lib/EventPluginUtils';
-/*
-var IOSDefaultEventPluginOrder = require('IOSDefaultEventPluginOrder');
-var IOSNativeBridgeEventPlugin = require('IOSNativeBridgeEventPlugin');
-*/
+import HardwareDefaultEventPluginOrder from './HardwareDefaultEventPluginOrder';
+import HardwareBridgeEventPlugin from './HardwareBridgeEventPlugin';
 import ReactClass from 'react/lib/ReactClass';
 import ReactComponentEnvironment from 'react/lib/ReactComponentEnvironment';
 import ReactDefaultBatchingStrategy from 'react/lib/ReactDefaultBatchingStrategy';
 import ReactNativeComponent from 'react/lib/ReactNativeComponent';
 /*
 var ReactEmptyComponent = require('ReactEmptyComponent');
-var ReactInstanceHandles = require('ReactInstanceHandles');
+*/
+import ReactInstanceHandles from 'react/lib/ReactInstanceHandles';
+/*
 var ReactIOSComponentEnvironment = require('ReactIOSComponentEnvironment');
 var ReactIOSComponentMixin = require('ReactIOSComponentMixin');
-var ReactIOSGlobalInteractionHandler = require('ReactIOSGlobalInteractionHandler');
-var ReactIOSGlobalResponderHandler = require('ReactIOSGlobalResponderHandler');
 */
+import ReactHardwareGlobalInteractionHandler from './ReactHardwareGlobalInteractionHandler';
+import ReactHardwareGlobalResponderHandler from './ReactHardwareGlobalResponderHandler';
 import NodeHandle from './NodeHandle';
 import ReactHardwareMount from './ReactHardwareMount';
 import ReactHardwareComponentEnvironment from './ReactHardwareComponentEnvironment';
@@ -26,18 +27,30 @@ import ReactHardwareComponentMixin from './ReactHardwareComponentMixin';
 import ReactUpdates from 'react/lib/ReactUpdates';
 /*
 var ReactIOSTextComponent = require('ReactIOSTextComponent');
-var ResponderEventPlugin = require('ResponderEventPlugin');
 */
+import ResponderEventPlugin from './ResponderEventPlugin';
 import UniversalWorkerNodeHandle from './UniversalWorkerNodeHandle';
-
-/*
-var createReactIOSNativeComponentClass = require('createReactIOSNativeComponentClass');
-*/
 import invariant from 'react/lib/invariant';
 
 var noop = () => {};
 
 function inject() {
+  console.log('injecting');
+  EventPluginHub.injection.injectEventPluginOrder(HardwareDefaultEventPluginOrder);
+  EventPluginHub.injection.injectInstanceHandle(ReactInstanceHandles);
+
+  ResponderEventPlugin.injection.injectGlobalResponderHandler(
+    ReactHardwareGlobalResponderHandler
+  );
+
+  ResponderEventPlugin.injection.injectGlobalInteractionHandler(
+    ReactHardwareGlobalInteractionHandler
+  );
+
+  EventPluginHub.injection.injectEventPluginsByName({
+    'HardwareBridgeEventPlugin': HardwareBridgeEventPlugin,
+  });
+
   ReactUpdates.injection.injectReconcileTransaction(
     ReactHardwareComponentEnvironment.ReactReconcileTransaction
   );
@@ -70,8 +83,12 @@ function inject() {
   NodeHandle.injection.injectImplementation(UniversalWorkerNodeHandle);
 
   // TODO: maybe possibly find a better way to do this.
-  // Ask @vjeux or @zpao about it
   // Ensure that react’s default stuff doesn’t inject into our world
+  // I think that https://github.com/facebook/react/pull/3866 should
+  // make this unnecessary.
+  EventPluginHub.injection.injectEventPluginOrder = noop;
+  EventPluginHub.injection.injectInstanceHandle = noop;
+  EventPluginHub.injection.injectEventPluginsByName = noop;
   ReactUpdates.injection.injectReconcileTransaction = noop;
   ReactUpdates.injection.injectBatchingStrategy = noop;
   ReactComponentEnvironment.injection.injectEnvironment = noop;
@@ -79,6 +96,7 @@ function inject() {
   ReactClass.injection.injectMixin = noop;
   ReactNativeComponent.injection.injectAutoWrapper = noop;
   NodeHandle.injection.injectImplementation = noop;
+  console.log('injected');
 }
 
 module.exports = {

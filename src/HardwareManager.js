@@ -5,7 +5,7 @@ import warning from 'react/lib/warning';
 import invariant from 'react/lib/invariant';
 
 var WRITE_TYPE = {
-  [0x00]: 'analog',  // input
+  [0x00]: 'digital', // input
   [0x01]: 'digital', //output
   [0x02]: 'analog', // analog
   [0x03]: 'analog', // pwm
@@ -58,8 +58,6 @@ var HardwareManager = {
     removeAtIndices
   ) {
     console.log('TODO: HardwareManager#manageChildren');
-    // console.log('TODO: manageChildren', arguments);
-    // console.log(Registry[componentTag]);
   },
 
   createView(
@@ -85,6 +83,7 @@ var HardwareManager = {
 
     // console.log(`${WRITE_TYPE[payload.mode]}Write`, payload.pin, payload.value);
     Registry.board[`${WRITE_TYPE[payload.mode]}Write`](payload.pin, payload.value);
+    console.log('create', payload);
   },
 
   updateView(
@@ -118,6 +117,43 @@ var HardwareManager = {
     }
 
     Object.assign(props, payload);
+  },
+
+  read(tag: number, callback: Function) {
+    var {
+      props,
+      reader,
+    } = Registry.children[tag];
+
+    Registry.board[`${WRITE_TYPE[props.mode]}Read`](props.pin, callback);
+  },
+
+  measure(tag: number, callback: Function) {
+    var {
+      props,
+      reader,
+    } = Registry.children[tag];
+    console.log('TODO: HardwareManager.measure');
+
+    /*
+    // todo: all reads should be in a global event registry
+    Registry.board[`${WRITE_TYPE[props.mode]}Read`](props.pin, callback);
+    */
+  },
+
+  setJSResponder(tag: number) {
+    console.log('TODO: HardwareManager#setJSResponder to %s', tag);
+  },
+
+  clearJSResponder() {
+    console.log('TODO: HardwareManager#clearJSResponder');
+  },
+
+  customDirectEventTypes: {
+    topChange: {registrationName: 'onChange'},
+    topDown: {registrationName: 'onDown'},
+    topUp: {registrationName: 'onUp'},
+    topHold: {registrationName: 'onHold'},
   },
 };
 

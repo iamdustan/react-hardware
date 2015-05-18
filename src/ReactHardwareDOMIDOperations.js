@@ -48,7 +48,6 @@ var dangerouslyProcessChildrenUpdates = function(childrenUpdates, markupList) {
     var updateParentTagNumber = +updateParentTagString;
     var childUpdatesToSend = byContainerTag[updateParentTagNumber];
     console.log('TODO: HardwareManager.manageChildren', childUpdatesToSend);
-    /*
     RCTUIManager.manageChildren(
       updateParentTagNumber,
       childUpdatesToSend.moveFromIndices,
@@ -57,7 +56,6 @@ var dangerouslyProcessChildrenUpdates = function(childrenUpdates, markupList) {
       childUpdatesToSend.addAtIndices,
       childUpdatesToSend.removeAtIndices
     );
-    */
   }
 };
 

@@ -1,12 +1,8 @@
 /*eslint no-console:0*/
 var __DEV__ = true;
-/*
-var NativeMethodsMixin = require('NativeMethodsMixin');
-*/
+import HardwareMethodsMixin from './HardwareMethodsMixin';
 import ReactHardwareComponentMixin from './ReactHardwareComponentMixin';
-/*
-var ReactIOSEventEmitter = require('ReactIOSEventEmitter');
-*/
+import ReactHardwareEventEmitter from './ReactHardwareEventEmitter';
 import ReactHardwareTagHandles from './ReactHardwareTagHandles';
 import ReactMultiChild from 'react/lib/ReactMultiChild';
 
@@ -15,11 +11,11 @@ import warning from 'react/lib//warning';
 import deepFreezeAndThrowOnMutationInDev from './deepFreezeAndThrowOnMutationInDev';
 import HardwareManager from './HardwareManager';
 
-/*
-var registrationNames = ReactIOSEventEmitter.registrationNames;
-var putListener = ReactIOSEventEmitter.putListener;
-var deleteAllListeners = ReactIOSEventEmitter.deleteAllListeners;
-*/
+var {
+  registrationNames,
+  putListener,
+  deleteAllListeners,
+} = ReactHardwareEventEmitter;
 
 type ReactHardwareNativeComponentViewConfig = {
   validAttributes: Object;
@@ -78,12 +74,9 @@ ReactHardwareNativeComponent.Mixin = {
   },
 
   unmountComponent: function() {
-    console.warn('TODO: ReactHardwareNativeComponent.Mixin.unmountComponent');
-    /*
     deleteAllListeners(this._rootNodeID);
     this.unmountChildren();
     this._rootNodeID = null;
-    */
   },
 
   /**
@@ -190,7 +183,6 @@ ReactHardwareNativeComponent.Mixin = {
    * @param {object} initialProps Native component props.
    */
   _registerListenersUponCreation: function(initialProps) {
-    /*
     for (var key in initialProps) {
       // NOTE: The check for `!props[key]`, is only possible because this method
       // registers listeners the *first* time a component is created.
@@ -199,7 +191,6 @@ ReactHardwareNativeComponent.Mixin = {
         putListener(this._rootNodeID, key, listener);
       }
     }
-    */
   },
 
   /**
@@ -208,19 +199,17 @@ ReactHardwareNativeComponent.Mixin = {
    * @param {object} nextProps Next native component props including events.
    */
   _reconcileListenersUponUpdate: function(prevProps, nextProps) {
-    /*
     for (var key in nextProps) {
       if (registrationNames[key] && (nextProps[key] != prevProps[key])) {
         putListener(this._rootNodeID, key, nextProps[key]);
       }
     }
-    */
   },
 
   /**
    * @param {string} rootID Root ID of this subtree.
    * @param {Transaction} transaction For creating/updating.
-   * @return {string} Unique iOS view tag.
+   * @return {string} Unique hardware view tag.
    */
   mountComponent: function(rootID, transaction, context) {
     this._rootNodeID = rootID;
@@ -256,9 +245,7 @@ Object.assign(
   ReactHardwareNativeComponent.prototype,
   ReactMultiChild.Mixin,
   ReactHardwareNativeComponent.Mixin,
-  /*
-  NativeMethodsMixin,
-  */
+  HardwareMethodsMixin,
   ReactHardwareComponentMixin
 );
 

@@ -1,14 +1,10 @@
-/*eslint-disable*/
-import * as polys from './JSPolyfills';
-/*eslint-enable*/
-
 import ReactHardwareDefaultInjection from './ReactHardwareDefaultInjection';
-
 ReactHardwareDefaultInjection.inject();
 
 import ReactHardwareMount from './ReactHardwareMount';
 import ReactHardwareComponents from './components';
 import inputModes from './components/inputModes';
+import findNodeHandle from './findNodeHandle';
 
 /*
 var ReactChildren = require('ReactChildren');
@@ -16,9 +12,9 @@ var ReactChildren = require('ReactChildren');
 import ReactClass from 'react/lib/ReactClass';
 import ReactComponent from 'react/lib/ReactComponent';
 import ReactElement from 'react/lib/ReactElement';
+import ReactContext from 'react/lib/ReactContext';
+import ReactCurrentOwner from 'react/lib/ReactCurrentOwner';
 /*
-var ReactContext = require('ReactContext');
-var ReactCurrentOwner = require('ReactCurrentOwner');
 var ReactElementValidator = require('ReactElementValidator');
 */
 import ReactPropTypes from 'react/lib/ReactPropTypes';
@@ -38,7 +34,9 @@ var render = function(
 };
 
 import React from 'react';
+
 var ReactHardware = Object.assign(Object.create(React), {
+  findNodeHandle: findNodeHandle,
   hasReactHardwareInitialized: false,
   Component: ReactComponent,
   PropTypes: ReactPropTypes,
@@ -47,6 +45,7 @@ var ReactHardware = Object.assign(Object.create(React), {
   createFactory: createFactory,
   cloneElement: cloneElement,
   render: render,
+
   mode: inputModes,
 });
 
@@ -59,13 +58,11 @@ if (
   typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ !== 'undefined' &&
   typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.inject === 'function') {
   __REACT_DEVTOOLS_GLOBAL_HOOK__.inject({
-    /*
     CurrentOwner: ReactCurrentOwner,
     InstanceHandles: ReactInstanceHandles,
-    */
     Mount: ReactHardwareMount,
-    /*
     Reconciler: require('ReactReconciler'),
+    /*
     TextComponent: require('ReactIOSTextComponent'),
     */
   });

@@ -1,6 +1,7 @@
 import React from 'react';
 import createReactHardwareComponentClass from '../createReactHardwareComponentClass';
 import modes from './inputModes';
+var {PropTypes} = React;
 
 var viewConfig = {
   uiViewClassName: 'Servo',

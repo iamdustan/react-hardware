@@ -1,4 +1,5 @@
 /*eslint no-console:0*/
+import HardwareManager from './HardwareManager';
 import ReactHardwareTagHandles from './ReactHardwareTagHandles';
 import ReactMultiChildUpdateTypes from 'react/lib/ReactMultiChildUpdateTypes';
 
@@ -15,8 +16,6 @@ import ReactMultiChildUpdateTypes from 'react/lib/ReactMultiChildUpdateTypes';
  * Hardware, the ids of new components assumed to be already created.
  */
 var dangerouslyProcessChildrenUpdates = function(childrenUpdates, markupList) {
-  console.warn('WARNING: dangerouslyProcessChildrenUpdates should not be called in ReactHardware');
-
   if (!childrenUpdates.length) {
     return;
   }
@@ -47,8 +46,7 @@ var dangerouslyProcessChildrenUpdates = function(childrenUpdates, markupList) {
   for (var updateParentTagString in byContainerTag) {
     var updateParentTagNumber = +updateParentTagString;
     var childUpdatesToSend = byContainerTag[updateParentTagNumber];
-    console.log('TODO: HardwareManager.manageChildren', childUpdatesToSend);
-    RCTUIManager.manageChildren(
+    HardwareManager.manageChildren(
       updateParentTagNumber,
       childUpdatesToSend.moveFromIndices,
       childUpdatesToSend.moveToIndices,

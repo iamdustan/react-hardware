@@ -13,8 +13,47 @@ var WRITE_TYPE = {
 };
 
 var Registry = {
-  children: [],
+  children: {},
 };
+
+var EMPTY_ARRAY = [];
+
+function _childrenToRemoveFromContainer(container, atIndices) {
+  // If there are no indices to move or the container has no subviews don't bother
+  // We support parents with nil subviews so long as they're all nil so this allows for this behavior
+  if (!atIndices || atIndices.length === 0) {
+    return null;
+  }
+  // Construction of removed children must be done "up front", before indices are disturbed by removals.
+  var removedChildren = new Array(atIndices.length);
+
+  invariant(container !== null, 'container view (for ID %s) not found', container);
+
+  var i, index;
+  for (var i = 0; i < atIndices.length; i++) {
+    index = atIndices[i];
+    if (index < Object.keys(Registry.children).length) {
+      removedChildren.push(Registry.children[index]);
+    }
+  }
+  warning(
+    removedChildren.length !== atIndices.length,
+    'removedChildren count (%s) was not what we expected (%s)',
+    removedChildren.count,
+    atIndices.count
+  );
+  return removedChildren;
+}
+
+/**
+ * Unregisters views from registries
+ */
+function _purgeChildren(children, fromRegistry) {
+  for (var child in children) {
+    console.log('_purgeChildren', child);
+    fromRegistry[child.reactTag] = null;
+  }
+}
 
 var noop = () => {};
 var HardwareManager = {
@@ -51,13 +90,53 @@ var HardwareManager = {
   manageChildren(
     componentTag,
     // TODO (remove): most of these are unnecessary in the hardware environment
-    moveFromIndices,
-    moveToIndices,
+    moveFromIndices, // null
+    moveToIndices,   // null
     addChildTags,
     addAtIndices,
     removeAtIndices
   ) {
-    console.log('TODO: HardwareManager#manageChildren');
+    console.log(
+      'TODO: HardwareManager#manageChildren',
+      componentTag,
+      moveFromIndices,
+      moveToIndices,
+      addChildTags,
+      addAtIndices,
+      removeAtIndices
+    );
+    var {children} = Registry;
+    console.log(children);
+
+    var permanentlyRemovedChildren = _childrenToRemoveFromContainer(componentTag, removeAtIndices) || EMPTY_ARRAY;
+    var temporarilyRemovedChildren = _childrenToRemoveFromContainer(componentTag, moveFromIndices) || EMPTY_ARRAY;
+    /*
+    Removes (both permanent and temporary moves) are using "before" indices
+    [self _removeChildren:permanentlyRemovedChildren fromContainer:container];
+    [self _removeChildren:temporarilyRemovedChildren fromContainer:container];
+    */
+
+    _purgeChildren(permanentlyRemovedChildren, children);
+
+    // Figure out what to insert - merge temporary inserts and adds
+    var destinationsToChildrenToAdd = {};
+    var index, length, view;
+    for (index = 0, length = temporarilyRemovedChildren.length; index < length; index++) {
+      destinationsToChildrenToAdd[moveToIndices[index]] = temporarilyRemovedChildren[index];
+    }
+    for (index = 0, length = addAtIndices.length; index < length; index++) {
+      view = Registry.children[addChildTags[index]];
+      if (view) {
+        destinationsToChildrenToAdd[addAtIndices[index]] = view;
+      }
+    }
+    console.log('destinationsToChildrenToAdd', destinationsToChildrenToAdd);
+
+    var sortedIndices = Object.keys(destinationsToChildrenToAdd).sort();
+    for (var reactIndex in sortedIndices) {
+      // console.log('reactIndex', reactIndex, sortedIndices[reactIndex]);
+      // [container insertReactSubview:destinationsToChildrenToAdd[reactIndex] atIndex:reactIndex.integerValue];
+    }
   },
 
   createView(
@@ -73,10 +152,14 @@ var HardwareManager = {
       return;
     }
 
+    var view = Registry.children[tag];
+    console.log('view', view, tag, Registry.children);
+    /*
     Registry.children[tag] = {
       name: name,
       props: payload,
     };
+    */
 
     // TODO: support more payload modes?
     Registry.board.pinMode(payload.pin, payload.mode);
@@ -126,19 +209,6 @@ var HardwareManager = {
     } = Registry.children[tag];
 
     Registry.board[`${WRITE_TYPE[props.mode]}Read`](props.pin, callback);
-  },
-
-  measure(tag: number, callback: Function) {
-    var {
-      props,
-      reader,
-    } = Registry.children[tag];
-    console.log('TODO: HardwareManager.measure');
-
-    /*
-    // todo: all reads should be in a global event registry
-    Registry.board[`${WRITE_TYPE[props.mode]}Read`](props.pin, callback);
-    */
   },
 
   setJSResponder(tag: number) {

@@ -7,28 +7,24 @@ import findNodeHandle from '../findNodeHandle';
 var {PropTypes} = React;
 
 var CHANGE_EVENT = 'topChange';
-var CLOSE_EVENT = 'topClose';
-var OPEN_EVENT = 'topOpen';
 
 var collect = (obj, ...things) =>
   things.reduce((memo, thing) => ((memo[thing] = obj[thing]), memo), {});
 
 var EVENT_TYPE = collect(
   HardwareManager.customDirectEventTypes,
-  CHANGE_EVENT, CLOSE_EVENT, OPEN_EVENT
+  CHANGE_EVENT
 );
 
-var SWITCH_REF = 'switch';
+var POT_REF = 'potentiometer';
 
 var viewConfig = {
-  uiViewClassName: 'Switch',
+  uiViewClassName: 'Potentiometer',
   validAttributes: {
     pin: true,
     mode: true,
 
     onChange: true,
-    onClose: true,
-    onOpen: true,
   },
 };
 
@@ -44,13 +40,11 @@ function emitEvent(componentInstance, eventName, value) {
   );
 }
 
-class Switch extends React.Component {
+class Potentiometer extends React.Component {
   componentDidMount() {
     // set up the hardware polling
-    HardwareManager.read(findNodeHandle(this.refs[SWITCH_REF]), newValue => {
-      if (newValue !== this.value) {
-        var eventName = newValue === 0 ? CLOSE_EVENT : OPEN_EVENT;
-        emitEvent(this, eventName, newValue);
+    HardwareManager.read(findNodeHandle(this.refs[POT_REF]), newValue => {
+      if (newValue !== this.value && Math.abs(newValue - this.value) > this.props.threshold) {
         emitEvent(this, CHANGE_EVENT, newValue);
 
         this.value = newValue;
@@ -60,7 +54,7 @@ class Switch extends React.Component {
 
   componentWillUnmount() {
     // TODO: maybe move this destroyer to the HardwareManager
-    HardwareManager.destroyRead(findNodeHandle(this.refs[SWITCH_REF]));
+    HardwareManager.destroyRead(findNodeHandle(this.refs[POT_REF]));
   }
 
   render() {
@@ -68,8 +62,8 @@ class Switch extends React.Component {
 
     return (
       <Hardware
-        ref={SWITCH_REF}
-        mode={modes.INPUT}
+        ref={POT_REF}
+        mode={modes.ANALOG}
         {...props} />
     );
   }
@@ -77,14 +71,18 @@ class Switch extends React.Component {
 
 var Hardware = createReactHardwareComponentClass(viewConfig);
 
-Switch.propTypes = {
-  pin: PropTypes.number.isRequired,
-  mode: PropTypes.number,
-
-  onChange: PropTypes.func,
-  onClose: PropTypes.func,
-  onOpen: PropTypes.func,
+Potentiometer.defaultProps = {
+  threshold: 10,
 };
 
-export default Switch;
+Potentiometer.propTypes = {
+  pin: PropTypes.number.isRequired,
+  mode: PropTypes.number,
+  threshold: PropTypes.number,
+
+  onChange: PropTypes.func,
+};
+
+export default Potentiometer;
+
 

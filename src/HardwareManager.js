@@ -82,8 +82,9 @@ var HardwareManager = {
     // TODO: support more payload modes?
     Registry.board.pinMode(payload.pin, payload.mode);
 
-    // console.log(`${WRITE_TYPE[payload.mode]}Write`, payload.pin, payload.value);
-    Registry.board[`${WRITE_TYPE[payload.mode]}Write`](payload.pin, payload.value);
+    if (typeof payload.value !== 'undefined') {
+      Registry.board[`${WRITE_TYPE[payload.mode]}Write`](payload.pin, payload.value);
+    }
     console.log('create', payload);
   },
 
@@ -124,7 +125,8 @@ var HardwareManager = {
     var {props} = Registry.children[tag];
     Registry.children[tag].readListener = callback;
 
-    Registry.board[`${WRITE_TYPE[props.mode]}Read`](props.pin, callback);
+    // HACK: - 13 for arduino uno
+    Registry.board[`${WRITE_TYPE[props.mode]}Read`](props.pin - 13, callback);
   },
 
   destroyRead(tag: number) {

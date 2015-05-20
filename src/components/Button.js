@@ -4,18 +4,20 @@ import modes from './inputModes';
 import HardwareManager from '../HardwareManager';
 import ReactHardwareEventEmitter from '../ReactHardwareEventEmitter';
 import findNodeHandle from '../findNodeHandle';
+var {PropTypes} = React;
 
 var DOWN_EVENT = 'topDown';
 var UP_EVENT = 'topUp';
 var CHANGE_EVENT = 'topChange';
 var HOLD_EVENT = 'topHold';
 
-var EVENT_TYPE = {
-  [DOWN_EVENT]: 'down',
-  [UP_EVENT]: 'up',
-  [CHANGE_EVENT]: 'change',
-  [HOLD_EVENT]: 'hold',
-};
+var collect = (obj, ...things) =>
+  things.reduce((memo, thing) => ((memo[thing] = obj[thing]), memo), {});
+
+var EVENT_TYPE = collect(
+  HardwareManager.customDirectEventTypes,
+  CHANGE_EVENT, DOWN_EVENT, HOLD_EVENT, UP_EVENT
+);
 
 var BUTTON_REF = 'button';
 
@@ -39,7 +41,7 @@ function emitEvent(componentInstance, eventName, value) {
     {
       value: value,
       target: componentInstance,
-      type: EVENT_TYPE[eventName],
+      type: EVENT_TYPE[eventName].registrationName,
     }
   );
 }
@@ -84,6 +86,11 @@ class Button extends React.Component {
     });
   }
 
+  componentWillUnmount() {
+    // TODO: maybe move this destroyer to the HardwareManager
+    HardwareManager.destroyRead(findNodeHandle(this.refs[BUTTON_REF]));
+  }
+
   render() {
     var props = Object.assign({}, this.props);
 
@@ -97,6 +104,17 @@ class Button extends React.Component {
 }
 
 var Hardware = createReactHardwareComponentClass(viewConfig);
+
+Button.propTypes = {
+  pin: PropTypes.number.isRequired,
+  mode: PropTypes.number,
+  holdtime: PropTypes.number,
+
+  onChange: PropTypes.func,
+  onDown: PropTypes.func,
+  onHold: PropTypes.func,
+  onUp: PropTypes.func,
+};
 
 Button.defaultProps = {
   holdtime: 1000,

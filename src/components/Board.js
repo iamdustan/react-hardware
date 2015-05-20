@@ -4,7 +4,7 @@ import createReactHardwareComponentClass from '../createReactHardwareComponentCl
 var viewConfig = {
   uiViewClassName: 'Board',
   validAttributes: {
-    port: true,
+    // port: true,
   },
 };
 

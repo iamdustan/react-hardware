@@ -21,6 +21,12 @@ class Led extends React.Component {
 
 Led.displayName = 'Led';
 
+Led.propTypes = {
+  pin: PropTypes.number.isRequired,
+  mode: PropTypes.number,
+  value: PropTypes.number,
+};
+
 var Hardware = createReactHardwareComponentClass(viewConfig);
 Hardware.defaultProps = {mode: modes.OUTPUT};
 

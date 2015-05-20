@@ -24,6 +24,13 @@ class Servo extends React.Component {
 
 Servo.displayName = 'Servo';
 
+Servo.propTypes = {
+  pin: PropTypes.number.isRequired,
+  mode: PropTypes.number,
+  value: PropTypes.number,
+};
+
+
 var Hardware = createReactHardwareComponentClass(viewConfig);
 
 export default Servo;

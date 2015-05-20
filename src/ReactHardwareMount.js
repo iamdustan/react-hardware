@@ -159,6 +159,41 @@ var ReactHardwareMount = {
     return true;
   },
 
+  /**
+   * Unmount component at container ID by iterating through each child component
+   * that has been rendered and unmounting it. There should just be one child
+   * component at this time.
+   */
+  unmountComponentByTag(containerTag: number): boolean {
+    var containerID = ReactHardwareTagHandles.tagToRootNodeID[containerTag];
+    var instance = ReactHardwareMount._instancesByContainerID[containerID];
+    if (!instance) {
+      return false;
+    }
+    ReactHardwareMount.unmountComponentFromNode(instance, containerID);
+    delete ReactHardwareMount._instancesByContainerID[containerID];
+    return true;
+  },
+
+  /**
+   * Unmounts a component.
+   *
+   * @param {ReactComponent} instance React component instance.
+   * @param {string} containerID ID of container we're removing from.
+   * @final
+   * @internal
+   * @see {ReactNativeMount.unmountComponentAtNode}
+   */
+  unmountComponentFromNode: function(
+    instance: ReactComponent,
+    containerID: string
+  ) {
+    ReactReconciler.unmountComponent(instance);
+    var containerTag =
+      ReactHardwareTagHandles.mostRecentMountedNodeHandleForRootNodeID(containerID);
+    HardwareManager.removeSubviewsFromContainerWithID(containerTag);
+  },
+
   getNode<T>(id: T): T {
     return id;
   },

@@ -1,5 +1,6 @@
 /*eslint no-console:0*/
 import {Board} from 'firmata';
+import ReactHardwareMount from './ReactHardwareMount';
 // import ReactHardwareTagHandles from './ReactHardwareTagHandles';
 import warning from 'react/lib/warning';
 import invariant from 'react/lib/invariant';
@@ -106,10 +107,22 @@ var HardwareManager = {
       removeAtIndices
     );
     var {children} = Registry;
-    console.log(children);
+
+    if (moveFromIndices || moveToIndices) throw new Error('Components should never move in the hardware tree');
 
     var permanentlyRemovedChildren = _childrenToRemoveFromContainer(componentTag, removeAtIndices) || EMPTY_ARRAY;
     var temporarilyRemovedChildren = _childrenToRemoveFromContainer(componentTag, moveFromIndices) || EMPTY_ARRAY;
+
+    console.log('permanentlyRemovedChildren', permanentlyRemovedChildren);
+    console.log('temporarilyRemovedChildren', temporarilyRemovedChildren);
+    permanentlyRemovedChildren.forEach(child => (
+      console.log(
+        'ReactHardwareMount.unmountComponentAtNode(%s)',
+        child,
+        ReactHardwareMount.unmountComponentByTag(child)
+      )
+    ));
+
     /*
     Removes (both permanent and temporary moves) are using "before" indices
     [self _removeChildren:permanentlyRemovedChildren fromContainer:container];
@@ -139,6 +152,12 @@ var HardwareManager = {
     }
   },
 
+  destroyView(
+    tag: number,
+    name: string
+  ) {
+  },
+
   createView(
     tag: number,
     name: string,
@@ -152,21 +171,17 @@ var HardwareManager = {
       return;
     }
 
-    var view = Registry.children[tag];
-    console.log('view', view, tag, Registry.children);
-    /*
+    // var view = Registry.children[tag];
+    // console.log('view', view, tag, Registry.children);
     Registry.children[tag] = {
       name: name,
       props: payload,
     };
-    */
 
     // TODO: support more payload modes?
     Registry.board.pinMode(payload.pin, payload.mode);
 
-    // console.log(`${WRITE_TYPE[payload.mode]}Write`, payload.pin, payload.value);
     Registry.board[`${WRITE_TYPE[payload.mode]}Write`](payload.pin, payload.value);
-    console.log('create', payload);
   },
 
   updateView(

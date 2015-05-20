@@ -2,7 +2,6 @@ import ReactHardwareDefaultInjection from './ReactHardwareDefaultInjection';
 ReactHardwareDefaultInjection.inject();
 
 import ReactHardwareMount from './ReactHardwareMount';
-import ReactHardwareComponents from './components';
 import inputModes from './components/inputModes';
 import findNodeHandle from './findNodeHandle';
 
@@ -34,6 +33,7 @@ var render = function(
 };
 
 import React from 'react';
+import ReactHardwareComponents from './components';
 
 var ReactHardware = Object.assign(Object.create(React), {
   findNodeHandle: findNodeHandle,

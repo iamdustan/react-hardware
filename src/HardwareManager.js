@@ -3,6 +3,7 @@ import {Board} from 'firmata';
 // import ReactHardwareTagHandles from './ReactHardwareTagHandles';
 import warning from 'react/lib/warning';
 import invariant from 'react/lib/invariant';
+var capitalize = w => `${w[0].toUpperCase()}${w.slice(1)}`;
 
 var WRITE_TYPE = {
   [0x00]: 'digital', // input
@@ -120,12 +121,20 @@ var HardwareManager = {
   },
 
   read(tag: number, callback: Function) {
-    var {
-      props,
-      reader,
-    } = Registry.children[tag];
+    var {props} = Registry.children[tag];
+    Registry.children[tag].readListener = callback;
 
     Registry.board[`${WRITE_TYPE[props.mode]}Read`](props.pin, callback);
+  },
+
+  destroyRead(tag: number) {
+    var {
+      props,
+      readListener,
+    } = Registry.children[tag];
+
+    Registry.board[`report${capitalize(WRITE_TYPE[props.mode])}Pin`](props.pin, 0);
+    Registry.board.removeListener(`digital-read-${props.pin}`, readListener);
   },
 
   measure(tag: number, callback: Function) {
@@ -134,11 +143,6 @@ var HardwareManager = {
       reader,
     } = Registry.children[tag];
     console.log('TODO: HardwareManager.measure');
-
-    /*
-    // todo: all reads should be in a global event registry
-    Registry.board[`${WRITE_TYPE[props.mode]}Read`](props.pin, callback);
-    */
   },
 
   setJSResponder(tag: number) {

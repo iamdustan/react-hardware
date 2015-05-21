@@ -1,10 +1,11 @@
 /*eslint no-console:0*/
 import {Board} from 'firmata';
 // import ReactHardwareTagHandles from './ReactHardwareTagHandles';
-import mode from './components/inputModes';
+import mode from '../components/inputModes';
 import warning from 'react/lib/warning';
 import invariant from 'react/lib/invariant';
 import pinMappings from './pinMappings/ArduinoUno';
+import {customDirectEventTypes} from './customEventTypes';
 
 var capitalize = w => `${w[0].toUpperCase()}${w.slice(1)}`;
 
@@ -119,6 +120,8 @@ var HardwareManager = {
       props.mode = payload.mode;
     }
 
+    console.log(tag, _name);
+
 
     if (typeof payload.value !== 'undefined') {
       // console.log(`${WRITE_TYPE[props.mode]}Write`, props.pin, payload.value);
@@ -168,14 +171,7 @@ var HardwareManager = {
     console.log('TODO: HardwareManager#clearJSResponder');
   },
 
-  customDirectEventTypes: {
-    topChange: {registrationName: 'onChange'},
-    topDown: {registrationName: 'onDown'},
-    topUp: {registrationName: 'onUp'},
-    topHold: {registrationName: 'onHold'},
-    topOpen: {registrationName: 'onOpen'},
-    topClose: {registrationName: 'onClose'},
-  },
+  customDirectEventTypes: customDirectEventTypes,
 };
 
 export default HardwareManager;

@@ -5,6 +5,7 @@ import HardwareManager from '../HardwareManager';
 import ReactHardwareEventEmitter from '../ReactHardwareEventEmitter';
 import findNodeHandle from '../findNodeHandle';
 import {collect, emitEvent} from './ComponentUtils';
+import defaultPropTypes from './defaultPropTypes';
 var {PropTypes} = React;
 
 var CHANGE_EVENT = 'topChange';
@@ -64,13 +65,11 @@ Potentiometer.defaultProps = {
   threshold: 10,
 };
 
-Potentiometer.propTypes = {
-  pin: PropTypes.number.isRequired,
-  mode: PropTypes.number,
+Potentiometer.propTypes = Object.assign({
   threshold: PropTypes.number,
 
   onChange: PropTypes.func,
-};
+}, defaultPropTypes);
 
 export default Potentiometer;
 

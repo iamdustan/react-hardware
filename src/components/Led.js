@@ -1,6 +1,7 @@
 import React from 'react';
 import createReactHardwareComponentClass from '../createReactHardwareComponentClass';
 import modes from './inputModes';
+import defaultPropTypes from './defaultPropTypes';
 var {PropTypes} = React;
 
 var viewConfig = {
@@ -22,11 +23,9 @@ class Led extends React.Component {
 
 Led.displayName = 'Led';
 
-Led.propTypes = {
-  pin: PropTypes.number.isRequired,
-  mode: PropTypes.number,
+Led.propTypes = Object.assign({
   value: PropTypes.number,
-};
+}, defaultPropTypes);
 
 var Hardware = createReactHardwareComponentClass(viewConfig);
 Hardware.defaultProps = {mode: modes.OUTPUT};

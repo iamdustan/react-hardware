@@ -1,3 +1,5 @@
+var __DEV__ = true;
+
 import ReactHardwareDefaultInjection from './ReactHardwareDefaultInjection';
 ReactHardwareDefaultInjection.inject();
 
@@ -13,9 +15,7 @@ import ReactComponent from 'react/lib/ReactComponent';
 import ReactElement from 'react/lib/ReactElement';
 import ReactContext from 'react/lib/ReactContext';
 import ReactCurrentOwner from 'react/lib/ReactCurrentOwner';
-/*
-var ReactElementValidator = require('ReactElementValidator');
-*/
+import ReactElementValidator from 'react/lib/ReactElementValidator';
 import ReactPropTypes from 'react/lib/ReactPropTypes';
 
 var {
@@ -23,6 +23,14 @@ var {
   createFactory,
   cloneElement,
 } = ReactElement;
+
+if (__DEV__) {
+  var {
+    createElement,
+    createFactory,
+    cloneElement,
+  } = ReactElementValidator;
+}
 
 var render = function(
   element: ReactElement,

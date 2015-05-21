@@ -4,6 +4,7 @@ import modes from './inputModes';
 import HardwareManager from '../HardwareManager';
 import findNodeHandle from '../findNodeHandle';
 import {collect, emitEvent} from './ComponentUtils';
+import defaultPropTypes from './defaultPropTypes';
 var {PropTypes} = React;
 
 var CHANGE_EVENT = 'topChange';
@@ -63,14 +64,11 @@ class Switch extends React.Component {
 
 var Hardware = createReactHardwareComponentClass(viewConfig);
 
-Switch.propTypes = {
-  pin: PropTypes.number.isRequired,
-  mode: PropTypes.number,
-
+Switch.propTypes = Object.assign({
   onChange: PropTypes.func,
   onClose: PropTypes.func,
   onOpen: PropTypes.func,
-};
+}, defaultPropTypes);
 
 export default Switch;
 

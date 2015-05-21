@@ -120,9 +120,6 @@ var HardwareManager = {
       props.mode = payload.mode;
     }
 
-    console.log(tag, _name);
-
-
     if (typeof payload.value !== 'undefined') {
       // console.log(`${WRITE_TYPE[props.mode]}Write`, props.pin, payload.value);
       Registry.board[`${WRITE_TYPE[props.mode]}Write`](props.pin, payload.value);
@@ -156,10 +153,6 @@ var HardwareManager = {
   },
 
   measure(tag: number, callback: Function) {
-    var {
-      props,
-      reader,
-    } = Registry.children[tag];
     console.log('TODO: HardwareManager.measure');
   },
 

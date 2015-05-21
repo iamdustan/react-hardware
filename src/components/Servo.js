@@ -1,6 +1,7 @@
 import React from 'react';
 import createReactHardwareComponentClass from '../createReactHardwareComponentClass';
 import modes from './inputModes';
+import defaultPropTypes from './defaultPropTypes';
 var {PropTypes} = React;
 
 var viewConfig = {
@@ -25,11 +26,9 @@ class Servo extends React.Component {
 
 Servo.displayName = 'Servo';
 
-Servo.propTypes = {
-  pin: PropTypes.number.isRequired,
-  mode: PropTypes.number,
+Servo.propTypes = Object.assign({
   value: PropTypes.number,
-};
+}, defaultPropTypes);
 
 
 var Hardware = createReactHardwareComponentClass(viewConfig);

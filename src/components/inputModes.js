@@ -1,3 +1,4 @@
+// TODO: maybe pull this off of firmata?
 const modes = {
   INPUT: 0x00,
   OUTPUT: 0x01,

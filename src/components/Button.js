@@ -5,6 +5,7 @@ import HardwareManager from '../HardwareManager';
 import ReactHardwareEventEmitter from '../ReactHardwareEventEmitter';
 import findNodeHandle from '../findNodeHandle';
 import {collect, emitEvent} from './ComponentUtils';
+import defaultPropTypes from './defaultPropTypes';
 var {PropTypes} = React;
 
 var DOWN_EVENT = 'topDown';
@@ -91,16 +92,14 @@ class Button extends React.Component {
 
 var Hardware = createReactHardwareComponentClass(viewConfig);
 
-Button.propTypes = {
-  pin: PropTypes.number.isRequired,
-  mode: PropTypes.number,
+Button.propTypes = Object.assign({
   holdtime: PropTypes.number,
 
   onChange: PropTypes.func,
   onDown: PropTypes.func,
   onHold: PropTypes.func,
   onUp: PropTypes.func,
-};
+}, defaultPropTypes);
 
 Button.defaultProps = {
   holdtime: 1000,

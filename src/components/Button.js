@@ -4,15 +4,13 @@ import modes from './inputModes';
 import HardwareManager from '../HardwareManager';
 import ReactHardwareEventEmitter from '../ReactHardwareEventEmitter';
 import findNodeHandle from '../findNodeHandle';
+import {collect, emitEvent} from './ComponentUtils';
 var {PropTypes} = React;
 
 var DOWN_EVENT = 'topDown';
 var UP_EVENT = 'topUp';
 var CHANGE_EVENT = 'topChange';
 var HOLD_EVENT = 'topHold';
-
-var collect = (obj, ...things) =>
-  things.reduce((memo, thing) => ((memo[thing] = obj[thing]), memo), {});
 
 var EVENT_TYPE = collect(
   HardwareManager.customDirectEventTypes,
@@ -34,18 +32,6 @@ var viewConfig = {
   },
 };
 
-function emitEvent(componentInstance, eventName, value) {
-  ReactHardwareEventEmitter.receiveEvent(
-    findNodeHandle(componentInstance),
-    eventName,
-    {
-      value: value,
-      target: componentInstance,
-      type: EVENT_TYPE[eventName].registrationName,
-    }
-  );
-}
-
 class Button extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -63,16 +49,17 @@ class Button extends React.Component {
 
   componentDidMount() {
     // set up the hardware polling
-    HardwareManager.read(findNodeHandle(this.refs[BUTTON_REF]), newValue => {
+    var nodeHandle = findNodeHandle(this.refs[BUTTON_REF]);
+    HardwareManager.read(nodeHandle, newValue => {
       if (newValue !== this.value) {
         // TODO: add support for inverted buttons like johnny-five.
         var eventName = newValue === 0 ? UP_EVENT : DOWN_EVENT;
-        emitEvent(this, eventName, newValue);
-        emitEvent(this, CHANGE_EVENT, newValue);
+        emitEvent(this, nodeHandle, eventName, newValue);
+        emitEvent(this, nodeHandle, CHANGE_EVENT, newValue);
 
         if (eventName === DOWN_EVENT) {
           this._timer = setTimeout(
-            _ => emitEvent(this, HOLD_EVENT, newValue),
+            _ => emitEvent(this, nodeHandle, HOLD_EVENT, newValue),
             this.props.holdtime
           );
         }

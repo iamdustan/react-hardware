@@ -2,16 +2,13 @@ import React from 'react';
 import createReactHardwareComponentClass from '../createReactHardwareComponentClass';
 import modes from './inputModes';
 import HardwareManager from '../HardwareManager';
-import ReactHardwareEventEmitter from '../ReactHardwareEventEmitter';
 import findNodeHandle from '../findNodeHandle';
+import {collect, emitEvent} from './ComponentUtils';
 var {PropTypes} = React;
 
 var CHANGE_EVENT = 'topChange';
 var CLOSE_EVENT = 'topClose';
 var OPEN_EVENT = 'topOpen';
-
-var collect = (obj, ...things) =>
-  things.reduce((memo, thing) => ((memo[thing] = obj[thing]), memo), {});
 
 var EVENT_TYPE = collect(
   HardwareManager.customDirectEventTypes,
@@ -32,26 +29,15 @@ var viewConfig = {
   },
 };
 
-function emitEvent(componentInstance, eventName, value) {
-  ReactHardwareEventEmitter.receiveEvent(
-    findNodeHandle(componentInstance),
-    eventName,
-    {
-      value: value,
-      target: componentInstance,
-      type: EVENT_TYPE[eventName].registrationName,
-    }
-  );
-}
-
 class Switch extends React.Component {
   componentDidMount() {
+    var nodeHandle = findNodeHandle(this.refs[SWITCH_REF]);
     // set up the hardware polling
-    HardwareManager.read(findNodeHandle(this.refs[SWITCH_REF]), newValue => {
+    HardwareManager.read(nodeHandle, newValue => {
       if (newValue !== this.value) {
         var eventName = newValue === 0 ? CLOSE_EVENT : OPEN_EVENT;
-        emitEvent(this, eventName, newValue);
-        emitEvent(this, CHANGE_EVENT, newValue);
+        emitEvent(this, nodeHandle, eventName, newValue);
+        emitEvent(this, nodeHandle, CHANGE_EVENT, newValue);
 
         this.value = newValue;
       }

@@ -4,12 +4,10 @@ import modes from './inputModes';
 import HardwareManager from '../HardwareManager';
 import ReactHardwareEventEmitter from '../ReactHardwareEventEmitter';
 import findNodeHandle from '../findNodeHandle';
+import {collect, emitEvent} from './ComponentUtils';
 var {PropTypes} = React;
 
 var CHANGE_EVENT = 'topChange';
-
-var collect = (obj, ...things) =>
-  things.reduce((memo, thing) => ((memo[thing] = obj[thing]), memo), {});
 
 var EVENT_TYPE = collect(
   HardwareManager.customDirectEventTypes,
@@ -28,24 +26,14 @@ var viewConfig = {
   },
 };
 
-function emitEvent(componentInstance, eventName, value) {
-  ReactHardwareEventEmitter.receiveEvent(
-    findNodeHandle(componentInstance),
-    eventName,
-    {
-      value: value,
-      target: componentInstance,
-      type: EVENT_TYPE[eventName].registrationName,
-    }
-  );
-}
-
 class Potentiometer extends React.Component {
   componentDidMount() {
+    this.value = 0;
+    var nodeHandle = findNodeHandle(this.refs[POT_REF]);
     // set up the hardware polling
-    HardwareManager.read(findNodeHandle(this.refs[POT_REF]), newValue => {
+    HardwareManager.read(nodeHandle, newValue => {
       if (newValue !== this.value && Math.abs(newValue - this.value) > this.props.threshold) {
-        emitEvent(this, CHANGE_EVENT, newValue);
+        emitEvent(this, nodeHandle, CHANGE_EVENT, newValue);
 
         this.value = newValue;
       }

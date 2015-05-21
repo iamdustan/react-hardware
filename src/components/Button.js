@@ -52,6 +52,8 @@ class Button extends React.Component {
     var nodeHandle = findNodeHandle(this.refs[BUTTON_REF]);
     HardwareManager.read(nodeHandle, newValue => {
       if (newValue !== this.value) {
+        this.value = newValue;
+
         // TODO: add support for inverted buttons like johnny-five.
         var eventName = newValue === 0 ? UP_EVENT : DOWN_EVENT;
         emitEvent(this, nodeHandle, eventName, newValue);
@@ -66,8 +68,6 @@ class Button extends React.Component {
         else {
           this._timer = clearTimeout(this._timer);
         }
-
-        this.value = newValue;
       }
     });
   }

@@ -96,7 +96,6 @@ function inject() {
   ReactClass.injection.injectMixin = noop;
   ReactNativeComponent.injection.injectAutoWrapper = noop;
   NodeHandle.injection.injectImplementation = noop;
-  console.log('injected');
 }
 
 module.exports = {

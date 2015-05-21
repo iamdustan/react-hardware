@@ -35,11 +35,11 @@ class Switch extends React.Component {
     // set up the hardware polling
     HardwareManager.read(nodeHandle, newValue => {
       if (newValue !== this.value) {
+        this.value = newValue;
+
         var eventName = newValue === 0 ? CLOSE_EVENT : OPEN_EVENT;
         emitEvent(this, nodeHandle, eventName, newValue);
         emitEvent(this, nodeHandle, CHANGE_EVENT, newValue);
-
-        this.value = newValue;
       }
     });
   }

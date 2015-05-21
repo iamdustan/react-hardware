@@ -30,12 +30,13 @@ class Potentiometer extends React.Component {
   componentDidMount() {
     this.value = 0;
     var nodeHandle = findNodeHandle(this.refs[POT_REF]);
+    var read = false;
     // set up the hardware polling
     HardwareManager.read(nodeHandle, newValue => {
       if (newValue !== this.value && Math.abs(newValue - this.value) > this.props.threshold) {
-        emitEvent(this, nodeHandle, CHANGE_EVENT, newValue);
-
         this.value = newValue;
+
+        emitEvent(this, nodeHandle, CHANGE_EVENT, newValue);
       }
     });
   }

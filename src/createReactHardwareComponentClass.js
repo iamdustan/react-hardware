@@ -19,6 +19,7 @@ var createReactHardwareNativeComponentClass = function(
 
     this._rootNodeID = null;
     this._renderedChildren = null;
+
     // for events to pull the value off of the target
     this.value = null;
   };

@@ -17,6 +17,8 @@ var WRITE_TYPE = {
   [0x04]: 'servo',  // servo
 };
 
+// TODO: need interfaces for firmata, node-hid, etc.
+
 var Registry = {
   children: [],
 };
@@ -101,7 +103,6 @@ var HardwareManager = {
     _name: string,
     payload: Object
   ) {
-
     var {
       name,
       props,

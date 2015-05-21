@@ -39,7 +39,7 @@ class Application extends React.Component {
           onOpen={this.log}
           onClose={this.log}
           />
-        <Led pin={13} value={this.state.value} />
+        <Led pin={11} value={this.state.value} />
       </Board>
     );
   }

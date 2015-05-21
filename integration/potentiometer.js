@@ -24,7 +24,6 @@ class Application extends React.Component {
     var POT_HIGH = 1000;
     var value = (event.target.value - POT_LOW) / POT_HIGH * HIGH;
     if (value < 10) value = 0;
-    console.log('new value', value, event.target.value);
 
     this.setState({value});
   }
@@ -33,7 +32,7 @@ class Application extends React.Component {
     return (
       <Board>
         <Potentiometer
-          pin={14}
+          pin={'A1'}
           onChange={this.onChange}
           />
         <Led pin={11} mode={mode.PWM} value={this.state.value} />

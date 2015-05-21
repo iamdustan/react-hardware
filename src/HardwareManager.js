@@ -1,8 +1,11 @@
 /*eslint no-console:0*/
 import {Board} from 'firmata';
 // import ReactHardwareTagHandles from './ReactHardwareTagHandles';
+import mode from './components/inputModes';
 import warning from 'react/lib/warning';
 import invariant from 'react/lib/invariant';
+import pinMappings from './pinMappings/ArduinoUno';
+
 var capitalize = w => `${w[0].toUpperCase()}${w.slice(1)}`;
 
 var WRITE_TYPE = {
@@ -25,21 +28,18 @@ var HardwareManager = {
         throw err;
       }
       console.log('Connected to %s', containerTag);
-      Registry[containerTag].isConnected = true;
-      Registry[containerTag].onReadyQueue.forEach(fn => fn());
+      // console.log(Registry[containerTag].board)
       callback();
     };
 
     if (Registry[containerTag]) {
-      if (Registry[containerTag].isConnected) {
+      if (Registry[containerTag].board.isReady) {
         callback();
       }
     }
     else {
       Registry[containerTag] = {
         board: new Board(containerTag, onConnect),
-        isReady: false,
-        onReadyQueue: [],
         children: [],
       };
 
@@ -79,8 +79,15 @@ var HardwareManager = {
       props: payload,
     };
 
-    // TODO: support more payload modes?
-    Registry.board.pinMode(payload.pin, payload.mode);
+    // analog pins
+    if (typeof payload.pin === 'string') {
+      payload.physicalPin = pinMappings[payload.pin];
+      Registry.board.pinMode(pinMappings[payload.pin], payload.mode);
+    }
+    else {
+      Registry.board.pinMode(payload.pin, payload.mode);
+    }
+
 
     if (typeof payload.value !== 'undefined') {
       Registry.board[`${WRITE_TYPE[payload.mode]}Write`](payload.pin, payload.value);
@@ -124,9 +131,15 @@ var HardwareManager = {
   read(tag: number, callback: Function) {
     var {props} = Registry.children[tag];
     Registry.children[tag].readListener = callback;
+    var method = `${WRITE_TYPE[props.mode]}Read`;
 
-    // HACK: - 13 for arduino uno
-    Registry.board[`${WRITE_TYPE[props.mode]}Read`](props.pin - 13, callback);
+    if (props.mode === mode.ANALOG) {
+      // TODO: this mapping needs to be smarter, but oh well
+      Registry.board[method](props.physicalPin - pinMappings[props.pin], callback);
+    }
+    else {
+      Registry.board[method](props.pin, callback);
+    }
   },
 
   destroyRead(tag: number) {

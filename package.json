@@ -1,23 +1,29 @@
 {
   "name": "react-hardware",
-  "version": "0.9.0",
+  "version": "0.1.0",
   "description": "React bindings for your hardware through firmata.",
-  "main": "index.js",
+  "main": "npm-react-hardware/index.js",
   "scripts": {
     "lint": "eslint .",
     "jest": "BABEL_JEST_STAGE=0 jest",
-    "test": "npm run lint"
+    "test": "npm run lint",
+    "build": "babel --out-dir npm-react-hardware src"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/iamdustan/react-hardware"
   },
+  "files": [
+    "npm-react-hardware",
+    "package.json",
+    "README.md"
+  ],
   "keywords": [
     "reactjs",
     "hardware",
     "arduino"
   ],
-  "author": "Dustan Kasten <dustan@skookum.com>",
+  "author": "Dustan Kasten <dustan.kasten@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/iamdustan/react-hardware/issues"

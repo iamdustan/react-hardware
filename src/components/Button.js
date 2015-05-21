@@ -79,7 +79,7 @@ class Button extends React.Component {
   }
 
   render() {
-    var props = Object.assign({}, this.props);
+    var props = {...this.props};
 
     return (
       <Hardware
@@ -92,14 +92,15 @@ class Button extends React.Component {
 
 var Hardware = createReactHardwareComponentClass(viewConfig);
 
-Button.propTypes = Object.assign({
-  holdtime: PropTypes.number,
+Button.propTypes = {
+  ...defaultPropTypes,
 
+  holdtime: PropTypes.number,
   onChange: PropTypes.func,
   onDown: PropTypes.func,
   onHold: PropTypes.func,
   onUp: PropTypes.func,
-}, defaultPropTypes);
+};
 
 Button.defaultProps = {
   holdtime: 1000,

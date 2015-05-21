@@ -6,7 +6,6 @@ import EventPropagators from './EventPropagators';
 import HardwareManager from './HardwareManager';
 import SyntheticEvent from 'react/lib/SyntheticEvent';
 
-import assign from 'react/lib/Object.assign';
 import warning from 'react/lib/warning';
 
 var {
@@ -37,7 +36,7 @@ for (var directTypeName in customDirectEventTypes) {
 var HardwareBridgeEventPlugin = {
 
   // eventTypes: assign({}, customBubblingEventTypes, customDirectEventTypes),
-  eventTypes: assign({}, customDirectEventTypes),
+  eventTypes: {...customDirectEventTypes},
 
   /**
    * @param {string} topLevelType Record from `EventConstants`.

@@ -1,6 +1,7 @@
 import CallbackQueue from 'react/lib/CallbackQueue';
 import PooledClass from 'react/lib/PooledClass';
 import Transaction from 'react/lib/Transaction';
+import assign from 'react/lib/Object.assign';
 
 /**
  * Provides a `CallbackQueue` queue for collecting `onDOMReady` callbacks during
@@ -64,7 +65,7 @@ var Mixin = {
   },
 };
 
-Object.assign(
+assign(
   ReactHardwareReconcileTransaction.prototype,
   Transaction.Mixin,
   ReactHardwareReconcileTransaction,

@@ -15,7 +15,7 @@ var viewConfig = {
 
 class Servo extends React.Component {
   render() {
-    var props = Object.assign({}, this.props);
+    var props = {...this.props};
     props.mode = modes.SERVO;
 
     return (
@@ -26,9 +26,10 @@ class Servo extends React.Component {
 
 Servo.displayName = 'Servo';
 
-Servo.propTypes = Object.assign({
+Servo.propTypes = {
+  ...defaultPropTypes,
   value: PropTypes.number,
-}, defaultPropTypes);
+};
 
 
 var Hardware = createReactHardwareComponentClass(viewConfig);

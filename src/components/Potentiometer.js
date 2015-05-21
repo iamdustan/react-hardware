@@ -48,7 +48,7 @@ class Potentiometer extends React.Component {
   }
 
   render() {
-    var props = Object.assign({}, this.props);
+    var props = {...this.props};
 
     return (
       <Hardware
@@ -65,11 +65,12 @@ Potentiometer.defaultProps = {
   threshold: 10,
 };
 
-Potentiometer.propTypes = Object.assign({
-  threshold: PropTypes.number,
+Potentiometer.propTypes = {
+  ...defaultPropTypes,
 
+  threshold: PropTypes.number,
   onChange: PropTypes.func,
-}, defaultPropTypes);
+};
 
 export default Potentiometer;
 

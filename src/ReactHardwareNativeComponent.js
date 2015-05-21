@@ -10,6 +10,7 @@ import diffRawProperties from './diffRawProperties';
 import warning from 'react/lib//warning';
 import deepFreezeAndThrowOnMutationInDev from './deepFreezeAndThrowOnMutationInDev';
 import HardwareManager from './HardwareManager';
+import assign from 'react/lib/Object.assign';
 
 var {
   registrationNames,
@@ -241,7 +242,7 @@ ReactHardwareNativeComponent.Mixin = {
  * Order of mixins is important. ReactHardwareNativeComponent overrides methods in
  * ReactMultiChild.
  */
-Object.assign(
+assign(
   ReactHardwareNativeComponent.prototype,
   ReactMultiChild.Mixin,
   ReactHardwareNativeComponent.Mixin,

@@ -17,6 +17,7 @@ import ReactContext from 'react/lib/ReactContext';
 import ReactCurrentOwner from 'react/lib/ReactCurrentOwner';
 import ReactElementValidator from 'react/lib/ReactElementValidator';
 import ReactPropTypes from 'react/lib/ReactPropTypes';
+import assign from 'react/lib/Object.assign';
 
 var {
   createElement,
@@ -43,7 +44,9 @@ var render = function(
 import React from 'react';
 import ReactHardwareComponents from './components';
 
-var ReactHardware = Object.assign(Object.create(React), {
+var ReactHardware = {
+  ...Object.create(React),
+
   findNodeHandle: findNodeHandle,
   hasReactHardwareInitialized: false,
   Component: ReactComponent,
@@ -55,9 +58,9 @@ var ReactHardware = Object.assign(Object.create(React), {
   render: render,
 
   mode: inputModes,
-});
+};
 
-Object.assign(ReactHardware, ReactHardwareComponents);
+assign(ReactHardware, ReactHardwareComponents);
 
 // Inject the runtime into a devtools global hook regardless of browser.
 // Allows for debugging when the hook is injected on the page.

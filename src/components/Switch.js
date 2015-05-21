@@ -51,7 +51,7 @@ class Switch extends React.Component {
   }
 
   render() {
-    var props = Object.assign({}, this.props);
+    var props = {...this.props};
 
     return (
       <Hardware
@@ -64,11 +64,13 @@ class Switch extends React.Component {
 
 var Hardware = createReactHardwareComponentClass(viewConfig);
 
-Switch.propTypes = Object.assign({
+Switch.propTypes = {
+  ...defaultPropTypes,
+
   onChange: PropTypes.func,
   onClose: PropTypes.func,
   onOpen: PropTypes.func,
-}, defaultPropTypes);
+};
 
 export default Switch;
 

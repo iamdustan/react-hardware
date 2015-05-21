@@ -1,6 +1,7 @@
 /*eslint no-console:0*/
 import {Board} from 'firmata';
 // import ReactHardwareTagHandles from './ReactHardwareTagHandles';
+import assign from 'react/lib/Object.assign';
 import mode from '../components/inputModes';
 import warning from 'react/lib/warning';
 import invariant from 'react/lib/invariant';
@@ -126,7 +127,7 @@ var HardwareManager = {
       Registry.board[`${WRITE_TYPE[props.mode]}Write`](props.pin, payload.value);
     }
 
-    Object.assign(props, payload);
+    assign(props, payload);
   },
 
   read(tag: number, callback: Function) {

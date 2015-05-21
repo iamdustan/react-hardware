@@ -1,8 +1,8 @@
 /** @flow */
 'use strict';
 
-import ErrorUtils from '../vendor/ErrorUtils';
-import EventEmitter from '../vendor/EventEmitter';
+import ErrorUtils from './vendor/ErrorUtils';
+import EventEmitter from './vendor/EventEmitter';
 // I think Set should just work...
 // var Set = require('Set');
 

@@ -22,13 +22,12 @@ following code demonstrates how this is done naively with React Hardware and how
 React’s programming model brings composability to the hardware world.
 
 ``` javascript
-import React from 'react';
-import ReactHardware from '../';
+import React from 'react-hardware';
 
 const {
   Board,
   Led,
-} = ReactHardware;
+} = React;
 
 const HIGH = 255;
 const LOW = 0;
@@ -58,7 +57,7 @@ class Application extends React.Component {
 }
 
 var PORT = '/dev/tty.usbmodem1411';
-ReactHardware.render(<Application />, PORT);
+React.render(<Application />, PORT);
 ```
 
 While this is unquestionably more code than it’s Johnny-Five or Sketch
@@ -69,13 +68,12 @@ state. Let’s now extract the idea of a flashing LED into something we can shar
 with our team or even on npm.
 
 ``` javascript
-import React from 'react';
-import ReactHardware from '../';
+import React from 'react-hardware';
 
 const {
   Board,
   Led,
-} = ReactHardware;
+} = React;
 
 const HIGH = 255;
 const LOW = 0;
@@ -116,7 +114,7 @@ class Application extends React.Component {
 }
 
 var PORT = '/dev/tty.usbmodem1411';
-ReactHardware.render(<Application />, PORT);
+React.render(<Application />, PORT);
 ```
 
 ## Community

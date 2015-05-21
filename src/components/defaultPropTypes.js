@@ -1,4 +1,4 @@
-import {PropTypes} from 'react';
+import {PropTypes} from '../ReactHardware';
 
 var defaultPropTypes = {
   pin: PropTypes.oneOfType([

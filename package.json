@@ -2,12 +2,13 @@
   "name": "react-hardware",
   "version": "0.1.0",
   "description": "React bindings for your hardware through firmata.",
-  "main": "npm-react-hardware/index.js",
+  "main": "npm-react-hardware/react-hardware.js",
   "scripts": {
     "lint": "eslint .",
-    "jest": "BABEL_JEST_STAGE=0 jest",
+    "jest": "BABEL_JEST_STAGE=1 jest",
     "test": "npm run lint",
-    "build": "babel --out-dir npm-react-hardware src"
+    "build": "babel --out-dir npm-react-hardware src",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",

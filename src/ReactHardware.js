@@ -1,5 +1,4 @@
 var __DEV__ = true;
-
 import ReactHardwareDefaultInjection from './ReactHardwareDefaultInjection';
 ReactHardwareDefaultInjection.inject();
 
@@ -41,12 +40,7 @@ var render = function(
   return ReactHardwareMount.renderComponent(element, mountInto, callback);
 };
 
-import React from 'react';
-import ReactHardwareComponents from './components';
-
 var ReactHardware = {
-  ...Object.create(React),
-
   findNodeHandle: findNodeHandle,
   hasReactHardwareInitialized: false,
   Component: ReactComponent,
@@ -59,8 +53,6 @@ var ReactHardware = {
 
   mode: inputModes,
 };
-
-assign(ReactHardware, ReactHardwareComponents);
 
 // Inject the runtime into a devtools global hook regardless of browser.
 // Allows for debugging when the hook is injected on the page.

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from '../ReactHardware';
 import createReactHardwareComponentClass from '../createReactHardwareComponentClass';
 import modes from './inputModes';
 import HardwareManager from '../HardwareManager';

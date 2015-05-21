@@ -42,6 +42,6 @@ class Application extends React.Component {
 }
 
 var PORT = '/dev/tty.usbmodem1411';
-React.render(<Application value={HIGH} />, PORT);
+React.render(<Application />, PORT);
 
 

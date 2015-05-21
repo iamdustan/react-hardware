@@ -6,9 +6,9 @@ import ReactHardwareEventEmitter from './ReactHardwareEventEmitter';
 import ReactHardwareTagHandles from './ReactHardwareTagHandles';
 import ReactMultiChild from 'react/lib/ReactMultiChild';
 
-import diffRawProperties from './diffRawProperties';
-import warning from 'react/lib//warning';
-import deepFreezeAndThrowOnMutationInDev from './deepFreezeAndThrowOnMutationInDev';
+import diffRawProperties from './vendor/diffRawProperties';
+import warning from 'react/lib/warning';
+import deepFreezeAndThrowOnMutationInDev from './vendor/deepFreezeAndThrowOnMutationInDev';
 import HardwareManager from './HardwareManager';
 import assign from 'react/lib/Object.assign';
 

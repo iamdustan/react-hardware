@@ -1,7 +1,6 @@
 /** @flow */
 
 var HardwareDefaultEventPluginOrdering = [
-  'ResponderEventPlugin',
   'HardwareBridgeEventPlugin',
 ];
 

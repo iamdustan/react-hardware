@@ -140,7 +140,7 @@
     "block-scoped-var": 0,
     "brace-style": [0, "1tbs"],
     "camelcase": 2,
-    "comma-dangle": [1, "always-multiline"],
+    "comma-dangle": [0, "always-multiline"],
     "comma-spacing": 2,
     "comma-style": 0,
     "complexity": [0, 11],

@@ -28,7 +28,6 @@ import ReactUpdates from 'react/lib/ReactUpdates';
 /*
 var ReactIOSTextComponent = require('ReactIOSTextComponent');
 */
-import ResponderEventPlugin from './ResponderEventPlugin';
 import UniversalWorkerNodeHandle from './UniversalWorkerNodeHandle';
 import invariant from 'react/lib/invariant';
 
@@ -38,14 +37,6 @@ function inject() {
   console.log('injecting');
   EventPluginHub.injection.injectEventPluginOrder(HardwareDefaultEventPluginOrder);
   EventPluginHub.injection.injectInstanceHandle(ReactInstanceHandles);
-
-  ResponderEventPlugin.injection.injectGlobalResponderHandler(
-    ReactHardwareGlobalResponderHandler
-  );
-
-  ResponderEventPlugin.injection.injectGlobalInteractionHandler(
-    ReactHardwareGlobalInteractionHandler
-  );
 
   EventPluginHub.injection.injectEventPluginsByName({
     'HardwareBridgeEventPlugin': HardwareBridgeEventPlugin,

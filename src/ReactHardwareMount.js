@@ -36,7 +36,7 @@ function mountComponentIntoNode(
   var markup = ReactReconciler.mountComponent(
     componentInstance, rootID, transaction, emptyObject
   );
-  componentInstance._isTopLevel = true;
+  // componentInstance._isTopLevel = true;
   ReactHardwareMount._mountImageIntoNode(markup, container);
 }
 

@@ -12,7 +12,6 @@ var ReactChildren = require('ReactChildren');
 import ReactClass from 'react/lib/ReactClass';
 import ReactComponent from 'react/lib/ReactComponent';
 import ReactElement from 'react/lib/ReactElement';
-import ReactContext from 'react/lib/ReactContext';
 import ReactCurrentOwner from 'react/lib/ReactCurrentOwner';
 import ReactElementValidator from 'react/lib/ReactElementValidator';
 import ReactPropTypes from 'react/lib/ReactPropTypes';

@@ -32,7 +32,7 @@
   "homepage": "https://github.com/iamdustan/react-hardware",
   "dependencies": {
     "firmata": "^0.5.5",
-    "react": "^0.13.3",
+    "react": "^0.14.0-beta1",
     "serialport": "^1.7.4",
     "setimmediate": "^1.0.2"
   },

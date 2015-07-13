@@ -12,8 +12,8 @@ const HIGH = 255;
 const LOW = 0;
 
 class Application extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     this.state = {value: LOW};
     this.onChange = this.onChange.bind(this);

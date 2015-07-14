@@ -6,12 +6,10 @@ import EventPluginHub from 'react/lib/EventPluginHub';
 import ReactEventEmitterMixin from 'react/lib/ReactEventEmitterMixin';
 import ReactHardwareTagHandles from './ReactHardwareTagHandles';
 import NodeHandle from './NodeHandle';
-import EventConstants from './EventConstants';
 
 import assign from 'react/lib/Object.assign';
 import warning from 'react/lib/warning';
 
-var {topLevelTypes} = EventConstants;
 
 /**
  * Version of `ReactBrowserEventEmitter` that works on the receiving side of a

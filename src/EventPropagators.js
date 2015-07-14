@@ -1,12 +1,10 @@
 "use strict";
 
-import EventConstants from './EventConstants';
 import EventPluginHub from 'react/lib/EventPluginHub';
 
 import accumulateInto from 'react/lib/accumulateInto';
 import forEachAccumulated from 'react/lib/forEachAccumulated';
 
-var {PropagationPhases} = EventConstants;
 var {getListener} = EventPluginHub;
 
 /**

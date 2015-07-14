@@ -1,3 +1,5 @@
+/** @flow; use strict; */
+
 export var customDirectEventTypes = {
     topChange: {registrationName: 'onChange'},
     topDown: {registrationName: 'onDown'},

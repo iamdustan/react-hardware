@@ -2,7 +2,7 @@
 import React from '../';
 
 const {
-  Board,
+  ArduinoUno,
   Button,
   Led,
 } = React;
@@ -30,7 +30,7 @@ class Application extends React.Component {
 
   render(): ?ReactElement {
     return (
-      <Board>
+      <ArduinoUno port="/dev/tty.usbmodem1411">
         <Button
           pin={2}
           onChange={this.toggle}

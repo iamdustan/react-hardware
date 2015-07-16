@@ -74,8 +74,6 @@ var ReactHardwareTagHandles = {
 
   reactTagIsHardwareTopRootID: function(reactTag: number): bool {
     return /^\/dev/.test(reactTag);
-    // We reserve all tags that are 1 mod 10 for native root views
-    // return reactTag % 10 === 1;
   },
 
   /**

@@ -1,20 +1,27 @@
-import React from '../ReactHardware';
+/** @flow */
+
+import React, {Component, PropTypes} from '../ReactHardware';
 import createReactHardwareComponentClass from '../createReactHardwareComponentClass';
 
 var viewConfig = {
   uiViewClassName: 'Board',
   validAttributes: {
-    // port: true,
+    pinMapping: true,
+    port: true,
   },
 };
 
-class Board extends React.Component {
+class Board extends Component {
   render() {
     return (
       <Hardware {...this.props} />
     );
   }
 }
+
+Board.propTypes = {
+  pinMapping: PropTypes.object.isRequired,
+};
 
 var Hardware = createReactHardwareComponentClass(viewConfig);
 

@@ -6,9 +6,6 @@ import ReactHardwareMount from './ReactHardwareMount';
 import inputModes from './components/inputModes';
 import findNodeHandle from './findNodeHandle';
 
-/*
-var ReactChildren = require('ReactChildren');
-*/
 import ReactClass from 'react/lib/ReactClass';
 import ReactComponent from 'react/lib/ReactComponent';
 import ReactElement from 'react/lib/ReactElement';

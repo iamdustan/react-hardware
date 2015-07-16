@@ -2,7 +2,7 @@
 import React from '../';
 
 const {
-  Board,
+  ArduinoUno,
   Potentiometer,
   Led,
   mode,
@@ -30,20 +30,19 @@ class Application extends React.Component {
     this.setState({value});
   }
 
-  render(): ?ReactElement {
+  render(): ReactElement {
     return (
-      <Board>
+      <ArduinoUno port="/dev/tty.usbmodem1411">
         <Potentiometer
           pin={'A1'}
           onChange={this.onChange}
           />
-        <Led pin={11} mode={mode.PWM} value={this.state.value} />
-      </Board>
+        <Led pin={9} mode={mode.PWM} value={this.state.value} />
+      </ArduinoUno>
     );
   }
 }
 
 var PORT = '/dev/tty.usbmodem1411';
 React.render(<Application />, PORT);
-
 

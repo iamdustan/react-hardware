@@ -112,6 +112,7 @@ ReactHardwareNativeComponent.Mixin = {
         );
         createdTags[i] = mountImage.tag;
       }
+
       HardwareManager
         .manageChildren(containerTag, null, null, createdTags, indexes, null);
     }
@@ -222,7 +223,7 @@ ReactHardwareNativeComponent.Mixin = {
       this._currentElement.props, // next props
       this.viewConfig.validAttributes
     );
-    HardwareManager.createView(tag, this.viewConfig.uiViewClassName, updatePayload);
+    HardwareManager.createView(rootID, tag, this.viewConfig.uiViewClassName, updatePayload);
 
     this._registerListenersUponCreation(this._currentElement.props);
     this.initializeChildren(

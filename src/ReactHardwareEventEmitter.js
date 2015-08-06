@@ -8,7 +8,7 @@ import ReactHardwareTagHandles from './ReactHardwareTagHandles';
 import NodeHandle from './NodeHandle';
 
 import assign from 'react/lib/Object.assign';
-import warning from 'react/lib/warning';
+import warning from 'fbjs/lib/warning';
 
 
 /**

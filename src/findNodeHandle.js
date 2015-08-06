@@ -7,8 +7,8 @@ import ReactCurrentOwner from 'react/lib/ReactCurrentOwner';
 import ReactInstanceMap from 'react/lib/ReactInstanceMap';
 import ReactHardwareTagHandles from './ReactHardwareTagHandles';
 
-import invariant from 'react/lib/invariant';
-import warning from 'react/lib/warning';
+import invariant from 'fbjs/lib/invariant';
+import warning from 'fbjs/lib/warning';
 
 /**
  * ReactNative vs ReactWeb

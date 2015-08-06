@@ -1,6 +1,6 @@
 import ReactHardwareTagHandles from './ReactHardwareTagHandles';
 
-import invariant from 'react/lib/invariant';
+import invariant from 'fbjs/lib/invariant';
 
 var UniversalWorkerNodeHandle = {
   getRootNodeID(nodeHandle) {

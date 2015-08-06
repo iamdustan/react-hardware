@@ -3,8 +3,8 @@ import {Board} from 'firmata';
 // import ReactHardwareTagHandles from './ReactHardwareTagHandles';
 import assign from 'react/lib/Object.assign';
 import mode from '../components/inputModes';
-import warning from 'react/lib/warning';
-import invariant from 'react/lib/invariant';
+import warning from 'fbjs/lib/warning';
+import invariant from 'fbjs/lib/invariant';
 import pinMappings from './pinMappings/ArduinoUno';
 import {customDirectEventTypes} from './customEventTypes';
 

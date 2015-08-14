@@ -28,7 +28,7 @@ class Application extends React.Component {
     this.setState({value});
   }
 
-  render(): ?ReactElement {
+  render(): ReactElement {
     return (
       <Board>
         <Potentiometer

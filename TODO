@@ -1,0 +1,19 @@
+- [x] Pulsing LED Example
+- [x] Servo Example
+- [x] Event Hub
+- [x] Button Example
+- [x] Potentiometer
+- [x] ReactElementValidator
+- [ ] ReactElementValidator with pin info from firmata
+- [ ] HardwareManger.manageChildren
+- [-] Pins that are not numeric. Analog In. A0-A5
+- [-] npm package distros in es5
+- [ ] Wrappers around johnny-five?
+
+- [ ] Documentation website
+- [ ] __REACT_DEVTOOLS__ hook for Browser-based debugging
+- [ ] Webpack hot loader support
+- [ ] Unit Tests
+- [x] Eslint
+- [ ] Travis
+

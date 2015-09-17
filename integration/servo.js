@@ -51,7 +51,7 @@ var SweepingServo = React.createClass({
 });
 
 class Application extends React.Component {
-  render(): ?ReactElement {
+  render():ReactElement {
     return (
       <Board>
         <SweepingServo

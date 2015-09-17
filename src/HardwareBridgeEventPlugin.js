@@ -59,6 +59,11 @@ var HardwareBridgeEventPlugin = {
       topLevelTargetID,
       nativeEvent
     );
+    // Warning: mutating this *may* cause issues, but it does mean that the
+    // event given to a Hardware event handler *does* have a target property.
+    // Research the changes made in the final 0.14 pre-releases to see if shadow
+    // DOM changes had anything to do with this
+    Object.assign(event, event.nativeEvent);
     if (bubbleDispatchConfig) {
       EventPropagators.accumulateTwoPhaseDispatches(event);
     } else if (directDispatchConfig) {
@@ -71,5 +76,4 @@ var HardwareBridgeEventPlugin = {
 };
 
 export default HardwareBridgeEventPlugin;
-
 

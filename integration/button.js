@@ -23,12 +23,12 @@ class Application extends React.Component {
     console.log('event', event.type);
   }
 
-  toggle(event) {
+  toggle(event:any) {
     console.log('event', event.type);
     this.setState({value: this.state.value === LOW ? HIGH : LOW});
   }
 
-  render(): ?ReactElement {
+  render():ReactElement {
     return (
       <Board>
         <Button

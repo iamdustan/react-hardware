@@ -20,10 +20,12 @@ class Application extends React.Component {
   }
 
   onChange(event) {
+    // fudge numbers for my particular potentiometer
     var POT_LOW = 15;
-    var POT_HIGH = 1000;
+    var POT_HIGH = 960;
     var value = (event.target.value - POT_LOW) / POT_HIGH * HIGH;
-    if (value < 10) value = 0;
+    if (value < 10) value = LOW;
+    else if (value > HIGH) value = HIGH
 
     this.setState({value});
   }

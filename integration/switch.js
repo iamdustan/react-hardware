@@ -29,7 +29,7 @@ class Application extends React.Component {
     this.setState({value: this.state.value === LOW ? HIGH : LOW});
   }
 
-  render(): ?ReactElement {
+  render():ReactElement {
     return (
       <Board>
         <Button pin={2} onChange={this.toggle} />
@@ -47,5 +47,4 @@ class Application extends React.Component {
 
 var PORT = '/dev/tty.usbmodem1411';
 React.render(<Application />, PORT);
-
 

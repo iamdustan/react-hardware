@@ -54,7 +54,7 @@ FlashingLed.defaultProps = {
 };
 
 class Application extends React.Component {
-  render(): ?ReactElement {
+  render():ReactElement {
     return (
       <Board>
         <FlashingLed pin={9} delay={400} interval={[200, 400]} initialValue={LOW} />

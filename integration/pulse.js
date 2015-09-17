@@ -68,7 +68,7 @@ var PulsingLed = React.createClass({
 });
 
 class Application extends React.Component {
-  render(): ?ReactElement {
+  render():ReactElement {
     return (
       <Board port="/dev/cu.usbmodem1411">
         <PulsingLed pin={9} duration={1000} easing='linear' />

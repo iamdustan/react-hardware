@@ -31,18 +31,18 @@
   },
   "homepage": "https://github.com/iamdustan/react-hardware",
   "dependencies": {
-    "fbjs": "0.1.0-alpha.4",
+    "fbjs": "0.2.1",
     "firmata": "^0.5.5",
-    "react": "^0.14.0-beta2",
+    "react": "^0.14.0-rc1",
     "serialport": "^1.7.4",
     "setimmediate": "^1.0.2"
   },
   "devDependencies": {
-    "babel": "^5.8.21",
-    "babel-eslint": "^4.0.5",
+    "babel": "^5.8.23",
+    "babel-eslint": "^4.1.2",
     "babel-jest": "^5.3.0",
     "board-io": "^3.0.4",
-    "eslint": "^1.0.0",
+    "eslint": "^1.4.3",
     "eslint-plugin-react": "^3.2.0",
     "react-tween-state": "0.1.3"
   },

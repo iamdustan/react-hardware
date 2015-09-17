@@ -9,9 +9,12 @@ import instantiateReactComponent from 'react/lib/instantiateReactComponent';
 
 import shouldUpdateReactComponent from 'react/lib/shouldUpdateReactComponent';
 import HardwareManager from './HardwareManager';
+import serialPort from 'serialport';
 
 import emptyObject from 'fbjs/lib/emptyObject';
 import invariant from 'fbjs/lib/invariant';
+
+var rePort = /usb|acm|^com/i;
 
 /*
 var ReactPerf = require('ReactPerf');
@@ -75,11 +78,11 @@ var ReactHardwareMount = {
 
   _instancesByContainerID: {},
 
-  renderComponent(
+  _createConnection(
     nextElement: ReactElement,
-    containerTag: number,
+    containerTag: string,
     callback?: ?(() => void)
-  ): ?ReactComponent {
+  ) {
     HardwareManager.createConnection(containerTag, () => {
       var topRootNodeID = ReactHardwareTagHandles.tagToRootNodeID[containerTag];
       if (topRootNodeID) {
@@ -137,6 +140,39 @@ var ReactHardwareMount = {
       }
       return component;
     });
+  },
+
+  renderComponent(
+    nextElement: ReactElement,
+    portComName: string, // aka containerTag
+    callback?: ?(() => void)
+  ): void {
+    // allow both:
+    //   ReactHardware.render(<HardwareApplication />, 'portComName', cb);
+    //   ReactHardware.render(<HardwareApplication port="portComName" />, cb);
+    portComName || (portComName = nextElement.props.port);
+    if (typeof portComName === 'function') {
+      callback = portComName;
+      portComName = void 0;
+    }
+
+    // if no portComName is given, then connect to the first valid one found
+    if (typeof portComName === 'undefined') {
+      serialPort.list((err, ports) => {
+        if (err) throw err;
+        ports.some(port => {
+          var result = rePort.test(port.comName);
+          if (result) {
+            this._createConnection(nextElement, port.comName, callback);
+          }
+
+          return result;
+        });
+      });
+    }
+    else {
+      this._createConnection(nextElement, portComName, callback);
+    }
   },
 
   /**

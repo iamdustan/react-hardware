@@ -6,7 +6,7 @@ import EventPropagators from './EventPropagators';
 import HardwareManager from './HardwareManager';
 import SyntheticEvent from 'react/lib/SyntheticEvent';
 
-import warning from 'react/lib/warning';
+import warning from 'fbjs/lib/warning';
 
 var {
   customBubblingEventTypes,

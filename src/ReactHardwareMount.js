@@ -6,10 +6,11 @@ import ReactUpdateQueue from 'react/lib/ReactUpdateQueue';
 import ReactUpdates from 'react/lib/ReactUpdates';
 import instantiateReactComponent from 'react/lib/instantiateReactComponent';
 
-import emptyObject from 'react/lib/emptyObject';
 import shouldUpdateReactComponent from 'react/lib/shouldUpdateReactComponent';
 import HardwareManager from './HardwareManager';
-import invariant from 'react/lib/invariant';
+
+import emptyObject from 'fbjs/lib/emptyObject';
+import invariant from 'fbjs/lib/invariant';
 
 /*
 var ReactPerf = require('ReactPerf');
@@ -160,6 +161,10 @@ var ReactHardwareMount = {
   },
 
   getNode<T>(id: T): T {
+    return id;
+  },
+
+  getID<T>(id: T): T {
     return id;
   },
 

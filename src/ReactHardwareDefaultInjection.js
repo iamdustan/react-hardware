@@ -29,12 +29,11 @@ import ReactUpdates from 'react/lib/ReactUpdates';
 var ReactIOSTextComponent = require('ReactIOSTextComponent');
 */
 import UniversalWorkerNodeHandle from './UniversalWorkerNodeHandle';
-import invariant from 'react/lib/invariant';
+import invariant from 'fbjs/lib/invariant';
 
 var noop = () => {};
 
 function inject() {
-  console.log('injecting');
   EventPluginHub.injection.injectEventPluginOrder(HardwareDefaultEventPluginOrder);
   EventPluginHub.injection.injectInstanceHandle(ReactInstanceHandles);
 

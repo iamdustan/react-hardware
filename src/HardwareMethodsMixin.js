@@ -4,8 +4,6 @@
 import HardwareManager from './HardwareManager';
 import findNodeHandle from './findNodeHandle';
 
-import invariant from 'react/lib/invariant';
-
 var HardwareMethodsMixin = {
   measure(callback: MeasureOnSuccessCallback) {
     console.log('HardwareMethodsMixin#measure', this);

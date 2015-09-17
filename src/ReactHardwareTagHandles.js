@@ -11,8 +11,8 @@
  */
 'use strict';
 
-var invariant = require('react/lib/invariant');
-var warning = require('react/lib/warning');
+var invariant = require('fbjs/lib/invariant');
+var warning = require('fbjs/lib/warning');
 
 /**
  * Keeps track of allocating and associating native "tags" which are numeric,

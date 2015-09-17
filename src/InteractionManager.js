@@ -6,8 +6,8 @@ import EventEmitter from './vendor/EventEmitter';
 // I think Set should just work...
 // var Set = require('Set');
 
-import invariant from 'react/lib/invariant';
-import keyMirror from 'react/lib/keyMirror';
+import invariant from 'fbjs/lib/invariant';
+import keyMirror from 'fbjs/lib/keyMirror';
 import setImmediate from 'setImmediate';
 
 var _emitter = new EventEmitter();

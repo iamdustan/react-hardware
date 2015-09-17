@@ -1,8 +1,8 @@
 /*eslint no-console:0*/
-import React from '../';
+import React, {Component} from '../';
 
 const {
-  Board,
+  ArduinoUno,
   Button,
   Switch,
   Led,
@@ -11,9 +11,9 @@ const {
 const HIGH = 255;
 const LOW = 0;
 
-class Application extends React.Component {
-  constructor(props) {
-    super(props);
+class Application extends Component {
+  constructor(props, context) {
+    super(props, context);
 
     this.state = {value: LOW};
     this.toggle = this.toggle.bind(this);
@@ -31,7 +31,7 @@ class Application extends React.Component {
 
   render():ReactElement {
     return (
-      <Board>
+      <ArduinoUno>
         <Button pin={2} onChange={this.toggle} />
         <Switch
           pin={3}
@@ -40,11 +40,10 @@ class Application extends React.Component {
           onClose={this.log}
           />
         <Led pin={11} value={this.state.value} />
-      </Board>
+      </ArduinoUno>
     );
   }
 }
 
-var PORT = '/dev/tty.usbmodem1411';
-React.render(<Application />, PORT);
+React.render(<Application />);
 

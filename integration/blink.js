@@ -1,6 +1,6 @@
 /*eslint react/no-multi-comp:0, no-console:0*/
 
-import React from '../';
+import React, {Component, PropTypes} from '../';
 
 const {
   Board,
@@ -11,7 +11,7 @@ const {
 const HIGH = 255;
 const LOW = 0;
 
-class FlashingLed extends React.Component {
+class FlashingLed extends Component {
   constructor(props: any, context: any) {
     super(props, context);
 
@@ -32,7 +32,6 @@ class FlashingLed extends React.Component {
   componentDidMount() {
     setTimeout(_ => {
       this.next(this.props.interval[0]);
-
     }, this.props.delay);
   }
 
@@ -46,6 +45,13 @@ class FlashingLed extends React.Component {
     );
   }
 }
+
+FlashingLed.propTypes = {
+  delay: PropTypes.number,
+  pin: PropTypes.number,
+  interval: PropTypes.number,
+  mode: PropTypes.number,
+};
 
 FlashingLed.defaultProps = {
   pin: 13,

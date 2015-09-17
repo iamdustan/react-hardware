@@ -4,7 +4,6 @@ import React from '../';
 const {
   ArduinoUno,
   Button,
-  Led,
 } = React;
 
 const HIGH = 255;

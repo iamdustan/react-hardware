@@ -6,10 +6,10 @@ import EventPropagators from './EventPropagators';
 import HardwareManager from './HardwareManager';
 import SyntheticEvent from 'react/lib/SyntheticEvent';
 
-import warning from 'fbjs/lib/warning';
+// import warning from 'fbjs/lib/warning';
 
 var {
-  customBubblingEventTypes,
+  // customBubblingEventTypes,
   customDirectEventTypes,
 } = HardwareManager;
 
@@ -66,13 +66,15 @@ var HardwareBridgeEventPlugin = {
     Object.assign(event, event.nativeEvent);
     if (bubbleDispatchConfig) {
       EventPropagators.accumulateTwoPhaseDispatches(event);
-    } else if (directDispatchConfig) {
+    }
+    else if (directDispatchConfig) {
       EventPropagators.accumulateDirectDispatches(event);
-    } else {
+    }
+    else {
       return null;
     }
     return event;
-  }
+  },
 };
 
 export default HardwareBridgeEventPlugin;

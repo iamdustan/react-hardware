@@ -124,7 +124,8 @@ function processUpdate() {
   if (interactionCount !== 0 && nextInteractionCount === 0) {
     // transition from 1+ --> 0 interactions
     _emitter.emit(InteractionManager.Events.interactionComplete);
-  } else if (interactionCount === 0 && nextInteractionCount !== 0) {
+  }
+  else if (interactionCount === 0 && nextInteractionCount !== 0) {
     // transition from 0 --> 1+ interactions
     _emitter.emit(InteractionManager.Events.interactionStart);
   }

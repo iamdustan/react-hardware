@@ -1,6 +1,6 @@
 /*eslint no-console:0*/
 import {Board} from 'firmata';
-import ReactHardwareMount from '../ReactHardwareMount';
+// import ReactHardwareMount from '../ReactHardwareMount';
 import assign from 'react/lib/Object.assign';
 import mode from '../components/inputModes';
 import warning from 'fbjs/lib/warning';
@@ -12,7 +12,7 @@ var capitalize = w => `${w[0].toUpperCase()}${w.slice(1)}`;
 
 var WRITE_TYPE = {
   [0x00]: 'digital', // input
-  [0x01]: 'digital', //output
+  [0x01]: 'digital', // output
   [0x02]: 'analog', // analog
   [0x03]: 'analog', // pwm
   [0x04]: 'servo',  // servo
@@ -84,8 +84,7 @@ var HardwareManager = {
       return;
     }
 
-
-    const {board, pinMapping} = Registry;
+    const {pinMapping} = Registry;
 
     Registry.children[tag] = {
       name: name,
@@ -100,7 +99,6 @@ var HardwareManager = {
     else {
       Registry.board.pinMode(payload.pin, payload.mode);
     }
-
 
     if (typeof payload.value !== 'undefined') {
       Registry.board[`${WRITE_TYPE[payload.mode]}Write`](payload.pin, payload.value);

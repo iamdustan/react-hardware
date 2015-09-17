@@ -1,6 +1,6 @@
 var lastTime = 0;
 
-var FRAME = 16;
+// var FRAME = 16;
 var FRAME = 75;
 
 global.requestAnimationFrame = function(callback: Function): number {

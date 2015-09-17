@@ -5,7 +5,7 @@ import HardwareManager from './HardwareManager';
 import findNodeHandle from './findNodeHandle';
 
 var HardwareMethodsMixin = {
-  measure(callback: MeasureOnSuccessCallback) {
+  measure(callback:MeasureOnSuccessCallback) { // eslint-disable-line
     console.log('HardwareMethodsMixin#measure', this);
     HardwareManager.measure(
       findNodeHandle(this),

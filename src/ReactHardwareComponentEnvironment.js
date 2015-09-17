@@ -10,14 +10,14 @@ var ReactHardwareComponentEnvironment = {
   /**
    * @private
    */
-  unmountIDFromEnvironment: function(/*rootNodeID*/) {
+  unmountIDFromEnvironment: function(/* rootNodeID */) {
 
   },
 
   /**
    * @param {DOMElement} Element to clear.
    */
-  clearNode: function(/*containerView*/) {
+  clearNode: function(/* containerView */) {
 
   },
 

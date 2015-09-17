@@ -1,7 +1,6 @@
 /** @flow */
 
 'use strict';
-var __DEV__ = true;
 
 import ReactCurrentOwner from 'react/lib/ReactCurrentOwner';
 import ReactInstanceMap from 'react/lib/ReactInstanceMap';
@@ -41,7 +40,7 @@ import warning from 'fbjs/lib/warning';
  */
 
 function findNodeHandle(componentOrHandle: any): ?number {
-  if (__DEV__) {
+  if (process.env.NODE_ENV === 'development') {
     var owner = ReactCurrentOwner.current;
     if (owner !== null) {
       warning(
@@ -71,11 +70,13 @@ function findNodeHandle(componentOrHandle: any): ?number {
   var internalInstance = ReactInstanceMap.get(component);
   if (internalInstance) {
     return ReactHardwareTagHandles.rootNodeIDToTag[internalInstance._rootNodeID];
-  } else {
+  }
+  else {
     var rootNodeID = component._rootNodeID;
     if (rootNodeID) {
       return ReactHardwareTagHandles.rootNodeIDToTag[rootNodeID];
-    } else {
+    }
+    else {
       invariant(
         (
           // Native

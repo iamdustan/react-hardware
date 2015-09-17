@@ -1,20 +1,15 @@
-import React from '../ReactHardware';
+/** @flow */
+import React, {Component, PropTypes} from '../ReactHardware';
 import createReactHardwareComponentClass from '../createReactHardwareComponentClass';
 import modes from './inputModes';
 import HardwareManager from '../HardwareManager';
 import findNodeHandle from '../findNodeHandle';
-import {collect, emitEvent} from './ComponentUtils';
+import {emitEvent} from './ComponentUtils';
 import defaultPropTypes from './defaultPropTypes';
-var {PropTypes} = React;
 
 var CHANGE_EVENT = 'topChange';
 var CLOSE_EVENT = 'topClose';
 var OPEN_EVENT = 'topOpen';
-
-var EVENT_TYPE = collect(
-  HardwareManager.customDirectEventTypes,
-  CHANGE_EVENT, CLOSE_EVENT, OPEN_EVENT
-);
 
 var SWITCH_REF = 'switch';
 
@@ -30,8 +25,8 @@ var viewConfig = {
   },
 };
 
-class Switch extends React.Component {
-  componentDidMount() {
+class Switch extends Component {
+  componentDidMount():void {
     var nodeHandle = findNodeHandle(this.refs[SWITCH_REF]);
     // set up the hardware polling
     HardwareManager.read(nodeHandle, newValue => {
@@ -45,19 +40,17 @@ class Switch extends React.Component {
     });
   }
 
-  componentWillUnmount() {
+  componentWillUnmount():void {
     // TODO: maybe move this destroyer to the HardwareManager
     HardwareManager.destroyRead(findNodeHandle(this.refs[SWITCH_REF]));
   }
 
-  render() {
-    var props = {...this.props};
-
+  render():ReactElement {
     return (
       <Hardware
         ref={SWITCH_REF}
         mode={modes.INPUT}
-        {...props} />
+        {...this.props} />
     );
   }
 }

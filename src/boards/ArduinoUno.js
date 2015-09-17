@@ -12,18 +12,7 @@ const pinMapping = {
   'A5': 19,
 };
 
-class ArduinoUno extends Board {
-  render(): ReactElement {
-    return (
-      <Board
-        {...this.props}
-        pinMapping={pinMapping}
-        />
-    );
-  }
-};
-
-ArduinoUno.defaultProps = {pinMapping};
-
+var ArduinoUno = (props) => <Board {...props} pinMapping={pinMapping} />;
+ArduinoUno.displayName = 'ArduinoUno';
 export default ArduinoUno;
 

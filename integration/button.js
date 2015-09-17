@@ -39,7 +39,7 @@ class Application extends React.Component {
           onHold={this.log}
           />
         <Led pin={13} value={this.state.value} />
-      </Board>
+      </ArduinoUno>
     );
   }
 }

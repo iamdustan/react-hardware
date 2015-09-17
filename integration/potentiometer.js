@@ -25,7 +25,7 @@ class Application extends React.Component {
     var POT_HIGH = 960;
     var value = (event.target.value - POT_LOW) / POT_HIGH * HIGH;
     if (value < 10) value = LOW;
-    else if (value > HIGH) value = HIGH
+    else if (value > HIGH) value = HIGH;
 
     this.setState({value});
   }
@@ -43,6 +43,6 @@ class Application extends React.Component {
   }
 }
 
-var PORT = '/dev/tty.usbmodem1411';
+var PORT = '/dev/tty.usbmodem1451';
 React.render(<Application />, PORT);
 

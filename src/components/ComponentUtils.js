@@ -1,6 +1,5 @@
 import {customDirectEventTypes} from '../HardwareManager';
 import ReactHardwareEventEmitter from '../ReactHardwareEventEmitter';
-import findNodeHandle from '../findNodeHandle';
 
 /**
  * used to create EVENT_TYPE hash for each component
@@ -18,7 +17,6 @@ import findNodeHandle from '../findNodeHandle';
  */
 export var collect = (obj, ...things) =>
   things.reduce((memo, thing) => ((memo[thing] = obj[thing]), memo), {});
-
 
 export function emitEvent(componentInstance, nodeHandle, eventName, value) {
   ReactHardwareEventEmitter.receiveEvent(

@@ -8,13 +8,13 @@ var ReactHardwareGlobalResponderHandler = {
   onChange(from: string, to: string) {
     if (to !== null) {
       HardwareManager.setJSResponder(
-        ReactNativeTagHandles.mostRecentMountedNodeHandleForRootNodeID(to)
+        ReactHardwareTagHandles.mostRecentMountedNodeHandleForRootNodeID(to)
       );
     }
     else {
       HardwareManager.clearJSResponder();
     }
-  }
+  },
 };
 
 export default ReactHardwareGlobalResponderHandler;

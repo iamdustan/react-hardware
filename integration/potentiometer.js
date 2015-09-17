@@ -2,7 +2,7 @@
 import React from '../';
 
 const {
-  Board,
+  ArduinoUno,
   Potentiometer,
   Led,
   mode,
@@ -25,25 +25,24 @@ class Application extends React.Component {
     var POT_HIGH = 960;
     var value = (event.target.value - POT_LOW) / POT_HIGH * HIGH;
     if (value < 10) value = LOW;
-    else if (value > HIGH) value = HIGH
+    else if (value > HIGH) value = HIGH;
 
     this.setState({value});
   }
 
-  render(): ?ReactElement {
+  render(): ReactElement {
     return (
-      <Board>
+      <ArduinoUno port="/dev/tty.usbmodem1411">
         <Potentiometer
           pin={'A1'}
           onChange={this.onChange}
           />
-        <Led pin={11} mode={mode.PWM} value={this.state.value} />
-      </Board>
+        <Led pin={9} mode={mode.PWM} value={this.state.value} />
+      </ArduinoUno>
     );
   }
 }
 
-var PORT = '/dev/tty.usbmodem1411';
+var PORT = '/dev/tty.usbmodem1451';
 React.render(<Application />, PORT);
-
 

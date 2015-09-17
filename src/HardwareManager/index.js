@@ -1,18 +1,18 @@
 /*eslint no-console:0*/
 import {Board} from 'firmata';
-// import ReactHardwareTagHandles from './ReactHardwareTagHandles';
+// import ReactHardwareMount from '../ReactHardwareMount';
 import assign from 'react/lib/Object.assign';
 import mode from '../components/inputModes';
 import warning from 'fbjs/lib/warning';
 import invariant from 'fbjs/lib/invariant';
-import pinMappings from './pinMappings/ArduinoUno';
+
 import {customDirectEventTypes} from './customEventTypes';
 
 var capitalize = w => `${w[0].toUpperCase()}${w.slice(1)}`;
 
 var WRITE_TYPE = {
   [0x00]: 'digital', // input
-  [0x01]: 'digital', //output
+  [0x01]: 'digital', // output
   [0x02]: 'analog', // analog
   [0x03]: 'analog', // pwm
   [0x04]: 'servo',  // servo
@@ -47,6 +47,7 @@ var HardwareManager = {
         children: [],
       };
 
+      Registry.containerTag = containerTag;
       Registry.board = Registry[containerTag].board;
     }
 
@@ -66,10 +67,15 @@ var HardwareManager = {
   },
 
   createView(
+    rootID: any,
     tag: number,
     name: string,
     payload: Object
   ) {
+    if (name === 'Board') {
+      Registry.pinMapping = payload.pinMapping;
+    }
+
     if (!payload || typeof payload.pin === 'undefined') {
       warning(
         name === 'Board',
@@ -78,6 +84,8 @@ var HardwareManager = {
       return;
     }
 
+    const {pinMapping} = Registry;
+
     Registry.children[tag] = {
       name: name,
       props: payload,
@@ -85,13 +93,12 @@ var HardwareManager = {
 
     // analog pins
     if (typeof payload.pin === 'string') {
-      payload.physicalPin = pinMappings[payload.pin];
-      Registry.board.pinMode(pinMappings[payload.pin], payload.mode);
+      payload.physicalPin = pinMapping[payload.pin];
+      Registry.board.pinMode(pinMapping[payload.pin], payload.mode);
     }
     else {
       Registry.board.pinMode(payload.pin, payload.mode);
     }
-
 
     if (typeof payload.value !== 'undefined') {
       Registry.board[`${WRITE_TYPE[payload.mode]}Write`](payload.pin, payload.value);
@@ -137,7 +144,7 @@ var HardwareManager = {
 
     if (props.mode === mode.ANALOG) {
       // TODO: this mapping needs to be smarter, but oh well
-      Registry.board[method](props.physicalPin - pinMappings[props.pin], callback);
+      Registry.board[method](props.physicalPin - Registry.pinMapping[props.pin], callback);
     }
     else {
       Registry.board[method](props.pin, callback);

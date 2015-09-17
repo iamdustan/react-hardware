@@ -1,3 +1,4 @@
+/** @flow */
 /*eslint no-console:0, no-use-before-define:0*/
 
 import ReactHardwareTagHandles from './ReactHardwareTagHandles';
@@ -65,8 +66,6 @@ function batchedMountComponentIntoNode(
   ReactUpdates.ReactReconcileTransaction.release(transaction);
 }
 
-
-
 /**
  * As soon as `ReactMount` is refactored to not rely on the DOM, we can share
  * code between the two. For now, we'll hard code the ID logic.
@@ -93,7 +92,8 @@ var ReactHardwareMount = {
               ReactUpdateQueue.enqueueCallbackInternal(prevComponent, callback);
             }
             return prevComponent;
-          } else {
+          }
+          else {
             ReactHardwareMount.unmountComponentAtNode(containerTag);
           }
         }

@@ -31,7 +31,6 @@ Servo.propTypes = {
   value: PropTypes.number,
 };
 
-
 var Hardware = createReactHardwareComponentClass(viewConfig);
 
 export default Servo;

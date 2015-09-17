@@ -1,5 +1,6 @@
+/** @flow */
 /*eslint no-console:0*/
-var __DEV__ = true;
+var __DEV__ = process.env.NODE_ENV === 'development';
 import HardwareMethodsMixin from './HardwareMethodsMixin';
 import ReactHardwareComponentMixin from './ReactHardwareComponentMixin';
 import ReactHardwareEventEmitter from './ReactHardwareEventEmitter';
@@ -54,7 +55,8 @@ var cachedIndexArray = function(size) {
     }
     cachedIndexArray._cache[size] = arr;
     return cachedIndexArray._cache[size];
-  } else {
+  }
+  else {
     return cachedResult;
   }
 };
@@ -112,11 +114,11 @@ ReactHardwareNativeComponent.Mixin = {
         );
         createdTags[i] = mountImage.tag;
       }
+
       HardwareManager
         .manageChildren(containerTag, null, null, createdTags, indexes, null);
     }
   },
-
 
   /**
    *
@@ -145,7 +147,6 @@ ReactHardwareNativeComponent.Mixin = {
 
     return updatePayload;
   },
-
 
   /**
    * Updates the component's currently mounted representation.
@@ -201,7 +202,7 @@ ReactHardwareNativeComponent.Mixin = {
    */
   _reconcileListenersUponUpdate: function(prevProps, nextProps) {
     for (var key in nextProps) {
-      if (registrationNames[key] && (nextProps[key] != prevProps[key])) {
+      if (registrationNames[key] && (nextProps[key] != prevProps[key])) { // eslint-disable-line
         putListener(this._rootNodeID, key, nextProps[key]);
       }
     }
@@ -222,7 +223,7 @@ ReactHardwareNativeComponent.Mixin = {
       this._currentElement.props, // next props
       this.viewConfig.validAttributes
     );
-    HardwareManager.createView(tag, this.viewConfig.uiViewClassName, updatePayload);
+    HardwareManager.createView(rootID, tag, this.viewConfig.uiViewClassName, updatePayload);
 
     this._registerListenersUponCreation(this._currentElement.props);
     this.initializeChildren(

@@ -14,10 +14,11 @@ var ReactHardwareGlobalInteractionHandler = {
         InteractionManager.clearInteractionHandle(interactionHandle);
         interactionHandle = null;
       }
-    } else if (!interactionHandle) {
+    }
+    else if (!interactionHandle) {
       interactionHandle = InteractionManager.createInteractionHandle();
     }
-  }
+  },
 };
 
 export default ReactHardwareGlobalInteractionHandler;

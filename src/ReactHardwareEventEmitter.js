@@ -1,19 +1,16 @@
 /* @flow */
 
-"use strict";
-
 import EventPluginHub from 'react/lib/EventPluginHub';
 import ReactEventEmitterMixin from 'react/lib/ReactEventEmitterMixin';
 import ReactHardwareTagHandles from './ReactHardwareTagHandles';
-import NodeHandle from './NodeHandle';
+// import NodeHandle from './NodeHandle';
 
 import assign from 'react/lib/Object.assign';
-import warning from 'fbjs/lib/warning';
-
+// import warning from 'fbjs/lib/warning';
 
 /**
  * Version of `ReactBrowserEventEmitter` that works on the receiving side of a
- * serialized worker boundary. Lulz there is no worker boundary.
+ * serialized worker boundary. Lulz from @iamdustan there is no worker boundary.
  */
 
 // Shared default empty native event - conserve memory.
@@ -128,7 +125,7 @@ var ReactHardwareEventEmitter = assign({}, ReactEventEmitterMixin, {
       );
     }
     */
-  }
+  },
 });
 
 export default ReactHardwareEventEmitter;

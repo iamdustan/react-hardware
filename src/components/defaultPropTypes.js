@@ -3,7 +3,7 @@ import {PropTypes} from '../ReactHardware';
 var defaultPropTypes = {
   pin: PropTypes.oneOfType([
     PropTypes.number,
-    PropTypes.string
+    PropTypes.string,
   ]).isRequired,
   mode: PropTypes.number,
 };

@@ -1,4 +1,6 @@
 /*eslint no-console:0*/
+
+import HardwareManager from './HardwareManager';
 import ReactHardwareTagHandles from './ReactHardwareTagHandles';
 import ReactMultiChildUpdateTypes from 'react/lib/ReactMultiChildUpdateTypes';
 
@@ -30,9 +32,11 @@ var dangerouslyProcessChildrenUpdates = function(childrenUpdates, markupList) {
     if (update.type === ReactMultiChildUpdateTypes.MOVE_EXISTING) {
       (updates.moveFromIndices || (updates.moveFromIndices = [])).push(update.fromIndex);
       (updates.moveToIndices || (updates.moveToIndices = [])).push(update.toIndex);
-    } else if (update.type === ReactMultiChildUpdateTypes.REMOVE_NODE) {
+    }
+    else if (update.type === ReactMultiChildUpdateTypes.REMOVE_NODE) {
       (updates.removeAtIndices || (updates.removeAtIndices = [])).push(update.fromIndex);
-    } else if (update.type === ReactMultiChildUpdateTypes.INSERT_MARKUP) {
+    }
+    else if (update.type === ReactMultiChildUpdateTypes.INSERT_MARKUP) {
       var mountImage = markupList[update.markupIndex];
       var tag = mountImage.tag;
       var rootNodeID = mountImage.rootNodeID;
@@ -48,7 +52,7 @@ var dangerouslyProcessChildrenUpdates = function(childrenUpdates, markupList) {
     var updateParentTagNumber = +updateParentTagString;
     var childUpdatesToSend = byContainerTag[updateParentTagNumber];
     console.log('TODO: HardwareManager.manageChildren', childUpdatesToSend);
-    RCTUIManager.manageChildren(
+    HardwareManager.manageChildren(
       updateParentTagNumber,
       childUpdatesToSend.moveFromIndices,
       childUpdatesToSend.moveToIndices,

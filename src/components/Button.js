@@ -1,22 +1,16 @@
-import React from '../ReactHardware';
+/** @flow */
+import React, {Component, PropTypes} from '../ReactHardware';
 import createReactHardwareComponentClass from '../createReactHardwareComponentClass';
 import modes from './inputModes';
 import HardwareManager from '../HardwareManager';
-import ReactHardwareEventEmitter from '../ReactHardwareEventEmitter';
 import findNodeHandle from '../findNodeHandle';
-import {collect, emitEvent} from './ComponentUtils';
+import {emitEvent} from './ComponentUtils';
 import defaultPropTypes from './defaultPropTypes';
-var {PropTypes} = React;
 
 var DOWN_EVENT = 'topDown';
 var UP_EVENT = 'topUp';
 var CHANGE_EVENT = 'topChange';
 var HOLD_EVENT = 'topHold';
-
-var EVENT_TYPE = collect(
-  HardwareManager.customDirectEventTypes,
-  CHANGE_EVENT, DOWN_EVENT, HOLD_EVENT, UP_EVENT
-);
 
 var BUTTON_REF = 'button';
 
@@ -33,7 +27,7 @@ var viewConfig = {
   },
 };
 
-class Button extends React.Component {
+class Button extends Component {
   constructor(props, context) {
     super(props, context);
 

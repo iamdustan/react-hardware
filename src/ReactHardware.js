@@ -1,4 +1,3 @@
-var __DEV__ = true;
 import ReactHardwareDefaultInjection from './ReactHardwareDefaultInjection';
 ReactHardwareDefaultInjection.inject();
 
@@ -6,16 +5,13 @@ import ReactHardwareMount from './ReactHardwareMount';
 import inputModes from './components/inputModes';
 import findNodeHandle from './findNodeHandle';
 
-/*
-var ReactChildren = require('ReactChildren');
-*/
 import ReactClass from 'react/lib/ReactClass';
 import ReactComponent from 'react/lib/ReactComponent';
 import ReactElement from 'react/lib/ReactElement';
 import ReactCurrentOwner from 'react/lib/ReactCurrentOwner';
 import ReactElementValidator from 'react/lib/ReactElementValidator';
 import ReactPropTypes from 'react/lib/ReactPropTypes';
-import assign from 'react/lib/Object.assign';
+// import assign from 'react/lib/Object.assign';
 
 var {
   createElement,
@@ -23,12 +19,14 @@ var {
   cloneElement,
 } = ReactElement;
 
-if (__DEV__) {
+if (process.env.NODE_ENV === 'development') {
+  /* eslint-disable */
   var {
     createElement,
     createFactory,
     cloneElement,
   } = ReactElementValidator;
+  /* eslint-enable */
 }
 
 var render = function(
@@ -61,7 +59,7 @@ if (
   typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.inject === 'function') {
   __REACT_DEVTOOLS_GLOBAL_HOOK__.inject({
     CurrentOwner: ReactCurrentOwner,
-    InstanceHandles: ReactInstanceHandles,
+    // InstanceHandles: ReactInstanceHandles,
     Mount: ReactHardwareMount,
     Reconciler: require('ReactReconciler'),
     /*

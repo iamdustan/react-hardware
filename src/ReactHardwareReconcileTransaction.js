@@ -6,20 +6,20 @@ import Transaction from 'react/lib/Transaction';
  * Provides a `CallbackQueue` queue for collecting `onDOMReady` callbacks during
  * the performing of the transaction.
  */
-var ON_DOM_READY_QUEUEING = {
+var ON_HARDWARE_READY_QUEUEING = {
   /**
-   * Initializes the internal `onDOMReady` queue.
+   * Initializes the internal firmata `connected` queue.
    */
   initialize: function() {
     this.reactMountReady.reset();
   },
 
   /**
-   * After DOM is flushed, invoke all registered `onDOMReady` callbacks.
+   * After Hardware is connected, invoke all registered `ready` callbacks.
    */
   close: function() {
     this.reactMountReady.notifyAll();
-  }
+  },
 };
 
 /**
@@ -27,28 +27,26 @@ var ON_DOM_READY_QUEUEING = {
  * being member methods, but with an implied ordering while being isolated from
  * each other.
  */
-var TRANSACTION_WRAPPERS = [ON_DOM_READY_QUEUEING];
+var TRANSACTION_WRAPPERS = [ON_HARDWARE_READY_QUEUEING];
 
 function ReactHardwareReconcileTransaction() {
   this.reinitializeTransaction();
   this.reactMountReady = CallbackQueue.getPooled(null);
 }
 
-var Mixin = {
+const Mixin = {
   /**
    * @see Transaction
    * @abstract
    * @final
-   * @return {array<object>} List of operation wrap proceedures.
-   *   TODO: convert to array<TransactionWrapper>
+   * @return {array<object>} List of operation wrap procedures.
    */
   getTransactionWrappers: function() {
     return TRANSACTION_WRAPPERS;
   },
 
   /**
-   * @return {object} The queue to collect `onDOMReady` callbacks with.
-   *   TODO: convert to ReactMountReady
+   * @return {object} The queue to collect `ready` callbacks with.
    */
   getReactMountReady: function() {
     return this.reactMountReady;
@@ -61,7 +59,7 @@ var Mixin = {
   destructor: function() {
     CallbackQueue.release(this.reactMountReady);
     this.reactMountReady = null;
-  }
+  },
 };
 
 Object.assign(

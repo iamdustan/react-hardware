@@ -1,0 +1,13 @@
+[ignore]
+# Ignore react and fbjs where there are overlaps, but don't ignore
+# anything that react-native relies on
+.*/node_modules/fbjs/flow
+.*/node_modules/babel.*
+.*/node_modules/babylon.*
+_backup
+
+[include]
+
+[libs]
+
+[options]

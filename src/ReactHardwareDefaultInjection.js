@@ -1,74 +1,36 @@
-/*
-require('InitializeJavaScriptAppEngine');
-*/
-import EventPluginHub from 'react/lib/EventPluginHub';
-import EventPluginUtils from 'react/lib/EventPluginUtils';
-/*
-var IOSDefaultEventPluginOrder = require('IOSDefaultEventPluginOrder');
-var IOSNativeBridgeEventPlugin = require('IOSNativeBridgeEventPlugin');
-*/
-import ReactClass from 'react/lib/ReactClass';
-import ReactComponentEnvironment from 'react/lib/ReactComponentEnvironment';
+/**
+ * React Hardware Default Injection
+ */
+import ReactInjection from 'react/lib/ReactInjection';
 import ReactDefaultBatchingStrategy from 'react/lib/ReactDefaultBatchingStrategy';
-import ReactNativeComponent from 'react/lib/ReactNativeComponent';
-/*
-var ReactEmptyComponent = require('ReactEmptyComponent');
-var ReactInstanceHandles = require('ReactInstanceHandles');
-var ReactIOSComponentEnvironment = require('ReactIOSComponentEnvironment');
-var ReactIOSComponentMixin = require('ReactIOSComponentMixin');
-var ReactIOSGlobalInteractionHandler = require('ReactIOSGlobalInteractionHandler');
-var ReactIOSGlobalResponderHandler = require('ReactIOSGlobalResponderHandler');
-*/
-import NodeHandle from './NodeHandle';
-import ReactHardwareMount from './ReactHardwareMount';
-import ReactHardwareComponentEnvironment from './ReactHardwareComponentEnvironment';
-import ReactHardwareComponentMixin from './ReactHardwareComponentMixin';
-import ReactUpdates from 'react/lib/ReactUpdates';
-/*
-var ReactIOSTextComponent = require('ReactIOSTextComponent');
-var ResponderEventPlugin = require('ResponderEventPlugin');
-*/
-import UniversalWorkerNodeHandle from './UniversalWorkerNodeHandle';
-
-/*
-var createReactIOSNativeComponentClass = require('createReactIOSNativeComponentClass');
-*/
-import invariant from 'react/lib/invariant';
+import ReactComponentEnvironment from 'react/lib/ReactComponentEnvironment';
+import ReactHardwareReconcileTransaction from './ReactHardwareReconcileTransaction';
+import ReactHardwareComponent from './ReactHardwareComponent';
 
 function inject() {
-  ReactUpdates.injection.injectReconcileTransaction(
-    ReactHardwareComponentEnvironment.ReactReconcileTransaction
+  ReactInjection.NativeComponent.injectGenericComponentClass(
+    ReactHardwareComponent
   );
 
-  ReactUpdates.injection.injectBatchingStrategy(
+  ReactInjection.Updates.injectReconcileTransaction(
+    ReactHardwareReconcileTransaction
+  );
+
+  ReactInjection.Updates.injectBatchingStrategy(
     ReactDefaultBatchingStrategy
   );
 
-  ReactComponentEnvironment.injection.injectEnvironment(
-    ReactHardwareComponentEnvironment
-  );
+  ReactInjection.EmptyComponent.injectEmptyComponent('element');
 
-  /*
-  ReactEmptyComponent.injection.injectEmptyComponent(RCTView);
-  */
-
-  EventPluginUtils.injection.injectMount(ReactHardwareMount);
-
-  ReactClass.injection.injectMixin(ReactHardwareComponentMixin);
-
-  ReactNativeComponent.injection.injectAutoWrapper(function(tag) {
-    // Show a nicer error message for non-function tags
-    var info = '';
-    if (typeof tag === 'string' && /^[a-z]/.test(tag)) {
-      info += ' Each component name should start with an uppercase letter.';
-    }
-    invariant(false, 'Expected a component class, got %s.%s', tag, info);
-  });
-
-  NodeHandle.injection.injectImplementation(UniversalWorkerNodeHandle);
+  // NOTE: we're monkeypatching ReactComponentEnvironment because
+  // ReactInjection.Component.injectEnvironment() currently throws,
+  // as it's already injected by ReactDOM for backward compat in 0.14 betas.
+  // Read more: https://github.com/Yomguithereal/react-blessed/issues/5
+  ReactComponentEnvironment.processChildrenUpdates = function() {};
+  ReactComponentEnvironment.replaceNodeWithMarkupByID = function() {};
 }
 
-module.exports = {
-  inject: inject,
+export default {
+  inject,
 };
 

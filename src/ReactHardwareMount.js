@@ -1,180 +1,238 @@
+/**
+ * React Hardware mount method.
+ *
+ * @providesModule ReactHardwareMount
+ * @flow
+ */
 
-import ReactHardwareTagHandles from './ReactHardwareTagHandles';
-import ReactReconciler from 'react/lib/ReactReconciler';
-import ReactUpdateQueue from 'react/lib/ReactUpdateQueue';
+import ReactInstanceHandles from 'react/lib/ReactInstanceHandles';
+import ReactElement from 'react/lib/ReactElement';
 import ReactUpdates from 'react/lib/ReactUpdates';
+import ReactUpdateQueue from 'react/lib/ReactUpdateQueue';
+import ReactReconciler from 'react/lib/ReactReconciler';
+import shouldUpdateReactComponent from 'react/lib/shouldUpdateReactComponent';
 import instantiateReactComponent from 'react/lib/instantiateReactComponent';
 
-import emptyObject from 'react/lib/emptyObject';
-import shouldUpdateReactComponent from 'react/lib/shouldUpdateReactComponent';
+import invariant from 'fbjs/lib/invariant';
+import warning from 'fbjs/lib/warning';
 
-/*
-var RCTUIManager = require('NativeModules').UIManager;
+import {Board} from 'firmata';
 
-var ReactPerf = require('ReactPerf');
+import ReactHardwareDefaultInjection from './ReactHardwareDefaultInjection';
 
-var invariant = require('invariant');
-*/
+import {connectionsByContainer} from './HardwareManager';
 
-var instanceNumberToChildRootID = function(rootNodeID, instanceNumber) {
-  return `${rootNodeID}[${instanceNumber}]`;
-};
+ReactHardwareDefaultInjection.inject();
 
-/**
- * Mounts this component and inserts it into the DOM.
- *
- * @param {ReactComponent} componentInstance The instance to mount.
- * @param {number} rootID ID of the root node.
- * @param {number} container container element to mount into.
- * @param {ReactReconcileTransaction} transaction
- */
-function mountComponentIntoNode(
-    componentInstance: ReactComponent,
-    rootID: number,
-    container: number,
-    transaction: any
-) {
-  var markup = ReactReconciler.mountComponent(
-    componentInstance, rootID, transaction, emptyObject
-  );
-  componentInstance._isTopLevel = true;
-  ReactHardwareMount._mountImageIntoNode(markup, container);
-}
-
-/**
- * Batched mount.
- *
- * @param {ReactComponent} componentInstance The instance to mount.
- * @param {number} rootID ID of the root node.
- * @param {number} container container element to mount into.
- */
-function batchedMountComponentIntoNode(
-    componentInstance: ReactComponent,
-    rootID: number,
-    container: number
-) {
-  var transaction = ReactUpdates.ReactReconcileTransaction.getPooled();
-  transaction.perform(
-    mountComponentIntoNode,
-    null,
-    componentInstance,
-    rootID,
-    container,
-    transaction
-  );
-  ReactUpdates.ReactReconcileTransaction.release(transaction);
-}
-
-
-
-/**
- * As soon as `ReactMount` is refactored to not rely on the DOM, we can share
- * code between the two. For now, we'll hard code the ID logic.
- */
-var ReactHardwareMount = {
-  instanceCount: 0,
-
-  _instancesByContainerID: {},
-
-  renderComponent(
+const ReactHardwareMount = {
+  /**
+   * Renders a React component to the supplied `container` port.
+   *
+   * If the React component was previously rendered into `container`, this will
+   * perform an update on it and only mutate the pins as necessary to reflect
+   * the latest React component.
+   */
+  render(
     nextElement: ReactElement,
-    containerTag: number,
-    callback?: ?(() => void)
-  ): ?ReactComponent {
-    var topRootNodeID = ReactHardwareTagHandles.tagToRootNodeID[containerTag];
-    if (topRootNodeID) {
-      var prevComponent = ReactHardwareMount._instancesByContainerID[topRootNodeID];
-      if (prevComponent) {
-        var prevElement = prevComponent._currentElement;
-        if (shouldUpdateReactComponent(prevElement, nextElement)) {
-          ReactUpdateQueue.enqueueElementInternal(prevComponent, nextElement);
-          if (callback) {
-            ReactUpdateQueue.enqueueCallbackInternal(prevComponent, callback);
+    container: string,
+    callback: ?Function
+  ): void {
+    // WIP: it appears as though nextElement.props is an empty object...
+    invariant(
+      ReactElement.isValidElement(nextElement),
+      'ReactHardware.render(): Invalid component element.%s',
+      (
+        typeof nextElement === 'function' ?
+          ' Instead of passing a component class, make sure to instantiate ' +
+          'it by passing it to React.createElement.' :
+        // Check if it quacks like an element
+        nextElement != null && nextElement.props !== undefined ?
+          ' This may be caused by unintentionally loading two independent ' +
+          'copies of React.' :
+          ''
+      )
+    );
+
+    warning(
+      typeof container === 'string'
+      && Board.isAcceptablePort({comName: container}),
+      'Attempting to render into a possibly invalid port: %s',
+      container
+    );
+
+    if (container) {
+      const prevConnection = connectionsByContainer[container];
+
+      if (prevConnection) {
+        warning(
+          prevConnection.status !== 'CONNECTING',
+          'Attempting to render to port `%s` that is in the process of mounting. ' +
+          'You should wait until ReactHardware(comp, port, callback) callback is ' +
+          'called to render again',
+          container
+        );
+
+        if (prevConnection.status === 'CONNECTED') {
+          const prevComponent = prevConnection.component;
+          if (prevComponent) {
+            const prevWrappedElement = prevComponent._currentElement;
+            const prevElement = prevWrappedElement.props;
+            if (shouldUpdateReactComponent(prevElement, nextElement)) {
+              const publicInst = prevComponent._renderedComponent.getPublicInstance();
+              const updatedCallback = callback && function() {
+                // appease flow
+                if (callback) {
+                  callback.call(publicInst);
+                }
+              };
+
+              ReactHardwareMount._updateRootComponent(
+                prevComponent,
+                nextElement,
+                container,
+                updatedCallback
+              );
+              return publicInst;
+            } else {
+              warning(
+                true,
+                'Unexpected `else` branch in ReactHardware.render()'
+              );
+            }
           }
-          return prevComponent;
-        } else {
-          ReactHardwareMount.unmountComponentAtNode(containerTag);
         }
       }
     }
 
-    console.log('containerTag', containerTag);
-    if (!ReactHardwareTagHandles.reactTagIsHardwareTopRootID(containerTag)) {
-      console.error('You cannot render into anything but a top root');
+    const id = 'id'; // ReactInstanceHandles.createReactRootID();
+    connectionsByContainer[container] = {
+      rootID: id,
+      status: 'CONNECTING',
+      component: null,
+      board: null,
+    };
+
+    connect(container, (board) => {
+      ReactHardwareMount._renderNewRootComponent(
+        id,
+        container,
+        nextElement,
+        board,
+        callback
+      );
+    });
+  },
+
+  /**
+   * Unmounts a component.
+   */
+  unmountComponentAtNode(
+    container: string
+  ):boolean {
+    const {component} = connectionsByContainer[container];
+    if (!component) {
+      return false;
+    }
+    const instance = component.getPublicInstance();
+
+    ReactReconciler.unmountComponent(instance);
+    delete connectionsByContainer.component;
+    // TODO: does Firmata support disconnect/cleanup events?
+    return true;
+  },
+
+  /**
+   * Take a component that’s already mounted and replace its props
+   */
+  _updateRootComponent(
+    prevComponent: ReactComponent, // component instance already in the DOM
+    nextElement: ReactElement, // component instance to render
+    container: string, // firmata connection port
+    callback: ?Function // function triggered on completion
+  ):ReactComponent {
+    ReactUpdateQueue.enqueueElementInternal(prevComponent, nextElement);
+    if (callback) {
+      ReactUpdateQueue.enqueueCallbackInternal(prevComponent, callback);
+    }
+
+    return prevComponent;
+  },
+
+  _renderNewRootComponent(
+    rootID: string,
+    container: string,
+    nextElement: ReactElement,
+    board: typeof Board, // Firmata instnace
+    callback: ?Function
+  ) {
+    // FIXME: this should only be hit in testing when we
+    // clear the connectionsByContainer cache. Totally a hack.
+    if (!connectionsByContainer[container]) {
       return;
     }
 
-    var topRootNodeID = ReactHardwareTagHandles.allocateRootNodeIDForTag(containerTag);
-    ReactHardwareTagHandles.associateRootNodeIDWithMountedNodeHandle(
-      topRootNodeID,
-      containerTag
-    );
+    const component = instantiateReactComponent(nextElement);
 
-    var instance = instantiateReactComponent(nextElement);
-    ReactHardwareMount._instancesByContainerID[topRootNodeID] = instance;
-
-    var childRootNodeID = instanceNumberToChildRootID(
-      topRootNodeID,
-      ReactHardwareMount.instanceCount++
-    );
+    connectionsByContainer[container].status = 'CONNECTED';
+    connectionsByContainer[container].component = component;
+    connectionsByContainer[container].board = board;
+    connectionsByContainer[container].rootID = rootID;
 
     // The initial render is synchronous but any updates that happen during
     // rendering, in componentWillMount or componentDidMount, will be batched
     // according to the current batching strategy.
-
-    ReactUpdates.batchedUpdates(
-      batchedMountComponentIntoNode,
-      instance,
-      childRootNodeID,
-      topRootNodeID
-    );
-    var component = instance.getPublicInstance();
-    if (callback) {
-      callback.call(component);
-    }
-    return component;
-
+    ReactUpdates.batchedUpdates(() => {
+      // Batched mount component
+      const transaction = ReactUpdates.ReactReconcileTransaction.getPooled();
+      transaction.perform(() => {
+        component.mountComponent(rootID, transaction, {});
+        if (callback) {
+          const publicInst = component.getPublicInstance();
+          callback(publicInst);
+        }
+      });
+      ReactUpdates.ReactReconcileTransaction.release(transaction);
+    });
   },
 
   /**
-   * Unmount component at container ID by iterating through each child component
-   * that has been rendered and unmounting it. There should just be one child
-   * component at this time.
+   * Empty connections by container. Used by test utils to get
+   * a clean slate. Totally a bad hack.
    */
-  unmountComponentAtNode(containerTag: number): boolean {
-    if (!ReactHardwareTagHandles.reactTagIsHardwareTopRootID(containerTag)) {
-      console.error('You cannot render into anything but a top root');
-      return false;
-    }
-
-    var containerID = ReactHardwareTagHandles.tagToRootNodeID[containerTag];
-    var instance = ReactHardwareMount._instancesByContainerID[containerID];
-    if (!instance) {
-      return false;
-    }
-    ReactHardwareMount.unmountComponentFromNode(instance, containerID);
-    delete ReactHardwareMount._instancesByContainerID[containerID];
-    return true;
-  },
-
-  getNode<T>(id: T): T {
-    return id;
-  },
-
-  /**
-   * @param {view} mountImage view tree image
-   * @param {string} node node to insert sub-view into
-   */
-  _mountImageIntoNode(mountImage, node) {
-    ReactHardwareTagHandles.associateRootNodeIDWithMountedNodeHandle(
-      mountImage.rootNodeID,
-      mountImage.tag
-    );
-    console.log('_mountImageIntoNode');
-    console.log(mountImage);
-    console.log(node);
+  _emptyCache() {
+    Object.keys(connectionsByContainer).forEach(connection => {
+      // TODO: actually disconnect
+      delete connectionsByContainer[connection];
+    });
   }
 };
 
-export default ReactHardwareMount
+/**
+  * Get or create a connection to a given port
+  */
+function connect(port:?string, callback:Function) {
+  if (port) {
+    connect(port);
+  } else {
+    Board.requestPort((err, port) => {
+      if (err) {
+        throw err;
+      } else {
+        connect(port);
+      }
+    });
+  }
+
+  function connect(port) {
+    const board = new Board(port, function(err) {
+      if (err) {
+        throw err;
+      }
+
+      callback(board);
+    });
+  }
+}
+
+export default ReactHardwareMount;
 

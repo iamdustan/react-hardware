@@ -2,7 +2,7 @@
 import {Firmata} from 'mock-firmata';
 import {
   setPayloadForPin,
-  validatePayloadForPin
+  validatePayloadForPin,
 } from '../HardwareManager';
 
 describe('HardwareManager', () => {

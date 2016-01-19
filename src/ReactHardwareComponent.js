@@ -1,3 +1,5 @@
+/* @flow */
+
 // import HardwareMethodsMixin from './HardwareMethodsMixin';
 // import ReactHardwareComponentMixin from './ReactHardwareComponentMixin';
 // import ReactHardwareEventEmitter from './ReactHardwareEventEmitter';
@@ -11,9 +13,10 @@ import * as HardwareManager from './HardwareManager';
 // TODO: typedef Transaction
 type ReactReconcileTransaction = any;
 
-type ReactHardwareComponentViewConfig = {
+export type ReactHardwareComponentViewConfig = {
   validAttributes: Object;
   uiViewClassName: string;
+  propTypes?: Object;
 }
 
 const DEFAULT_VIEW_CONFIG = {
@@ -25,11 +28,14 @@ const DEFAULT_VIEW_CONFIG = {
   uiViewClassName: 'GenericComponent',
 };
 
-type ViewConfig = {
-  MODES: 'INPUT'|'OUTPUT'|'ANALOG'|'PWM'| 'SERVO'|'SHIFT'|'I2C'|'ONEWIRE'|'STEPPER'|'IGNORE'|'UNKNOWN';
-  pin: number|string;
+/*
+type ViewConfigPropTypes = {
+  mode: 'INPUT'|'OUTPUT'|'ANALOG'|'PWM'| 'SERVO'|'SHIFT'|'I2C'|'ONEWIRE'|'STEPPER'|'IGNORE'|'UNKNOWN';
+  pin?: number|string;
+  pins?: Array<number>;
   value: number;
 };
+*/
 
 /**
  * @constructor ReactHardwareComponent
@@ -47,8 +53,7 @@ const ReactHardwareComponent = function(
 };
 
 /**
- * Mixin for containers that contain UIViews. NOTE: markup is rendered markup
- * which is a `viewID` ... see the return value for `mountComponent` !
+ * Mixin for hardware components.
  */
 ReactHardwareComponent.Mixin = {
   getPublicInstance() {
@@ -97,7 +102,7 @@ ReactHardwareComponent.Mixin = {
       );
 
       if (updatePayload) {
-        HardwareManager.validatePayloadForPin(this._rootID, updatePayload);
+        HardwareManager.validatePayloadForPin(this._rootNodeID, updatePayload);
       }
     }
 
@@ -138,9 +143,6 @@ ReactHardwareComponent.Mixin = {
       payload
     );
 
-    // TODO: createView
-    // HardwareManager.createView(rootID, tag, this.viewConfig.uiViewClassName, payload);
-
     // TODO register listeners
 
     // TODO: figure out what this should be for RH.
@@ -168,7 +170,7 @@ ReactHardwareComponent.Mixin = {
     context: Object // secret context, shhhh
   ) {
     const mountImages = this.mountChildren(children, transaction, context);
-    console.log('initializeChildren', mountImages);
+    // console.log('initializeChildren', mountImages);
   },
 };
 

@@ -2,7 +2,13 @@
   parser: 'babel-eslint',
   extends: './node_modules/fbjs-scripts/eslint/.eslintrc',
   plugins: [
-    'react'
-  ]
+    'react',
+  ],
+  globals: {
+    ReactComponent: true,
+  },
+  rules: {
+    "react/jsx-uses-react": 2,
+  }
 }
 

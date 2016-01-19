@@ -3,8 +3,12 @@
     "react",
     "es2015"
   ],
-  "plugins": [
-    // "./scripts/babel/test-deps"
-  ]
+  "env": {
+    "test": {
+      "plugins": [
+        "./scripts/babel/test-deps"
+      ]
+    }
+  }
 }
 

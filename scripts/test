@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+process.env.NODE_ENV = 'test';
 
 var program = require('commander');
 var chokidar = require('chokidar');
@@ -49,7 +50,6 @@ if (program.watch) {
     });
   })();
 } else {
-  console.log(program.filter);
   runner.execute(undefined, program.filter);
 }
 

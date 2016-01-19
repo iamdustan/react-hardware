@@ -1,30 +1,24 @@
-import ReactElement from 'react/lib/ReactElement';
-import ReactHardwareNativeComponent from './ReactHardwareNativeComponent';
+/* @flow */
 
-// See also ReactHardwareNativeComponent
-type ReactHardwareNativeComponentViewConfig = {
-  validAttributes: Object;
-  uiViewClassName: string;
-}
+import type {ReactHardwareComponentViewConfig} from './ReactHardwareComponent';
 
-/**
- * @param {string} config
- * @private
- */
-var createReactHardwareNativeComponentClass = function(
-  viewConfig: ReactHardwareNativeComponentViewConfig
-): Function { // returning Function is lossy :/
-  var Constructor = function(element) {
+import ReactHardwareComponent from './ReactHardwareComponent';
+
+export default function createReactHardwareComponentClass(
+  viewConfig: ReactHardwareComponentViewConfig
+): ReactClass<any, any, any> {
+  const Constructor = function(element) {
     this._currentElement = element;
 
     this._rootNodeID = null;
     this._renderedChildren = null;
   };
   Constructor.displayName = viewConfig.uiViewClassName;
-  Constructor.prototype = new ReactHardwareNativeComponent(viewConfig);
+  Constructor.viewConfig = viewConfig;
+  Constructor.propTypes = viewConfig.propTypes;
+  Constructor.prototype = new ReactHardwareComponent(viewConfig);
+  Constructor.prototype.constructor = Constructor;
 
-  return Constructor;
-};
-
-export default createReactHardwareNativeComponentClass;
+  return ((Constructor: any): ReactClass);
+}
 

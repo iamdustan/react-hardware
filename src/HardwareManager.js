@@ -17,17 +17,17 @@ import invariant from 'fbjs/lib/invariant';
  *   <pin mode="i2c" />
  */
 const FIRMATA_COMMUNICATION_METHOD = {
-  0: 'digital',  // input
-  1: 'digital',  // output
-  2: 'analog',   // analog
-  3: 'analog',   // pwm
-  4: 'servo',    // servo
-  5: 'UNKNOWN',  // shift
-  6: 'i2c',      // i2c
-  7: 'UNKNOWN',  // onewire
-  8: 'UNKNOWN',  // stepper
-  16: 'UNKNOWN', // unknown
-  127: 'IGNORE', // ignore
+  '0': 'digital',  // input
+  '1': 'digital',  // output
+  '2': 'analog',   // analog
+  '3': 'analog',   // pwm
+  '4': 'servo',    // servo
+  '5': 'UNKNOWN',  // shift
+  '6': 'i2c',      // i2c
+  '7': 'UNKNOWN',  // onewire
+  '8': 'UNKNOWN',  // stepper
+  '16': 'UNKNOWN', // unknown
+  '127': 'IGNORE', // ignore
 };
 
 export type Connection = {
@@ -39,7 +39,8 @@ export type Connection = {
 
 export const connectionsByContainer:{[key:string]: Connection} = {};
 
-const findConnectionForRootId = (rootID:string) => {
+type FindConnectionForRootId = (rootID:string) => ?Connection;
+const findConnectionForRootId:FindConnectionForRootId = (rootID) => {
   for (const connection in connectionsByContainer) {
     if (connectionsByContainer[connection].rootID !== rootID) {
       continue;
@@ -64,6 +65,12 @@ export const validatePayloadForPin = (
   if (typeof connection === 'string') {
     connection = findConnectionForRootId(connection);
   }
+
+  invariant(
+    !!connection,
+    'Attempting to update connection string "%s" that no longer exists',
+    connection
+  );
 
   const {board} = connection;
   const {pins, MODES} = board;

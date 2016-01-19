@@ -5,7 +5,7 @@
  * @flow
  */
 
-import ReactInstanceHandles from 'react/lib/ReactInstanceHandles';
+// import ReactInstanceHandles from 'react/lib/ReactInstanceHandles';
 import ReactElement from 'react/lib/ReactElement';
 import ReactUpdates from 'react/lib/ReactUpdates';
 import ReactUpdateQueue from 'react/lib/ReactUpdateQueue';
@@ -34,7 +34,7 @@ const ReactHardwareMount = {
    */
   render(
     nextElement: ReactElement,
-    container: string,
+    container: ?string,
     callback: ?Function
   ): void {
     // WIP: it appears as though nextElement.props is an empty object...
@@ -54,8 +54,8 @@ const ReactHardwareMount = {
     );
 
     warning(
-      typeof container === 'string'
-      && Board.isAcceptablePort({comName: container}),
+      typeof container !== 'string' ||
+      Board.isAcceptablePort({comName: container}),
       'Attempting to render into a possibly invalid port: %s',
       container
     );
@@ -104,7 +104,7 @@ const ReactHardwareMount = {
       }
     }
 
-    const id = 'id'; // ReactInstanceHandles.createReactRootID();
+    const id = 'TODO: generate IDs'; // ReactInstanceHandles.createReactRootID();
     connectionsByContainer[container] = {
       rootID: id,
       status: 'CONNECTING',
@@ -112,10 +112,10 @@ const ReactHardwareMount = {
       board: null,
     };
 
-    connect(container, (board) => {
+    connect(container, (board, resolvedPort) => {
       ReactHardwareMount._renderNewRootComponent(
         id,
-        container,
+        resolvedPort,
         nextElement,
         board,
         callback
@@ -204,21 +204,24 @@ const ReactHardwareMount = {
       // TODO: actually disconnect
       delete connectionsByContainer[connection];
     });
-  }
+  },
 };
 
 /**
   * Get or create a connection to a given port
   */
-function connect(port:?string, callback:Function) {
-  if (port) {
-    connect(port);
+function connect(maybePort:?string, callback:Function) {
+  if (maybePort) {
+    connect(maybePort);
   } else {
     Board.requestPort((err, port) => {
       if (err) {
         throw err;
       } else {
-        connect(port);
+        console.log(port.comName);
+        connectionsByContainer[port.comName] = connectionsByContainer[maybePort];
+        delete connectionsByContainer[maybePort];
+        connect(port.comName);
       }
     });
   }
@@ -229,7 +232,7 @@ function connect(port:?string, callback:Function) {
         throw err;
       }
 
-      callback(board);
+      callback(board, port);
     });
   }
 }

@@ -1,0 +1,21 @@
+.button {
+  background: #884499;
+  color: #fafafa;
+  border-radius: 4px;
+  padding: 0.44444em 0.888888em;
+  font-size: 18px;
+  font-weight: 400;
+  margin: 0 12px;
+  display: inline-block;
+  color: #fafafa;
+  text-decoration: none;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+}
+
+.button--getStarted {
+  font-size: 24px;
+  margin: 0 auto;
+}
+

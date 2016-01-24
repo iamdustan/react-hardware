@@ -1,0 +1,51 @@
+#!/usr/bin/env node
+
+require('babel-register');
+const path = require('path');
+const fs = require('fs');
+
+const examplesDirectory = path.join(__dirname, '..', 'examples');
+const examples = fs.readdirSync(examplesDirectory)
+  .reduce((dirs, cur) => {
+    if (fs.statSync(path.join(examplesDirectory, cur)).isDirectory()) {
+      return dirs.concat(cur);
+    }
+    return dirs;
+  }, []);
+
+const program = require('commander')
+  .on('--help', () => {
+    console.log('  Examples:');
+    console.log('');
+    console.log('    $ npm run example -- {example} {port}');
+    console.log('');
+    console.log('  Available examples:');
+    examples.forEach(example => {
+      console.log('    • ' + example);
+    });
+    console.log('');
+  })
+  .arguments('<example> [port]')
+  .action((example, port) => {
+    if (examples.indexOf(example) === -1) {
+      console.warn(
+        `"${example}" is not a valid example. Please choose one of "${examples.join('", "')}"`
+      );
+      // exit 0 so npm scripts don’t drown everything in their stack
+      process.exit(0);
+    }
+
+    if (port) {
+      process.env.REACT_HARDWARE_EXAMPLE_PORT = port;
+    }
+    try {
+      require(`${examplesDirectory}/${example}`);
+    } catch (e) {
+      console.error(e);
+      console.log(e.stack);
+      process.exit(0);
+    }
+  });
+
+program.parse(process.argv);
+

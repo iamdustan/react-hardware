@@ -4,10 +4,12 @@
   "description": "React firmata bindings.",
   "main": "todo",
   "scripts": {
+    "install-prerelease": "npm install http://react.zpao.com/builds/master/latest/react.tgz",
     "lint": "eslint .",
     "test": "./scripts/test",
     "posttest": "npm run lint",
-    "build": "echo \"Error: no build command yet\""
+    "build": "echo \"Error: no build command yet\"",
+    "example": "babel-node ./scripts/examples"
   },
   "repository": {
     "type": "git",

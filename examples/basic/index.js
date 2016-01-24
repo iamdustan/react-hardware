@@ -1,17 +1,23 @@
-import ReactHardware from '../src';
+/**
+ * Blinking LED.
+ * This example blinks the Arduino Uno built-in LED on pin 13 every 1 second.
+ */
+
+import {getPort} from '../port';
+import ReactHardware from '../../src';
 import React, {Component} from 'React';
 
 class FlashingLed extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state = {value: 255};
+    this.state = {value: 1};
   }
 
   componentDidMount() {
     setInterval(() => {
       this.setState({
-        value: this.state.value === 0 ? 255 : 0,
+        value: this.state.value === 0 ? 1 : 0,
       });
     }, 1000);
   }
@@ -29,10 +35,9 @@ class FlashingLed extends Component {
 
 ReactHardware.render(
   <FlashingLed />,
-  // <pin pin={13} value={255} mode={'OUTPUT'} />,
-  '/dev/tty.usbmodem1451',
+  getPort(),
   (inst) => {
-    console.log('Rendered <FlashingLed />');
+    console.log('Rendered <%s />', FlashingLed.name);
   }
 );
 

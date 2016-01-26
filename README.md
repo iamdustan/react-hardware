@@ -1,5 +1,7 @@
 # React Hardware
 
+[![Build Status](https://travis-ci.org/iamdustan/react-hardware.svg?branch=master)](https://travis-ci.org/iamdustan/react-hardware)
+
 > You are on the *rewrite* branch of an *alpha* software project. That should
 > tell you something about what to expect happening here. :)
 

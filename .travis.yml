@@ -1,0 +1,34 @@
+---
+language: node_js
+node_js:
+- 5
+sudo: false
+cache:
+  directories:
+  - node_modules
+before_install:
+- |
+    if [ "$TEST_TYPE" != build_website ] && \
+      ! git diff --name-only $TRAVIS_COMMIT_RANGE | grep -qvE '(\.md$)|(^(docs|examples))/'
+    then
+      echo "Only docs were updated, stopping build process."
+      exit
+    else
+      npm install flow-bin
+    fi
+script:
+- |
+    if [ "$TEST_TYPE" = build_website ]; then
+      if [ "$TRAVIS_BRANCH" = "$REACT_HARDWARE_WEBSITE_BRANCH" ] && [ "$TRAVIS_PULL_REQUEST" = false ]; then
+        echo "TODO: automatic website publishing"
+      fi
+    elif [ "$TEST_TYPE" = test ]; then
+      ./scripts/test
+    else
+      ./scripts/test $TEST_TYPE
+    fi
+env:
+  matrix:
+  - TEST_TYPE=test
+  - TEST_TYPE=build_website
+

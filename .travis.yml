@@ -23,7 +23,7 @@ script:
         echo "TODO: automatic website publishing"
       fi
     elif [ "$TEST_TYPE" = test ]; then
-      ./scripts/test
+      npm test
     else
       ./scripts/test $TEST_TYPE
     fi

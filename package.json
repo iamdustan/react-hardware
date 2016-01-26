@@ -5,9 +5,11 @@
   "main": "todo",
   "scripts": {
     "install-prerelease": "npm install http://react.zpao.com/builds/master/latest/react.tgz",
+    "flow": "flow",
     "lint": "eslint .",
     "test": "./scripts/test",
     "posttest": "npm run lint",
+    "postlint": "npm run flow",
     "build": "echo \"Error: no build command yet\"",
     "example": "babel-node ./scripts/examples"
   },

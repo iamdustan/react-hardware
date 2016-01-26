@@ -33,12 +33,13 @@ const FIRMATA_COMMUNICATION_METHOD = {
 export type Connection = {
   rootID: string;
   status: 'CONNECTING' | 'CONNECTED';
-  component: ?ReactElement;
+  component: ?ReactComponent;
   board: typeof Board;
 };
 
 export const connectionsByContainer:{[key:string]: Connection} = {};
 
+// matches return value of the input value
 type FindConnectionForRootId = (rootID:string) => ?Connection;
 const findConnectionForRootId:FindConnectionForRootId = (rootID) => {
   for (const connection in connectionsByContainer) {
@@ -55,16 +56,16 @@ const findConnectionForRootId:FindConnectionForRootId = (rootID) => {
  * configuration.
  */
 export const validatePayloadForPin = (
-  connection:string|Connection,
+  maybeConnection:string|Connection,
   payload:Object
 ) => {
   if (payload == null) {
     return;
   }
 
-  if (typeof connection === 'string') {
-    connection = findConnectionForRootId(connection);
-  }
+  const connection =  typeof maybeConnection === 'string'
+    ? findConnectionForRootId(maybeConnection)
+    : maybeConnection;
 
   invariant(
     !!connection,
@@ -96,15 +97,19 @@ export const validatePayloadForPin = (
  * Sets a pin's values to the desired payload.
  */
 export const setPayloadForPin = (
-  connection:string|Connection,
-  payload:Object
+  maybeConnection:string|Connection,
+  payload:?Object
 ) => {
   if (payload == null) {
     return;
   }
 
-  if (typeof connection === 'string') {
-    connection = findConnectionForRootId(connection);
+  const connection = typeof maybeConnection === 'string' ?
+    findConnectionForRootId(maybeConnection) :
+    maybeConnection;
+
+  if (!connection) {
+    return;
   }
 
   const {board} = connection;

@@ -13,7 +13,7 @@ var viewConfig = {
 */
 
 class RGBLed extends Component {
-  render() {
+  render():ReactElement {
     const {
       pins,
       values,

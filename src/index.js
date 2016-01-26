@@ -1,14 +1,16 @@
 /* @flow */
 
 import ReactHardwareMount from './ReactHardwareMount';
-import ReactHardwareComponents from './components';
+import * as ReactHardwareComponents from './components';
 
-const ReactHardware = {
-  render: ReactHardwareMount.render,
-  unmountComponentAtNode: ReactHardwareMount.unmountComponentAtNode,
-};
-
-Object.assign(ReactHardware, ReactHardwareComponents);
+const ReactHardware = Object.assign(
+  {},
+  {
+    render: ReactHardwareMount.render,
+    unmountComponentAtNode: ReactHardwareMount.unmountComponentAtNode,
+  },
+  ReactHardwareComponents
+);
 
 export default ReactHardware;
 

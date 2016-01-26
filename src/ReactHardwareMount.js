@@ -21,6 +21,8 @@ import ReactHardwareDefaultInjection from './ReactHardwareDefaultInjection';
 
 import {connectionsByContainer} from './HardwareManager';
 
+const TRANSIENT_CONTAINER_IDENTIFIER = '__AutomaticallyDiscoveredPort';
+
 ReactHardwareDefaultInjection.inject();
 
 const ReactHardwareMount = {
@@ -33,7 +35,7 @@ const ReactHardwareMount = {
    */
   render(
     nextElement: ReactElement,
-    container: ?string,
+    container: string = TRANSIENT_CONTAINER_IDENTIFIER,
     callback: ?Function
   ): void {
     // WIP: it appears as though nextElement.props is an empty object...
@@ -53,8 +55,10 @@ const ReactHardwareMount = {
     );
 
     warning(
-      typeof container !== 'string' ||
-      Board.isAcceptablePort({comName: container}),
+      typeof container === 'string' ? (
+        container === TRANSIENT_CONTAINER_IDENTIFIER ||
+        Board.isAcceptablePort({comName: container})
+      ) : true,
       'Attempting to render into a possibly invalid port: %s',
       container
     );
@@ -74,9 +78,11 @@ const ReactHardwareMount = {
         if (prevConnection.status === 'CONNECTED') {
           const prevComponent = prevConnection.component;
           if (prevComponent) {
+            // $FlowFixMe
             const prevWrappedElement = prevComponent._currentElement;
             const prevElement = prevWrappedElement.props;
             if (shouldUpdateReactComponent(prevElement, nextElement)) {
+              // $FlowFixMe
               const publicInst = prevComponent._renderedComponent.getPublicInstance();
               const updatedCallback = callback && function() {
                 // appease flow
@@ -132,6 +138,7 @@ const ReactHardwareMount = {
     if (!component) {
       return false;
     }
+    // $FlowFixMe
     const instance = component.getPublicInstance();
 
     ReactReconciler.unmountComponent(instance);
@@ -209,8 +216,8 @@ const ReactHardwareMount = {
 /**
   * Get or create a connection to a given port
   */
-function connect(maybePort:?string, callback:Function) {
-  if (maybePort) {
+function connect(maybePort:string, callback:Function) {
+  if (maybePort !== TRANSIENT_CONTAINER_IDENTIFIER) {
     connect(maybePort);
   } else {
     Board.requestPort((err, port) => {
@@ -218,6 +225,7 @@ function connect(maybePort:?string, callback:Function) {
         throw err;
       } else {
         console.log(port.comName);
+        // Remap the connection from transient state to the real port
         connectionsByContainer[port.comName] = connectionsByContainer[maybePort];
         delete connectionsByContainer[maybePort];
         connect(port.comName);

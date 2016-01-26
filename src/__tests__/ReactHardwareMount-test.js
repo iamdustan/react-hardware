@@ -86,7 +86,7 @@ describe('ReactHardwareMount', () => {
 
         ReactHardwareMount.render(<Component />, '/dev/usb.whatever', () => {
           expect(willMount).toHaveBeenCalled();
-          setTimeout(() =>{
+          setTimeout(() => {
             expect(didMount).toHaveBeenCalled();
             done();
           });

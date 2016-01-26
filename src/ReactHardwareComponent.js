@@ -122,8 +122,9 @@ ReactHardwareComponent.Mixin = {
    *
    */
   mountComponent(
-    rootID: string, // Root ID of this subtree
     transaction: ReactReconcileTransaction, // for creating/updating
+    rootID: string, // Root ID of this subtree
+    nativeContainerInfo, // nativeContainerInfo
     context: Object // secret context, shhhh
   ) {
     this._rootNodeID = rootID;

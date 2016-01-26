@@ -6,6 +6,7 @@ import ReactDefaultBatchingStrategy from 'react/lib/ReactDefaultBatchingStrategy
 import ReactComponentEnvironment from 'react/lib/ReactComponentEnvironment';
 import ReactHardwareReconcileTransaction from './ReactHardwareReconcileTransaction';
 import ReactHardwareComponent from './ReactHardwareComponent';
+import ReactHardwareEmptyComponent from './ReactHardwareEmptyComponent';
 
 function inject() {
   ReactInjection.NativeComponent.injectGenericComponentClass(
@@ -20,7 +21,9 @@ function inject() {
     ReactDefaultBatchingStrategy
   );
 
-  ReactInjection.EmptyComponent.injectEmptyComponent('container');
+  ReactInjection.EmptyComponent.injectEmptyComponentFactory(
+    (instantiate) => new ReactHardwareEmptyComponent(instantiate)
+  );
 
   // NOTE: we're monkeypatching ReactComponentEnvironment because
   // ReactInjection.Component.injectEnvironment() currently throws,

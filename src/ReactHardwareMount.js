@@ -109,7 +109,8 @@ const ReactHardwareMount = {
       }
     }
 
-    const id = 'TODO: generate IDs'; // ReactInstanceHandles.createReactRootID();
+    const id = 'TODO: generate IDs';
+    // const id = ReactInstanceHandles.createReactRootID();
     connectionsByContainer[container] = {
       rootID: id,
       status: 'CONNECTING',
@@ -191,7 +192,7 @@ const ReactHardwareMount = {
       // Batched mount component
       const transaction = ReactUpdates.ReactReconcileTransaction.getPooled();
       transaction.perform(() => {
-        component.mountComponent(rootID, transaction, {});
+        component.mountComponent(transaction, rootID, null, {});
         if (callback) {
           const publicInst = component.getPublicInstance();
           callback(publicInst);

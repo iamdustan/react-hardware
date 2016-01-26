@@ -35,8 +35,9 @@
   },
   "homepage": "https://github.com/iamdustan/react-hardware",
   "dependencies": {
-    "fbjs": "0.4.0",
+    "fbjs": "^0.6.1",
     "firmata": "^0.8.0",
+    "react": "^0.15.0-alpha.1",
     "serialport": "^2.0.5",
     "setimmediate": "^1.0.4"
   },

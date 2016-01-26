@@ -66,6 +66,33 @@ describe('ReactHardwareMount', () => {
         done();
       });
     });
+
+    // Maybe move these to ReactHardwareComponent-test.js
+    describe('Lifecycle tests', function() {
+      it('simply lifecycle test', (done) => {
+        const willMount = jasmine.createSpy();
+        const didMount = jasmine.createSpy();
+        class Component extends React.Component { // eslint-disable-line
+          componentWillMount() {
+            willMount();
+          }
+          componentDidMount() {
+            didMount();
+          }
+          render() {
+            return <pin pin={13} value={255} mode={'OUTPUT'} />;
+          }
+        }
+
+        ReactHardwareMount.render(<Component />, '/dev/usb.whatever', () => {
+          expect(willMount).toHaveBeenCalled();
+          setTimeout(() =>{
+            expect(didMount).toHaveBeenCalled();
+            done();
+          });
+        });
+      });
+    });
   });
 });
 

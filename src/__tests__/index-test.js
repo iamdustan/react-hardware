@@ -3,7 +3,7 @@
 'use strict';
 
 describe('ReactHardware Integration', () => {
-  const React = require('React');
+  const React = require('react');
   const ReactHardware = require('../index')['default'];
   const ReactHardwareMount = require('../ReactHardwareMount')['default'];
 

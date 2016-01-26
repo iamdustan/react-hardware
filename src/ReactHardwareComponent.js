@@ -88,18 +88,19 @@ ReactHardwareComponent.Mixin = {
       prevElement.props,
       nextElement.props,
       this.viewConfig.validAttributes
-    ), {
-      pin: nextElement.props.pin,
-      mode: nextElement.props.mode,
-    });
+    ), nextElement.props);
 
     if (process.env.NODE_ENV !== 'production') {
-      invariant(
-        prevElement.props.pin === nextElement.props.pin,
-        'A mounted component cannot be mounted into a new Pin. The `pin` ' +
-        'attribute is immutable. Check the render function of ' +
-        nextElement.displayName  + '.' // TODO
-      );
+      if (prevElement.props.pin) {
+        invariant(
+          prevElement.props.pin === nextElement.props.pin,
+          'A mounted component cannot be mounted into a new Pin. The `pin` ' +
+          'attribute is immutable. Check the render function of ' +
+          nextElement.displayName  + '.' // TODO
+        );
+      } else if (prevElement.props.pins) {
+        // TODO: multiple pins
+      }
 
       if (updatePayload) {
         HardwareManager.validatePayloadForPin(this._rootNodeID, updatePayload);
@@ -169,7 +170,7 @@ ReactHardwareComponent.Mixin = {
     transaction: ReactReconcileTransaction, // for creating/updating
     context: Object // secret context, shhhh
   ) {
-    const mountImages = this.mountChildren(children, transaction, context);
+    // const mountImages = this.mountChildren(children, transaction, context);
     // console.log('initializeChildren', mountImages);
   },
 };

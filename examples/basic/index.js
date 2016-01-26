@@ -25,7 +25,7 @@ class FlashingLed extends Component {
   render() {
     return (
       <pin
-        pin={13}
+        pin={9}
         value={this.state.value}
         mode={'OUTPUT'}
       />

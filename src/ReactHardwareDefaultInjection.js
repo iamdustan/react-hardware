@@ -20,7 +20,7 @@ function inject() {
     ReactDefaultBatchingStrategy
   );
 
-  ReactInjection.EmptyComponent.injectEmptyComponent('element');
+  ReactInjection.EmptyComponent.injectEmptyComponent('container');
 
   // NOTE: we're monkeypatching ReactComponentEnvironment because
   // ReactInjection.Component.injectEnvironment() currently throws,

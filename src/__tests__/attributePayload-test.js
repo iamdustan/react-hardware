@@ -18,6 +18,15 @@ describe('attributePayload', () => {
         {a: true, b: true}
       )).toEqual({a: 'a', b: 'b'});
     });
+
+    it('should return non-primitive valid attributes', () => {
+      expect(create(
+        {pins: [1, 2, 3], values: [0, 255, 0]},
+        {pins: true, values: true}
+      )).toEqual(
+        {pins: [1, 2, 3], values: [0, 255, 0]}
+      );
+    });
   });
 
   describe('update', () => {
@@ -51,6 +60,16 @@ describe('attributePayload', () => {
         {},
         {a: true}
       )).toEqual({a: null});
+    });
+
+    it('should diff non-primitive valid attributes', () => {
+      expect(diff(
+        {pins: [1, 2, 3], values: [0, 255, 0]},
+        {pins: [1, 2, 3], values: [255, 125, 125]},
+        {pins: true, values: true}
+      )).toEqual(
+        {pins: [1, 2, 3], values: [255, 125, 125]}
+      );
     });
 
     it('TODO: figure out function diffing when this is implemented', () => {

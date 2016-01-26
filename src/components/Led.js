@@ -5,14 +5,14 @@ var viewConfig = {
   uiViewClassName: 'Led',
   validAttributes: {
     pin: true,
-    voltage: true,
+    value: true,
+    mode: true,
   },
 };
 
 class Led extends React.Component {
   render() {
-    // console.log('Should be connected to board somehow');
-    return <Hardware {...this.props} />
+    return <Hardware {...this.props} />;
   }
 }
 

@@ -8,7 +8,7 @@ describe('ReactHardwareComponent', () => {
     it('should mount component', function() {
       const willMount = jasmine.createSpy();
       const didMount = jasmine.createSpy();
-      class Component extends React.Component {
+      class Component extends React.Component { // eslint-disable-line
         componentWillMount() {
           willMount();
         }

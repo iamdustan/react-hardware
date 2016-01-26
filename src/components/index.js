@@ -1,9 +1,5 @@
-import Board from './Board';
-import Led from './Led';
-console.log(Board);
-console.log(Led);
+/* @flow */
 
-export default {
-  Board,
-  Led,
-};
+export {default as Led} from './Led';
+export {default as RGBLed} from './RGBLed';
+

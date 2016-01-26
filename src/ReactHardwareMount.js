@@ -1,7 +1,6 @@
 /**
  * React Hardware mount method.
  *
- * @providesModule ReactHardwareMount
  * @flow
  */
 

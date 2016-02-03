@@ -124,3 +124,16 @@ export const setPayloadForPin = (
   }
 };
 
+/**
+ * NOTE: This is a leaky abstraction. It returns the direct Board IO instance.
+ */
+export const getNativeNode = (
+  component:ReactComponent&{_rootNodeID:string}
+):typeof Board => {
+  const connection = findConnectionForRootId(component._rootNodeID);
+
+  if (connection) {
+    return connection.board;
+  }
+};
+

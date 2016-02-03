@@ -56,6 +56,10 @@ const ReactHardwareComponent = function(
  * Mixin for hardware components.
  */
 ReactHardwareComponent.Mixin = {
+  getNativeNode() {
+    ReactHardwareComponent.getNativeNode(this);
+  },
+
   getPublicInstance() {
     // TODO: This should probably use a composite wrapper
     return this;
@@ -99,7 +103,7 @@ ReactHardwareComponent.Mixin = {
           nextElement.displayName  + '.' // TODO
         );
       } else if (prevElement.props.pins) {
-        // TODO: multiple pins
+        console.log('TODO: multiple pins');
       }
 
       if (updatePayload) {

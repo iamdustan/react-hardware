@@ -1,7 +1,7 @@
 /**
  * @flow
  */
-const ReactHardwareEmptyComponent = function(instantiate) {
+const ReactHardwareEmptyComponent = function() {
   // ReactCompositeComponent uses this:
   this._currentElement = null;
 

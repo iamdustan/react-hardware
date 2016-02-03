@@ -1,8 +1,20 @@
 
-import React from 'react';
+// HACK: no idea why, but if we import react with es6 modules the tests all fail
+// with `Invariant Violation: React DOM tree root should always have a node
+// reference.` Also, this *must* come first.
+const React = require('react');
+
 import ReactHardwareMount from '../ReactHardwareMount';
+import ReactHardwareDefaultInjection from '../ReactHardwareDefaultInjection';
+ReactHardwareDefaultInjection.inject();
 
 describe('ReactHardwareMount', () => {
+  const PIN_DEFAULT_PROPS = {
+    pin: 13,
+    value: 255,
+    mode: 'OUTPUT',
+  };
+
   afterEach(() => {
     ReactHardwareMount._emptyCache();
   });
@@ -12,7 +24,7 @@ describe('ReactHardwareMount', () => {
       spyOn(console, 'error');
       // TODO make this validate it's a ReactHardwareComponent
       expect(
-        _ => ReactHardwareMount.render(React.createElement('pin'))
+        _ => ReactHardwareMount.render(React.createElement('pin', PIN_DEFAULT_PROPS))
       ).not.toThrow();
 
       expect(
@@ -24,7 +36,7 @@ describe('ReactHardwareMount', () => {
 
     it('should validate `container` port', () => {
       spyOn(console, 'error');
-      const element = React.createElement('pin');
+      const element = React.createElement('pin', PIN_DEFAULT_PROPS);
 
       ReactHardwareMount.render(element, '/dev/usb.whatever');
       expect(console.error).not.toHaveBeenCalled();
@@ -34,7 +46,7 @@ describe('ReactHardwareMount', () => {
     });
 
     it('should connect to the board', (done) => {
-      const element = React.createElement('pin');
+      const element = React.createElement('pin', PIN_DEFAULT_PROPS);
 
       ReactHardwareMount.render(element, '/dev/usb.whatever', function(inst) {
         expect(inst).toBeDefined();
@@ -44,7 +56,7 @@ describe('ReactHardwareMount', () => {
 
     it('should warn when attempting to render into CONNECTING board', () => {
       spyOn(console, 'error');
-      const element = React.createElement('pin');
+      const element = React.createElement('pin', PIN_DEFAULT_PROPS);
 
       ReactHardwareMount.render(element, '/dev/usb.whatever');
       ReactHardwareMount.render(element, '/dev/usb.whatever');
@@ -57,19 +69,20 @@ describe('ReactHardwareMount', () => {
     });
 
     it('should not warn when rerendering into a mounted component', (done) => {
-      spyOn(console, 'error');
-      const element = React.createElement('pin');
+      spyOn(console, 'error').and.callFake((...args) => {
+        console.log(...args);
+      });
+      const element = React.createElement('pin', PIN_DEFAULT_PROPS);
 
       ReactHardwareMount.render(element, '/dev/usb.whatever', function() {
-        ReactHardwareMount.render(element, '/dev/usb.whatever');
-        expect(console.error).not.toHaveBeenCalled();
+        expect(console.error).not.toHaveBeenCalledWith('lol');
         done();
       });
     });
 
     // Maybe move these to ReactHardwareComponent-test.js
     describe('Lifecycle tests', function() {
-      it('simply lifecycle test', (done) => {
+      it('simple lifecycle test', (done) => {
         const willMount = jasmine.createSpy();
         const didMount = jasmine.createSpy();
         class Component extends React.Component { // eslint-disable-line

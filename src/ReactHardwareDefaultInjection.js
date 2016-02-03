@@ -1,5 +1,7 @@
 /**
  * React Hardware Default Injection
+ *
+ * @flow
  */
 import ReactInjection from 'react/lib/ReactInjection';
 import ReactDefaultBatchingStrategy from 'react/lib/ReactDefaultBatchingStrategy';
@@ -31,6 +33,7 @@ function inject() {
   // Read more: https://github.com/Yomguithereal/react-blessed/issues/5
   ReactComponentEnvironment.processChildrenUpdates = function() {};
   ReactComponentEnvironment.replaceNodeWithMarkupByID = function() {};
+  ReactComponentEnvironment.unmountIDFromEnvironment = function() {};
 }
 
 export default {

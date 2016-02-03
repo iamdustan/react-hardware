@@ -20,8 +20,10 @@ Object.assign(ReactHardwareEmptyComponent.prototype, {
     nativeContainerInfo,
     context
   ) {
-    // var id = nativeContainerInfo._idCounter++;
-    // this._id = id;
+    if (nativeContainerInfo) {
+      var id = nativeContainerInfo._idCounter++;
+      this._id = id;
+    }
   },
 
   receiveComponent() {},

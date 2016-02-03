@@ -1,9 +1,5 @@
 
-// HACK: no idea why, but if we import react with es6 modules the tests all fail
-// with `Invariant Violation: React DOM tree root should always have a node
-// reference.` Also, this *must* come first.
-const React = require('react');
-
+import React from 'react';
 import ReactHardwareMount from '../ReactHardwareMount';
 import ReactHardwareDefaultInjection from '../ReactHardwareDefaultInjection';
 ReactHardwareDefaultInjection.inject();

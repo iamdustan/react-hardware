@@ -192,7 +192,12 @@ const ReactHardwareMount = {
       // Batched mount component
       const transaction = ReactUpdates.ReactReconcileTransaction.getPooled();
       transaction.perform(() => {
-        component.mountComponent(transaction, rootID, null, {});
+        component.mountComponent(
+          transaction,
+          rootID,
+          {_idCounter: 0},
+          {}
+        );
         if (callback) {
           const publicInst = component.getPublicInstance();
           callback(publicInst);

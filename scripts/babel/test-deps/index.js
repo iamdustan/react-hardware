@@ -1,6 +1,8 @@
 const join = require('path').join;
 
 module.exports = babel => {
+  console.log('build: replacing firmata with mock-firmata');
+
   const t = babel.types;
   return {
     visitor: {

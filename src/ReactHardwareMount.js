@@ -4,7 +4,7 @@
  * @flow
  */
 
-// import ReactInstanceHandles from 'react/lib/ReactInstanceHandles';
+import ReactInstanceHandles from 'react/lib/ReactInstanceHandles';
 import ReactElement from 'react/lib/ReactElement';
 import ReactUpdates from 'react/lib/ReactUpdates';
 import ReactUpdateQueue from 'react/lib/ReactUpdateQueue';
@@ -26,6 +26,12 @@ const TRANSIENT_CONTAINER_IDENTIFIER = '__AutomaticallyDiscoveredPort';
 ReactHardwareDefaultInjection.inject();
 
 const ReactHardwareMount = {
+  // for react devtools
+  _instancesByReactRootID: {},
+  nativeTagToRootNodeID(nativeTag: number): string {
+    throw new Error('TODO: implement nativeTagToRootNodeID ' + nativeTag);
+  },
+
   /**
    * Renders a React component to the supplied `container` port.
    *
@@ -36,7 +42,7 @@ const ReactHardwareMount = {
   render(
     nextElement: ReactElement,
     container: string = TRANSIENT_CONTAINER_IDENTIFIER,
-    callback: ?Function
+    callback?: ?(() => void)
   ): void {
     // WIP: it appears as though nextElement.props is an empty object...
     invariant(
@@ -109,8 +115,8 @@ const ReactHardwareMount = {
       }
     }
 
-    const id = 'TODO: generate IDs';
-    // const id = ReactInstanceHandles.createReactRootID();
+    // const id = 'TODO: generate IDs';
+    const id = ReactInstanceHandles.createReactRootID(container || 0);
     connectionsByContainer[container] = {
       rootID: id,
       status: 'CONNECTING',
@@ -118,15 +124,22 @@ const ReactHardwareMount = {
       board: null,
     };
 
+    const nextComponent = instantiateReactComponent(nextElement);
     connect(container, (board, resolvedPort) => {
-      ReactHardwareMount._renderNewRootComponent(
+      ReactHardwareMount.renderComponent(
         id,
         resolvedPort,
+        nextComponent,
         nextElement,
         board,
         callback
       );
     });
+
+    // needed for react-devtools
+    ReactHardwareMount._instancesByReactRootID[id] = nextComponent;
+
+    return nextComponent.getPublicInstance();
   },
 
   /**
@@ -165,9 +178,10 @@ const ReactHardwareMount = {
     return prevComponent;
   },
 
-  _renderNewRootComponent(
+  renderComponent(
     rootID: string,
     container: string,
+    nextComponent: ReactComponent,
     nextElement: ReactElement,
     board: typeof Board, // Firmata instnace
     callback: ?Function
@@ -175,10 +189,10 @@ const ReactHardwareMount = {
     // FIXME: this should only be hit in testing when we
     // clear the connectionsByContainer cache. Totally a hack.
     if (!connectionsByContainer[container]) {
-      return;
+      return nextComponent ? nextComponent.getPublicInstance() : null;
     }
 
-    const component = instantiateReactComponent(nextElement);
+    const component = nextComponent || instantiateReactComponent(nextElement);
 
     connectionsByContainer[container].status = 'CONNECTED';
     connectionsByContainer[container].component = component;
@@ -205,6 +219,19 @@ const ReactHardwareMount = {
       });
       ReactUpdates.ReactReconcileTransaction.release(transaction);
     });
+
+    return component.getPublicInstance();
+  },
+
+  getNode(nativeTag: number): string {
+    return nativeTag;
+  },
+
+  // needed for react devtools
+  getID(nativeTag: number): string {
+    const id = ReactInstanceHandles.getReactRootIDFromNodeID(nativeTag);
+    console.warn('TODO: ReactHardwareMount.getID(%s) ->  %s', nativeTag, id);
+    return id;
   },
 
   /**
@@ -226,6 +253,7 @@ function connect(maybePort:string, callback:Function) {
   if (maybePort !== TRANSIENT_CONTAINER_IDENTIFIER) {
     connect(maybePort);
   } else {
+    console.info('Requesting port...');
     Board.requestPort((err, port) => {
       if (err) {
         throw err;
@@ -240,8 +268,10 @@ function connect(maybePort:string, callback:Function) {
   }
 
   function connect(port) {
+    console.info('Connecting to port "%s"', port);
     const board = new Board(port, function(err) {
       if (err) {
+        console.error('Failed connecting to port %s', port);
         throw err;
       }
 

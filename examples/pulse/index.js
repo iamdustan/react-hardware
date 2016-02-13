@@ -5,7 +5,7 @@
 
 import {getPort} from '../port';
 import ReactHardware from '../../src';
-import React, {Component} from 'react';
+import React, {Component} from 'react/lib/ReactIsomorphic';
 
 class PulsingLed extends Component {
   constructor(props, context) {

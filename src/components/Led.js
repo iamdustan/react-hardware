@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react/lib/ReactIsomorphic';
 import createReactHardwareComponentClass from '../createReactHardwareComponentClass';
 
 var viewConfig = {

@@ -57,7 +57,7 @@ const ReactHardwareComponent = function(
  */
 ReactHardwareComponent.Mixin = {
   getNativeNode() {
-    ReactHardwareComponent.getNativeNode(this);
+    return ReactHardwareComponent.getNativeNode(this);
   },
 
   getPublicInstance() {
@@ -88,11 +88,15 @@ ReactHardwareComponent.Mixin = {
     const prevElement = this._currentElement;
     this._currentElement = nextElement;
 
-    const updatePayload = Object.assign(diff(
-      prevElement.props,
+    const updatePayload = Object.assign(
+      {},
       nextElement.props,
-      this.viewConfig.validAttributes
-    ), nextElement.props);
+      diff(
+        prevElement.props,
+        nextElement.props,
+        this.viewConfig.validAttributes
+      )
+    );
 
     if (process.env.NODE_ENV !== 'production') {
       if (prevElement.props.pin) {
@@ -163,10 +167,11 @@ ReactHardwareComponent.Mixin = {
       context
     );
 
+    return rootID;
     /*
     return {
       rootNodeID: rootID,
-      tag: tag,
+      // tag: tag,
     };
     */
   },

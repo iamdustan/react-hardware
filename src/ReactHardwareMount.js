@@ -165,7 +165,7 @@ const ReactHardwareMount = {
    * Take a component that’s already mounted and replace its props
    */
   _updateRootComponent(
-    prevComponent: ReactComponent, // component instance already in the DOM
+    prevComponent: Object, // component instance already in the DOM
     nextElement: ReactElement, // component instance to render
     container: string, // firmata connection port
     callback: ?Function // function triggered on completion
@@ -181,11 +181,11 @@ const ReactHardwareMount = {
   renderComponent(
     rootID: string,
     container: string,
-    nextComponent: ReactComponent,
+    nextComponent: Object,
     nextElement: ReactElement,
     board: typeof Board, // Firmata instnace
     callback: ?Function
-  ) {
+  ):?ReactComponent {
     // FIXME: this should only be hit in testing when we
     // clear the connectionsByContainer cache. Totally a hack.
     if (!connectionsByContainer[container]) {
@@ -223,7 +223,7 @@ const ReactHardwareMount = {
     return component.getPublicInstance();
   },
 
-  getNode(nativeTag: number): string {
+  getNode(nativeTag: number): number {
     return nativeTag;
   },
 

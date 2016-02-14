@@ -9,9 +9,10 @@ describe('ReactHardware Integration', () => {
 
   let Board;
   let Pin;
+  let Container;
 
   beforeEach(() => {
-    ({Board, Pin} = ReactHardware);
+    ({Board, Container, Pin} = ReactHardware);
   });
 
   afterEach(() => {
@@ -51,6 +52,34 @@ describe('ReactHardware Integration', () => {
         }
       );
     }
+  });
+
+  it('should render multiple children', (done) => {
+    const container = '/dev/cu.usbmodem1451';
+    class TestApplication extends React.Component {
+      render() {
+        return (
+          <Container>
+            <pin pin={10} value={0} mode={'OUTPUT'} />
+            <pin pin={11} value={0} mode={'OUTPUT'} />
+            <pin pin={12} value={0} mode={'OUTPUT'} />
+            <pin pin={13} value={0} mode={'OUTPUT'} />
+          </Container>
+        );
+      }
+    }
+
+    ReactHardware.render(
+      <TestApplication />,
+      container,
+      (inst) => {
+        const internalComponent = inst._reactInternalInstance._renderedComponent;
+        const container = internalComponent._currentElement;
+        const {children} = container.props;
+        expect(children.length).toBe(4);
+        done();
+      }
+    );
   });
 });
 

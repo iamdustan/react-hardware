@@ -3,6 +3,7 @@
 // import HardwareMethodsMixin from './HardwareMethodsMixin';
 // import ReactHardwareComponentMixin from './ReactHardwareComponentMixin';
 // import ReactHardwareEventEmitter from './ReactHardwareEventEmitter';
+import {CONTAINER_KEY, CONTAINER_VALUE} from './components/Container';
 import ReactMultiChild from 'react/lib/ReactMultiChild';
 
 import {create, diff} from './attributePayload';
@@ -88,6 +89,11 @@ ReactHardwareComponent.Mixin = {
     const prevElement = this._currentElement;
     this._currentElement = nextElement;
 
+    if (this._currentElement.props[CONTAINER_KEY] === CONTAINER_VALUE) {
+      this.updateChildren(nextElement.props.children, transaction, context);
+      return;
+    }
+
     const updatePayload = Object.assign(
       {},
       nextElement.props,
@@ -135,7 +141,18 @@ ReactHardwareComponent.Mixin = {
     nativeContainerInfo, // nativeContainerInfo
     context: Object // secret context, shhhh
   ) {
+    rootID = typeof rootID === 'object' ? rootID._rootNodeID : rootID;
+
     this._rootNodeID = rootID;
+    if (this._currentElement.props[CONTAINER_KEY] === CONTAINER_VALUE) {
+      this.initializeChildren(
+        this._currentElement.props.children,
+        transaction,
+        context
+      );
+
+      return rootID;
+    }
 
     const payload = create(
       this._currentElement.props, // next props
@@ -168,20 +185,13 @@ ReactHardwareComponent.Mixin = {
     );
 
     return rootID;
-    /*
-    return {
-      rootNodeID: rootID,
-      // tag: tag,
-    };
-    */
   },
   initializeChildren(
     children: ReactElement,
     transaction: ReactReconcileTransaction, // for creating/updating
     context: Object // secret context, shhhh
   ) {
-    // const mountImages = this.mountChildren(children, transaction, context);
-    // console.log('initializeChildren', mountImages);
+    this.mountChildren(children, transaction, context);
   },
 };
 

@@ -33,12 +33,8 @@ function inject() {
     (instantiate) => new ReactHardwareEmptyComponent(instantiate)
   );
 
-  // NOTE: we're monkeypatching ReactComponentEnvironment because
-  // ReactInjection.Component.injectEnvironment() currently throws,
-  // as it's already injected by ReactDOM for backward compat in 0.14 betas.
-  // Read more: https://github.com/Yomguithereal/react-blessed/issues/5
   ReactComponentEnvironment.processChildrenUpdates = function() {};
-  ReactComponentEnvironment.replaceNodeWithMarkupByID = function() {};
+  ReactComponentEnvironment.replaceNodeWithMarkup = function() {};
   ReactComponentEnvironment.unmountIDFromEnvironment = function() {};
 }
 

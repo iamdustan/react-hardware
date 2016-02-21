@@ -81,5 +81,46 @@ describe('ReactHardware Integration', () => {
       }
     );
   });
+
+  it('should support changing a child', (done) => {
+    const container = '/dev/cu.usbmodem1451';
+    class OtherPin extends React.Component {
+      render() {
+        return (
+          <pin pin={10} value={1} mode={'OUTPUT'} />
+        );
+      }
+    }
+
+    class TestApplication extends React.Component {
+      constructor() {
+        super();
+
+        this.state = {swapped: false};
+      }
+      componentDidMount() {
+        setTimeout(_ => this.setState({swapped: true}), 10);
+      }
+
+      componentDidUpdate() {
+        done();
+      }
+
+      render() {
+        if (this.state.swapped) {
+          return <OtherPin ref={'other'} />
+        }
+
+        return (
+          <pin pin={10} value={0} mode={'OUTPUT'} />
+        );
+      }
+    }
+
+    ReactHardware.render(
+      <TestApplication />,
+      container
+    );
+  });
 });
 

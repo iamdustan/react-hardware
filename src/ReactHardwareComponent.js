@@ -57,8 +57,10 @@ const ReactHardwareComponent = function(
  * Mixin for hardware components.
  */
 ReactHardwareComponent.Mixin = {
+  // this is called when changing a component in the middle of a tree
+  // currently a noop since _nativeNode is not defined.
   getNativeNode() {
-    return ReactHardwareComponent.getNativeNode(this);
+    return this._nativeNode;
   },
 
   getPublicInstance() {
@@ -186,6 +188,7 @@ ReactHardwareComponent.Mixin = {
 
     return rootID;
   },
+
   initializeChildren(
     children: ReactElement,
     transaction: ReactReconcileTransaction, // for creating/updating

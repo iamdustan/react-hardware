@@ -122,6 +122,7 @@ const ReactHardwareMount = {
       status: 'CONNECTING',
       component: null,
       board: null,
+      readers: {},
     };
 
     const nextComponent = instantiateReactComponent(nextElement);
@@ -169,7 +170,7 @@ const ReactHardwareMount = {
     nextElement: ReactElement, // component instance to render
     container: string, // firmata connection port
     callback: ?Function // function triggered on completion
-  ):ReactComponent {
+  ):React$Component {
     ReactUpdateQueue.enqueueElementInternal(prevComponent, nextElement);
     if (callback) {
       ReactUpdateQueue.enqueueCallbackInternal(prevComponent, callback);
@@ -185,7 +186,7 @@ const ReactHardwareMount = {
     nextElement: ReactElement,
     board: typeof Board, // Firmata instnace
     callback: ?Function
-  ):?ReactComponent {
+  ):?React$Component {
     // FIXME: this should only be hit in testing when we
     // clear the connectionsByContainer cache. Totally a hack.
     if (!connectionsByContainer[container]) {

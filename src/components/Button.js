@@ -16,8 +16,9 @@ type P = {
 class Button extends Component {
   props: P;
   defaultProps: {};
+  onRead: (value:number) => any;
 
-  constructor(props, context) {
+  constructor(props:P, context:{}) {
     super(props, context);
 
     this.onRead = this.onRead.bind(this);
@@ -32,11 +33,11 @@ class Button extends Component {
     }
 
     if (typeof onChange === 'function') {
-      this.props.onChange({value, type: 'change'});
+      onChange({value, type: 'change'});
     }
   }
 
-  render():ReactElement {
+  render() {
     return (
       <pin
         pin={this.props.pin}

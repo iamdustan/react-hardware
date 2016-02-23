@@ -191,7 +191,7 @@ ReactHardwareComponent.Mixin = {
   },
 
   initializeChildren(
-    children: ReactElement,
+    children: React$Element,
     transaction: ReactReconcileTransaction, // for creating/updating
     context: Object // secret context, shhhh
   ) {

@@ -4,12 +4,29 @@
 .*/node_modules/fbjs.*
 .*/node_modules/babel.*
 .*/node_modules/babylon.*
+
+# npm3 and other tooling interop is so fun
+.*/examples/.*/node_modules
+.*/node_modules/binary-extensions.*
+.*/node_modules/builtin-modules.*
+.*/node_modules/jasmine-es6.*
+.*/node_modules/json5.*
+.*/node_modules/resolve.*
+.*/node_modules/spdx-exceptions.*
+.*/node_modules/spdx-license-ids.*
+.*/node_modules/ua-parser-js.*
+.*/node_modules/y18n.*
+.*/node_modules/iconv-lite.*
+.*/node_modules/is-my-json-valid.*
+
 .*/_backup
+.*/docs
 
 [include]
 
 [libs]
 types/fbjs.js
+types/firmata.js
 
 [options]
 suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe\\($\\|[^(]\\|(\\(>=0\\.\\(2[0-0]\\|1[0-9]\\|[0-9]\\).[0-9]\\)? *\\)

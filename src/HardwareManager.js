@@ -33,9 +33,9 @@ const FIRMATA_COMMUNICATION_METHOD = {
 export type Connection = {
   rootID: string;
   status: 'CONNECTING' | 'CONNECTED';
-  component: ?ReactComponent;
+  component: ?React$Component;
   board: typeof Board;
-  readers: ?Array<() => {}>;
+  readers: {[pin:string]: (...args:any) => any};
 };
 
 const setReader = (
@@ -150,7 +150,7 @@ export const setPayloadForPin = (
  * NOTE: This is a leaky abstraction. It returns the direct Board IO instance.
  */
 export const getNativeNode = (
-  component:ReactComponent&{_rootNodeID:string}
+  component:React$Component&{_rootNodeID:string}
 ):typeof Board => {
   const connection = findConnectionForRootId(component._rootNodeID);
 

@@ -3,7 +3,7 @@ import React, {PropTypes, Component} from 'react/lib/ReactIsomorphic';
 import Led from './Led';
 
 class RGBLed extends Component {
-  render():ReactElement {
+  render() {
     const {
       pins,
       values,

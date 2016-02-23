@@ -6,7 +6,7 @@ import ReactHardwareComponent from './ReactHardwareComponent';
 
 export default function createReactHardwareComponentClass(
   viewConfig: ReactHardwareComponentViewConfig
-): ReactClass<any, any, any> {
+): ReactClass<any> {
   const Constructor = function(element) {
     this._currentElement = element;
 

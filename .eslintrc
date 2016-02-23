@@ -6,6 +6,9 @@
   ],
   globals: {
     ReactComponent: true,
+    React$Component: true,
+    ReactClass: true,
+    React$Element: true,
   },
   rules: {
     "react/jsx-uses-react": 2,

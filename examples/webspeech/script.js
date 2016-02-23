@@ -6,7 +6,7 @@ ws.onopen = () => console.log('Websocket connection opened');
 ws.onmessage = ({data}) => console.log(data);
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-const SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList;
+const SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList; // eslint-disable-line
 const SpeechRecognitionEvent = window.SpeechRecognitionEvent || window.webkitSpeechRecognitionEvent;
 
 const last = a => a[a.length - 1];
@@ -112,7 +112,7 @@ class App extends Component<any, any, S> {
           </span>
         </div>
       );
-    };
+    }
 
     return (
       <div>

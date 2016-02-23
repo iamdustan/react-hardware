@@ -96,7 +96,6 @@ class Application extends React.Component {
   }
 
   render() {
-    const PIN = 9
     if (this.state.swapped) {
       return <PulsingLed pin={9} />;
     }

@@ -2,16 +2,6 @@
 import React, {PropTypes, Component} from 'react/lib/ReactIsomorphic';
 import Led from './Led';
 
-/*
-var viewConfig = {
-  uiViewClassName: 'RGBLed',
-  validAttributes: {
-    pins: true,
-    values: true
-  },
-};
-*/
-
 class RGBLed extends Component {
   render():ReactElement {
     const {
@@ -37,9 +27,6 @@ RGBLed.propTypes = {
   pins: PropTypes.arrayOf(PropTypes.number).isRequired,
   values: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
-// Led.displayName = 'Led';
-
-// var Hardware = createReactHardwareComponentClass(viewConfig);
 
 export default RGBLed;
 

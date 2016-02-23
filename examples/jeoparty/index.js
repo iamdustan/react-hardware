@@ -1,13 +1,19 @@
 /**
  * https://github.com/keithpops/jeoparty in React Hardware
+ * TODO: actually implement the rest of the app
  */
 import React from 'react';
 import ReactHardware from '../../src';
 import {getPort} from '../port';
-// import socket from 'socket.io';
+import socket from 'socket.io';
+import http from 'http';
+
+const server = http.createServer().listen(3000, () => {
+  console.log('Express server listening on port %s', 3000);
+});
 
 // socket.io config
-// const io = socket(server);
+const io = socket(server);
 const {
   Container,
   Button,
@@ -92,7 +98,7 @@ class Jeoparty extends React.Component {
 
 
       // All LED Strobe
-      socket.on("led-strobe-all", function () {
+      socket.on('led-strobe-all', () => {
         this.setState({led1: 'strobe'});
         setTimeout(_ => {
           this.setState({led2: 'strobe'});
@@ -130,7 +136,7 @@ class Jeoparty extends React.Component {
 }
 
 ReactHardware.render(
-  <Jeoparty />
+  <Jeoparty />,
   getPort(),
   (inst) => {
     console.log('Rendered <Jeoparty />');

@@ -18,7 +18,7 @@ const compiler = webpack({
       { test: /\.js$/,
         loader: require.resolve('babel-loader'),
         exclude: /node_modules/,
-        query: {presets: ['react', 'es2015']}
+        query: {presets: ['react', 'es2015']},
       },
     ],
   },
@@ -78,5 +78,4 @@ new http.createServer((req, res) => {
 }).listen(9000, '127.0.0.1', () => {
   console.log('Speech recognizer webpack on localhost:8000');
 });
-
 

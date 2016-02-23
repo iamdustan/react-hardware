@@ -25,6 +25,7 @@ const DEFAULT_VIEW_CONFIG = {
     mode: true,
     pin: true,
     value: true,
+    reader: true,
   },
   uiViewClassName: 'GenericComponent',
 };

@@ -70,7 +70,9 @@ describe('HardwareManager', () => {
       hw = new Firmata();
       spyOn(hw, 'pinMode');
       spyOn(hw, 'digitalWrite');
+      spyOn(hw, 'digitalRead');
       spyOn(hw, 'analogWrite');
+      spyOn(hw, 'analogRead');
     });
 
     it('should handle an easy case', () => {
@@ -90,6 +92,29 @@ describe('HardwareManager', () => {
         payload.pin,
         payload.value
       );
+    });
+
+    it('should handle setting up read handlers', () => {
+      const noop = () => {};
+      const payload = {
+        pin: 0,
+        value: 255,
+        mode: 'OUTPUT',
+        reader: noop,
+      };
+
+      setPayloadForPin(
+        {board: hw},
+        payload
+      );
+
+      expect(hw.pinMode).toHaveBeenCalled();
+      expect(hw.digitalWrite).toHaveBeenCalledWith(
+        payload.pin,
+        payload.value
+      );
+
+      expect(hw.digitalRead).toHaveBeenCalledWith(payload.pin, payload.reader);
     });
   });
 });

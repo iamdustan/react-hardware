@@ -35,6 +35,24 @@ export type Connection = {
   status: 'CONNECTING' | 'CONNECTED';
   component: ?ReactComponent;
   board: typeof Board;
+  readers: ?Array<() => {}>;
+};
+
+const setReader = (
+  connection:Connection,
+  communicationType:string,
+  payload:Object
+) => {
+  if (typeof connection.readers === 'undefined') {
+    connection.readers = {};
+  }
+
+  // TODO: support updating the listener
+  if (!connection.readers[payload.pin]) {
+    connection.board[`${communicationType}Read`](payload.pin, payload.reader);
+  }
+
+  connection.readers[payload.pin] = payload.reader;
 };
 
 export const connectionsByContainer:{[key:string]: Connection} = {};
@@ -121,6 +139,10 @@ export const setPayloadForPin = (
   if (typeof payload.value !== 'undefined') {
     // console.log(`${communicationType}Write to "%s" with "%s"`, payload.pin, payload.value);
     board[`${communicationType}Write`](payload.pin, +payload.value);
+  }
+
+  if (payload.reader) {
+    setReader(connection, communicationType, payload);
   }
 };
 

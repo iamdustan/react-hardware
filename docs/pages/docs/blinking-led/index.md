@@ -1,6 +1,5 @@
 ---
 title: "Blinking LED"
-order: 2
 ---
 
 The “Hello World” of hardware programming is typically the blinking LED.

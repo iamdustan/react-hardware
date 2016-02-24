@@ -7,7 +7,7 @@ enables you to apply your React component model to hardware and physical
 devices.
 
 <div style="text-align:center">
-  <a href="/docs" class="button button--getStarted">Get Started</a>
+  <a href="/react-hardware/docs/" class="button button--getStarted">Get Started</a>
 </div>
 
 ## Motivation
@@ -31,6 +31,6 @@ Some experiments to look forward to are:
   your device from the same codebase. (Universal JavaScript 3.0)
 
 <div style="text-align:center">
-  <a href="/docs" class="button button--getStarted">Get Started</a>
+  <a href="/react-hardware/docs/" class="button button--getStarted">Get Started</a>
 </div>
 

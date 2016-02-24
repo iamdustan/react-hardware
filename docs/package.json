@@ -12,18 +12,22 @@
   "dependencies": {
     "chroma-js": "0.7.2",
     "color-pairs-picker": "^1.3.5",
-    "lodash": "^3.10.1",
+    "lodash": "^4.5.1",
     "react": "^0.14.3",
     "react-document-title": "^2.0.1",
     "react-dom": "^0.14.3",
     "react-motion": "^0.1.0",
     "react-responsive-grid": "^0.3.0",
-    "react-router": "^0.13.5",
-    "typography": "^0.6.2",
+    "react-router": "^2.0.0",
+    "typography": "^0.7.0",
     "underscore.string": "^3.2.2"
   },
   "devDependencies": {
+    "babel-plugin-react-transform": "^1.1.1",
     "babel-preset-es2015": "^6.3.13",
-    "babel-preset-react": "^6.3.13"
+    "babel-preset-react": "^6.3.13",
+    "react-transform-catch-errors": "^1.0.2",
+    "react-transform-hmr": "^1.0.2",
+    "redbox-react": "^1.2.2"
   }
 }

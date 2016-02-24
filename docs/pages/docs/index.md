@@ -1,6 +1,5 @@
 ---
 title: Introduction
-order: 0
 ---
 
 **React Hardware** is a custom React renderer targeting the Firmata protocol.

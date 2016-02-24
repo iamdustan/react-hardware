@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#
+# A quick and dirty script to deploy the gatsby documentation website to gh-pages
+#
+
+mv .babelrc .babelrc.bak
+git checkout -b tmp-throwaway
+cd docs && gatsby build --prefix-links && cd ..
+git add docs/public -f && git commit -m 'build docs'
+git push origin :gh-pages
+git subtree push --prefix=docs/public origin gh-pages
+git checkout rewrite
+git branch -D tmp-throwaway
+mv .babelrc.bak .babelrc
+

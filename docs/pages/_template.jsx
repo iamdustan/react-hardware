@@ -1,9 +1,10 @@
 import React from 'react';
-import { RouteHandler, Link, State } from 'react-router';
-import { Container, Grid, Breakpoint, Span } from 'react-responsive-grid';
+import { Link } from 'react-router';
+import { Container, Grid, Span } from 'react-responsive-grid';
 import includes from 'underscore.string/include';
 import { link } from 'gatsby-helpers';
 import { colors, activeColors, header, activeHeader } from 'utils/colors'
+import { config } from 'config';
 
 import typography from 'utils/typography';
 
@@ -29,12 +30,15 @@ const linkBase = {
 };
 
 module.exports = React.createClass({
-  mixins: [State],
+  propTypes () {
+    return {
+      children: React.PropTypes.object,
+    }
+  },
   render: function() {
-    const routes = this.getRoutes().map(route => route.path);
-    const docsActive = (routes.indexOf(link("/docs/")) >= 0);
-    const supportActive = (routes.indexOf(link("/support/")) >= 0);
-    const examplesActive = (routes.indexOf(link("/examples/")) >= 0);
+    const docsActive = includes(this.props.location.pathname, '/docs/');
+    const supportActive = includes(this.props.location.pathname, '/support/');
+    const examplesActive = includes(this.props.location.pathname, '/examples/');
 
     return (
       <div>
@@ -44,8 +48,7 @@ module.exports = React.createClass({
               {/* Ugly hack. How better to constrain height of div?*/}
               <Span columns={3} style={{height: 24}} >
                 <Link to={link('/')} style={{textDecoration: 'none', color: colors.fg, fontSize: fontSizeToPx("21px").fontSize}}>
-                  <img style={{height: '125%', margin: '0 0.25em 0 0', verticalAlign: 'middle'}} src="http://facebook.github.io/react-native/img/header_logo.png" />
-                  {this.props.config.siteTitle}
+                  {config.siteTitle}
                 </Link>
               </Span>
               <Span columns={9} last={true}>
@@ -65,22 +68,17 @@ module.exports = React.createClass({
             </Grid>
           </Container>
         </div>
-        {this.getPathname() === '/' &&
+        {(this.props.location.pathname === '/' || this.props.location.pathname === '/react-hardware/') &&
           <div style={{background: colors.bg, marginTop: '-2.25em', marginBottom: '2.25em', color: '#fff', textAlign: 'center', padding: '3.5em 0.5em'}}>
             <div style={{fontSize: '3.5em', marginBottom: '0.41666em'}}>React Hardware</div>
             <div style={{textTransform: 'uppercase'}}>React bindings for Arduino’s and other physical devices</div>
           </div>
         }
         <Container style={{maxWidth: 960, padding: `${rhythm(1)} ${rhythm(1/2)}`, paddingTop: 0}}>
-          <RouteHandler {...this.props}/>
+          {this.props.children}
           <div style={{margin: '2em 0 1em', fontSize: '11px', color: '#111', fontWeight: 'bold'}}>
             <div style={{float: 'right'}}>
               Documentation licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
-            </div>
-            <div>
-              <Link to={link('/acknowledgements/')}>
-                Acknowledgements
-              </Link>
             </div>
           </div>
         </Container>

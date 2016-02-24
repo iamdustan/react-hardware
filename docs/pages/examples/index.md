@@ -2,6 +2,6 @@
 title: Examples
 ---
 
-TODO: interactive examples from examples at
-https://www.github.com/iamdustan/react-hardware/tree/next/examples
+TODO: automatically import the examples from those in the repo at:
+https://github.com/iamdustan/react-hardware/tree/rewrite/examples
 

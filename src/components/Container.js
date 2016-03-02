@@ -8,7 +8,7 @@
  *
  * @flow
  */
-import React from 'react/lib/ReactIsomorphic';
+import React from 'react';
 
 export const CONTAINER_KEY = '__container';
 export const CONTAINER_VALUE = 'isContainer';

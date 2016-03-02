@@ -3,7 +3,7 @@
  * This example blinks the Arduino Uno built-in LED on pin 13 every 1 second.
  */
 
-import React, {Component} from 'react/lib/ReactIsomorphic';
+import React, {Component} from 'react';
 import {getPort} from '../port';
 import ReactHardware from '../../src';
 

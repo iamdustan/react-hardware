@@ -1,5 +1,5 @@
 /** @flow */
-import React, {PropTypes, Component} from 'react/lib/ReactIsomorphic';
+import React, {PropTypes, Component} from 'react';
 import Led from './Led';
 
 class RGBLed extends Component {

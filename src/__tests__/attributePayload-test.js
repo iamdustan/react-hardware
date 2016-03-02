@@ -72,7 +72,7 @@ describe('attributePayload', () => {
       );
     });
 
-    it('TODO: figure out function diffing when this is implemented', () => {
+    it('should diff functions', () => {
       const fn1 = () => {};
       const fn2 = () => {};
       expect(diff(

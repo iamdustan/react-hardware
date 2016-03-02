@@ -38,21 +38,23 @@ export type Connection = {
   readers: {[pin:string]: (...args:any) => any};
 };
 
+const deferredReader =
+  (connection, pin) =>
+    (value) => connection.readers[pin].call(value);
+
 const setReader = (
   connection:Connection,
   communicationType:string,
   payload:Object
 ) => {
-  if (typeof connection.readers === 'undefined') {
-    connection.readers = {};
-  }
-
-  // TODO: support updating the listener
   if (!connection.readers[payload.pin]) {
-    connection.board[`${communicationType}Read`](payload.pin, payload.reader);
+    const reader = deferredReader(connection, payload.pin);
+    connection.readers[payload.pin] = {reader, call: null};
+
+    connection.board[`${communicationType}Read`](payload.pin, reader);
   }
 
-  connection.readers[payload.pin] = payload.reader;
+  connection.readers[payload.pin].call = payload.reader;
 };
 
 export const connectionsByContainer:{[key:string]: Connection} = {};

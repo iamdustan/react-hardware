@@ -17,7 +17,7 @@ describe('HardwareManager', () => {
     it('should handle an easy case', () => {
       expect(() => {
         validatePayloadForPin(
-          {board: hw},
+          {board: hw, readers: []},
           { pin: 0,
             value: 255,
             mode: 'DIGITAL',
@@ -35,7 +35,7 @@ describe('HardwareManager', () => {
 
       expect(() => {
         validatePayloadForPin(
-          {board: hw},
+          {board: hw, readers: []},
           { pin: 0,
             value: 255,
             mode: 'ANALOG',
@@ -53,7 +53,7 @@ describe('HardwareManager', () => {
 
       expect(() => {
         validatePayloadForPin(
-          {board: hw},
+          {board: hw, readers: []},
           { pin: 17,
             value: 255,
             mode: 'PWM',
@@ -83,7 +83,7 @@ describe('HardwareManager', () => {
       };
 
       setPayloadForPin(
-        {board: hw},
+        {board: hw, readers: []},
         payload
       );
 
@@ -103,10 +103,8 @@ describe('HardwareManager', () => {
         reader: noop,
       };
 
-      setPayloadForPin(
-        {board: hw},
-        payload
-      );
+      const connection = {board: hw, readers: []};
+      setPayloadForPin(connection, payload);
 
       expect(hw.pinMode).toHaveBeenCalled();
       expect(hw.digitalWrite).toHaveBeenCalledWith(
@@ -114,7 +112,37 @@ describe('HardwareManager', () => {
         payload.value
       );
 
-      expect(hw.digitalRead).toHaveBeenCalledWith(payload.pin, payload.reader);
+      expect(hw.digitalRead.calls.first().args[0]).toBe(payload.pin);
+      expect(connection.readers[0].call).toBe(payload.reader);
+    });
+
+    // TODO: mock-firmata emit should work
+    xit('should handle changing read handlers', () => {
+      const before = jasmine.createSpy();
+      const after = jasmine.createSpy();
+      const initialPayload = {
+        pin: 0,
+        mode: 'OUTPUT',
+        reader: before,
+      };
+
+      const updatePayload = {
+        pin: 0,
+        mode: 'OUTPUT',
+        reader: after,
+      };
+
+      setPayloadForPin({board: hw, readers: []}, initialPayload);
+
+      expect(hw.pinMode).toHaveBeenCalled();
+
+      expect(hw.digitalRead).toHaveBeenCalledWith(initialPayload.pin, initialPayload.reader);
+      hw.emit('digital-read-0', Infinity);
+      expect(before).toHaveBeenCalledWith(Infinity);
+
+      setPayloadForPin({board: hw}, updatePayload);
+      hw.emit('digital-read-1', 3.1415);
+      expect(before).toHaveBeenCalledWith(3.1415);
     });
   });
 });

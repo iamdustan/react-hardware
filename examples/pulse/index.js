@@ -17,7 +17,7 @@ class PulsingLed extends Component {
   componentDidMount() {
     let direction = 1;
     setInterval(() => {
-      if (this.state.value >= 100) {
+      if (this.state.value >= 200) {
         direction = -1;
       } else if (this.state.value <= 0) {
         direction = 1;

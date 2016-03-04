@@ -41,7 +41,7 @@ class Button extends Component {
     return (
       <pin
         pin={this.props.pin}
-        reader={this.onRead}
+        onRead={this.onRead}
         mode={'INPUT'}
       />
     );

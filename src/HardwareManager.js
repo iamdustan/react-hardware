@@ -54,7 +54,7 @@ const setReader = (
     connection.board[`${communicationType}Read`](payload.pin, reader);
   }
 
-  connection.readers[payload.pin].call = payload.reader;
+  connection.readers[payload.pin].call = payload.onRead;
 };
 
 export const connectionsByContainer:{[key:string]: Connection} = {};
@@ -143,7 +143,7 @@ export const setPayloadForPin = (
     board[`${communicationType}Write`](payload.pin, +payload.value);
   }
 
-  if (payload.reader) {
+  if (payload.onRead) {
     setReader(connection, communicationType, payload);
   }
 };

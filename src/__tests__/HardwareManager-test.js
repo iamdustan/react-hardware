@@ -100,7 +100,7 @@ describe('HardwareManager', () => {
         pin: 0,
         value: 255,
         mode: 'OUTPUT',
-        reader: noop,
+        onRead: noop,
       };
 
       const connection = {board: hw, readers: []};
@@ -113,7 +113,7 @@ describe('HardwareManager', () => {
       );
 
       expect(hw.digitalRead.calls.first().args[0]).toBe(payload.pin);
-      expect(connection.readers[0].call).toBe(payload.reader);
+      expect(connection.readers[0].call).toBe(payload.onRead);
     });
 
     // TODO: mock-firmata emit should work
@@ -123,20 +123,20 @@ describe('HardwareManager', () => {
       const initialPayload = {
         pin: 0,
         mode: 'OUTPUT',
-        reader: before,
+        onRead: before,
       };
 
       const updatePayload = {
         pin: 0,
         mode: 'OUTPUT',
-        reader: after,
+        onRead: after,
       };
 
       setPayloadForPin({board: hw, readers: []}, initialPayload);
 
       expect(hw.pinMode).toHaveBeenCalled();
 
-      expect(hw.digitalRead).toHaveBeenCalledWith(initialPayload.pin, initialPayload.reader);
+      expect(hw.digitalRead).toHaveBeenCalledWith(initialPayload.pin, initialPayload.onRead);
       hw.emit('digital-read-0', Infinity);
       expect(before).toHaveBeenCalledWith(Infinity);
 

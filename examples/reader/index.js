@@ -1,9 +1,9 @@
 /**
  * An example of a generic component with a generic reader.
  *
- * While constructing a component you are free to pass a generic `reader`
- * property. This is the raw hardware [digital|analog|i2c]Read method and is as
- * low level as you can get.
+ * While constructing a component you are free to pass a generic reader to the
+ * `onRead` property. This is the raw hardware [digital|analog|i2c]Read method
+ * and is as low level as you can get.
  *
  * Provided composite components like <Button /> use this to logic
  */
@@ -48,7 +48,7 @@ class Button extends Component {
     return (
       <pin
         pin={this.props.pin}
-        reader={this.onRead}
+        onRead={this.onRead}
         mode={'INPUT'}
       />
     );

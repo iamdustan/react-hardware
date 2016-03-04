@@ -1,24 +1,23 @@
-import React from 'react';
-import createReactHardwareComponentClass from '../createReactHardwareComponentClass';
+/**
+ * ReactHardware Led component for rendering an Led. Currently it’s simply an
+ * alias for a <pin />
+ *
+ * <Led value={100} pin={13} mode="OUTPUT" />
+ *
+ * @flow
+ **/
 
-var viewConfig = {
-  uiViewClassName: 'Led',
-  validAttributes: {
-    pin: true,
-    value: true,
-    mode: true,
-  },
-};
+import React, {Component} from 'react';
 
-class Led extends React.Component {
+class Led extends Component {
   render() {
-    return <Hardware {...this.props} />;
+    return (
+      <pin {...this.props} />
+    );
   }
 }
 
 Led.displayName = 'Led';
-
-var Hardware = createReactHardwareComponentClass(viewConfig);
 
 export default Led;
 

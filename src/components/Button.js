@@ -1,10 +1,16 @@
-/* @flow */
+/**
+ * ReactHardware <Button /> component.
+ *
+ * <Button
+ *   onDown={() => console.log('Button pressed')}
+ *   onUp={() => console.log('Button depressed')}
+ *   onChange={({value}) => console.log('Button changes to %s', value)}
+ * />
+ *
+ * @flow
+ **/
+import type {HardwareEvent} from '../types';
 import React, {Component} from 'react';
-
-type HardwareEvent = {
-  value: number;
-  type: string;
-};
 
 type P = {
   pin: number;

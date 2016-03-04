@@ -7,7 +7,7 @@
  * </Container>
  *
  * @flow
- */
+ **/
 import React from 'react';
 
 export const CONTAINER_KEY = '__container';

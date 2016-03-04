@@ -31,3 +31,5 @@ types/firmata.js
 [options]
 suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe\\($\\|[^(]\\|(\\(>=0\\.\\(2[0-0]\\|1[0-9]\\|[0-9]\\).[0-9]\\)? *\\)
 
+esproposal.class_static_fields=enable
+

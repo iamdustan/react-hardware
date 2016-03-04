@@ -2,7 +2,6 @@
 
 // import HardwareMethodsMixin from './HardwareMethodsMixin';
 // import ReactHardwareComponentMixin from './ReactHardwareComponentMixin';
-// import ReactHardwareEventEmitter from './ReactHardwareEventEmitter';
 import {CONTAINER_KEY, CONTAINER_VALUE} from './components/Container';
 import ReactMultiChild from 'react/lib/ReactMultiChild';
 

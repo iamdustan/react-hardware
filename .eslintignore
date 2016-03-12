@@ -2,4 +2,5 @@ _backup
 docs
 examples/*/node_modules
 examples/node_modules
+lib
 

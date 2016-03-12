@@ -1,8 +1,9 @@
 {
   "name": "react-hardware",
-  "version": "0.4.0",
+  "version": "0.5.0-alpha.1",
   "description": "React firmata bindings.",
-  "main": "todo",
+  "main": "lib/index.js",
+  "jsnext:main": "src/index.js",
   "scripts": {
     "install-prerelease": "npm install http://react.zpao.com/builds/master/latest/react.tgz",
     "flow": "flow",
@@ -10,7 +11,8 @@
     "test": "./scripts/test",
     "posttest": "npm run lint",
     "postlint": "npm run flow",
-    "build": "echo \"Error: no build command yet\"",
+    "prepublish": "npm run build",
+    "build": "babel src -d lib",
     "example": "babel-node ./scripts/examples"
   },
   "repository": {
@@ -18,6 +20,9 @@
     "url": "https://github.com/iamdustan/react-hardware"
   },
   "files": [
+    "bin",
+    "lib",
+    "src",
     "package.json",
     "README.md"
   ],
@@ -39,7 +44,8 @@
     "firmata": "^0.8.0",
     "react": "^15.0.0-rc.1",
     "serialport": "^2.0.5",
-    "setimmediate": "^1.0.4"
+    "setimmediate": "^1.0.4",
+    "ws": "^1.0.1"
   },
   "devDependencies": {
     "babel-cli": "^6.2.0",
@@ -58,7 +64,6 @@
     "jasmine-es6": "0.0.18",
     "jasmine-spec-reporter": "^2.4.0",
     "mock-firmata": "0.0.4",
-    "react-tween-state": "^0.1.4",
-    "ws": "^1.0.1"
+    "react-tween-state": "^0.1.4"
   }
 }

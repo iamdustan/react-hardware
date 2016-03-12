@@ -1,6 +1,7 @@
 /** @flow */
 import {Board} from 'firmata';
 import invariant from 'fbjs/lib/invariant';
+import {analogToDigital} from './HardwarePinTranslations';
 
 /**
  * map firmata’s Pin MODEs to what
@@ -51,7 +52,10 @@ const setReader = (
     const reader = deferredReader(connection, payload.pin);
     connection.readers[payload.pin] = {reader, call: null};
 
-    connection.board[`${communicationType}Read`](payload.pin, reader);
+    // map A0-A5 to the appropriate analog index for node-firmata
+    const toNodeFirmataMapping = typeof payload.pin === 'string' ? parseInt(payload.pin.slice(1), 10) : payload.pin;
+    connection.board[`${communicationType}Read`](toNodeFirmataMapping, reader);
+    connection.readers[payload.pin].call = payload.onRead;
   }
 
   connection.readers[payload.pin].call = payload.onRead;
@@ -104,7 +108,8 @@ export const validatePayloadForPin = (
     idToModeName[MODES[mode]] = mode;
   }
 
-  const {supportedModes, analogChannel} = pins[payload.pin];
+  const normalizedPin = analogToDigital(payload.pin);
+  const {supportedModes, analogChannel} = pins[normalizedPin];
   invariant(
     supportedModes.indexOf(mode) !== -1 ||
     (analogChannel === 127 && payload.mode === 'DIGITAL'),
@@ -136,7 +141,8 @@ export const setPayloadForPin = (
   const {MODES} = board;
 
   // console.log(`set pinMode of "%s" to "%s"`, payload.pin, payload.mode);
-  board.pinMode(payload.pin, MODES[payload.mode]);
+  const normalizedPin = analogToDigital(payload.pin);
+  board.pinMode(normalizedPin, MODES[payload.mode]);
   const communicationType = FIRMATA_COMMUNICATION_METHOD[MODES[payload.mode]];
   if (typeof payload.value !== 'undefined') {
     // console.log(`${communicationType}Write to "%s" with "%s"`, payload.pin, payload.value);

@@ -19,7 +19,7 @@ class SwitchDemo extends Component {
   render():ReactElement {
     return (
       <Container>
-        <Switch pin={2} onChange={this.toggle} />
+        <Switch pin={8} onChange={this.toggle} />
         <Led pin={13} mode={'OUTPUT'} value={this.state.switchValue} />
       </Container>
     );

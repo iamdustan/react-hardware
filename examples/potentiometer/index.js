@@ -6,7 +6,6 @@
 import {getPort} from '../port';
 import ReactHardware from '../../src';
 import React, {Component} from 'react';
-import ReactHardware from '../../src';
 
 const {Container, Led, Potentiometer} = ReactHardware;
 
@@ -36,7 +35,7 @@ class PotentiometerDemo extends Component {
     return (
       <Container>
         <Potentiometer
-          pin={'A1'}
+          pin={'A3'}
           onChange={this.onChange}
         />
         <Led pin={9} mode={'PWM'} value={this.state.value} />

@@ -37,7 +37,7 @@
   "dependencies": {
     "fbjs": "^0.7.1",
     "firmata": "^0.8.0",
-    "react": "^0.15.0-alpha.1",
+    "react": "^15.0.0-rc.1",
     "serialport": "^2.0.5",
     "setimmediate": "^1.0.4"
   },

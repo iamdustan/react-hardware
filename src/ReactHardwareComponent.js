@@ -45,12 +45,13 @@ type ViewConfigPropTypes = {
  * @param {!object} viewConfig View Configuration.
  */
 const ReactHardwareComponent = function(
-  viewConfig: ReactHardwareComponentViewConfig
+  element: React$Element
 ) {
-  this.viewConfig = typeof viewConfig === 'object' ? viewConfig : DEFAULT_VIEW_CONFIG;
+  this.viewConfig = DEFAULT_VIEW_CONFIG;
   this._rootNodeID = null;
   this._renderedChildren = null;
   this._io = null;
+  this.construct(element);
 };
 
 /**

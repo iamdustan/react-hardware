@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { Container, Grid, Span } from 'react-responsive-grid';
 import includes from 'underscore.string/include';
-import { link } from 'gatsby-helpers';
+import { prefixLink } from 'gatsby-helpers';
 import { colors, activeColors, header, activeHeader } from 'utils/colors'
 import { config } from 'config';
 
@@ -47,7 +47,7 @@ module.exports = React.createClass({
             <Grid columns={12} style={{padding: `${rhythm(1/2)} 0`}}>
               {/* Ugly hack. How better to constrain height of div?*/}
               <Span columns={3} style={{height: 24}} >
-                <Link to={link('/')} style={{textDecoration: 'none', color: colors.fg, fontSize: fontSizeToPx("21px").fontSize}}>
+                <Link to={prefixLink('/')} style={{textDecoration: 'none', color: colors.fg, fontSize: fontSizeToPx("21px").fontSize}}>
                   {config.siteTitle}
                 </Link>
               </Span>
@@ -55,13 +55,13 @@ module.exports = React.createClass({
                 <a style={{float: 'right', color: colors.fg, textDecoration: 'none', marginLeft: rhythm(1/2)}} href="https://github.com/iamdustan/react-hardware">
                   Github
                 </a>
-                <Link to={link('/docs/')} style={Object.assign(color(docsActive), linkBase)}>
+                <Link to={prefixLink('/docs/')} style={Object.assign(color(docsActive), linkBase)}>
                   Docs
                 </Link>
-                <Link to={link('/support/')} style={Object.assign(color(supportActive), linkBase)}>
+                <Link to={prefixLink('/support/')} style={Object.assign(color(supportActive), linkBase)}>
                   Support
                 </Link>
-                <Link to={link('/examples/')} style={Object.assign(color(examplesActive), linkBase)}>
+                <Link to={prefixLink('/examples/')} style={Object.assign(color(examplesActive), linkBase)}>
                   Examples
                 </Link>
               </Span>

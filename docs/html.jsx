@@ -1,7 +1,7 @@
 import React from 'react';
 import DocumentTitle from 'react-document-title';
 
-import { link } from 'gatsby-helpers';
+import { prefixLink } from 'gatsby-helpers';
 import typography from './utils/typography';
 const { TypographyStyle } = typography;
 import { colors, activeColors } from 'utils/colors'
@@ -21,7 +21,7 @@ module.exports = React.createClass({
     }
      let cssLink
      if (process.env.NODE_ENV === 'production') {
-       cssLink = <link rel="stylesheet" href={link('/styles.css')} />
+       cssLink = <link rel="stylesheet" href={prefixLink('/styles.css')} />
      }
 
     return (
@@ -53,29 +53,29 @@ module.exports = React.createClass({
                 background-size: 50px;
               }
               .ball-0 {
-                background-image: url(${link("/docs/some-react-code/0.jpg")});
+                background-image: url(${prefixLink("/docs/some-react-code/0.jpg")});
               }
               .ball-1 {
-                background-image: url(${link("/docs/some-react-code/1.jpg")});
+                background-image: url(${prefixLink("/docs/some-react-code/1.jpg")});
               }
               .ball-2 {
-                background-image: url(${link("/docs/some-react-code/2.jpg")});
+                background-image: url(${prefixLink("/docs/some-react-code/2.jpg")});
               }
               .ball-3 {
-                background-image: url(${link("/docs/some-react-code/3.jpg")});
+                background-image: url(${prefixLink("/docs/some-react-code/3.jpg")});
               }
               .ball-4 {
-                background-image: url(${link("/docs/some-react-code/4.jpg")});
+                background-image: url(${prefixLink("/docs/some-react-code/4.jpg")});
               }
               .ball-5 {
-                background-image: url(${link("/docs/some-react-code/5.jpg")});
+                background-image: url(${prefixLink("/docs/some-react-code/5.jpg")});
               }
             `
           }} />
         </head>
         <body className="landing-page">
           <div id="react-mount" dangerouslySetInnerHTML={{__html: this.props.body}} />
-          <script src={link("/bundle.js")}/>
+          <script src={prefixLink("/bundle.js")}/>
           <script dangerouslySetInnerHTML={{__html: "(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-74678007-1', 'auto');ga('send', 'pageview');"}}></script>
         </body>
       </html>

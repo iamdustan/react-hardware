@@ -4,8 +4,7 @@
     "es2015"
   ],
   "plugins": [
-    "transform-class-properties",
-    "react-isomorphic"
+    "transform-class-properties"
   ],
   "env": {
     "test": {

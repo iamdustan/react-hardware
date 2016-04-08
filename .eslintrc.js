@@ -1,6 +1,6 @@
-{
+module.exports = {
   parser: 'babel-eslint',
-  extends: './node_modules/fbjs-scripts/eslint/.eslintrc',
+  'extends': './node_modules/fbjs-scripts/eslint/.eslintrc.js',
   plugins: [
     'react',
   ],
@@ -11,7 +11,6 @@
     React$Element: true,
   },
   rules: {
-    "react/jsx-uses-react": 2,
-  }
-}
-
+    'react/jsx-uses-react': 2,
+  },
+};

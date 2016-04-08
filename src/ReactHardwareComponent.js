@@ -19,7 +19,7 @@ export type ReactHardwareComponentViewConfig = {
   propTypes?: Object;
 }
 
-const DEFAULT_VIEW_CONFIG = {
+export const DEFAULT_VIEW_CONFIG = {
   validAttributes: {
     mode: true,
     pin: true,

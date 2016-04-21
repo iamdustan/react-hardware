@@ -18,7 +18,8 @@ describe('HardwareManager', () => {
       expect(() => {
         validatePayloadForPin(
           {board: hw, readers: []},
-          { pin: 0,
+          {
+            pin: 0,
             value: 255,
             mode: 'DIGITAL',
           }
@@ -36,7 +37,8 @@ describe('HardwareManager', () => {
       expect(() => {
         validatePayloadForPin(
           {board: hw, readers: []},
-          { pin: 0,
+          {
+            pin: 0,
             value: 255,
             mode: 'ANALOG',
           }
@@ -54,7 +56,8 @@ describe('HardwareManager', () => {
       expect(() => {
         validatePayloadForPin(
           {board: hw, readers: []},
-          { pin: 17,
+          {
+            pin: 17,
             value: 255,
             mode: 'PWM',
           }
@@ -146,4 +149,3 @@ describe('HardwareManager', () => {
     });
   });
 });
-

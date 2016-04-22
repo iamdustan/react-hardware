@@ -10,14 +10,10 @@
  **/
 import React from 'react';
 
-export const CONTAINER_KEY = '__container';
-export const CONTAINER_VALUE = 'isContainer';
-const containerProp = {[CONTAINER_KEY]: CONTAINER_VALUE};
-
 class Container extends React.Component {
   render() {
     return (
-      <container {...containerProp}>
+      <container>
         {this.props.children}
       </container>
     );
@@ -27,4 +23,3 @@ class Container extends React.Component {
 Container.displayName = 'Container';
 
 export default Container;
-

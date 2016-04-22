@@ -11,6 +11,7 @@ module.exports = {
     React$Element: true,
   },
   rules: {
+    'object-curly-spacing': [2, 'never'],
     'react/jsx-uses-react': 2,
   },
 };

@@ -12,8 +12,6 @@ import {getPort} from '../port';
 import ReactHardware from '../../src';
 import React, {Component} from 'react';
 
-const {Container} = ReactHardware;
-
 type HardwareEvent = {
   value: number;
   type: string;
@@ -73,11 +71,11 @@ class App extends React.Component {
 
   render():ReactElement {
     return (
-      <Container>
+      <container>
         <Button pin={2} onChange={this.toggle} />
         <led pin={11} mode={'OUTPUT'} value={this.state.on ? 1 : 0} />
         <led pin={13} mode={'OUTPUT'} value={this.state.on ? 0 : 1} />
-      </Container>
+      </container>
     );
   }
 }
@@ -89,4 +87,3 @@ ReactHardware.render(
     console.log('Rendered <ButtonApplication />');
   }
 );
-

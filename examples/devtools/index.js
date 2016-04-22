@@ -7,8 +7,6 @@ import {getPort} from '../port';
 import ReactHardware from '../../src';
 import React, {Component} from 'react';
 
-const {Container} = ReactHardware;
-
 class FlashingLed extends Component {
   constructor(props, context) {
     super(props, context);
@@ -73,12 +71,12 @@ class PulsingLed extends Component {
 }
 
 const Application = () => (
-  <Container>
+  <container>
     <PulsingLed pin={9} />
     <PulsingLed pin={10} />
     <FlashingLed pin={11} />
     <FlashingLed pin={12} delay={1000} />
-  </Container>
+  </container>
 );
 
 ReactHardware.render(
@@ -88,6 +86,3 @@ ReactHardware.render(
     console.log('Rendered <%s />', 'Devtools demonstration');
   }
 );
-
-
-

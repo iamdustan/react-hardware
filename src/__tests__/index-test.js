@@ -8,11 +8,9 @@ describe('ReactHardware Integration', () => {
   const ReactHardwareMount = require('../ReactHardwareMount')['default'];
 
   let Board;
-  let Pin;
-  let Container;
 
   beforeEach(() => {
-    ({Board, Container, Pin} = ReactHardware);
+    ({Board} = ReactHardware);
   });
 
   afterEach(() => {
@@ -59,12 +57,12 @@ describe('ReactHardware Integration', () => {
     class TestApplication extends React.Component {
       render() {
         return (
-          <Container>
+          <container>
             <pin pin={10} value={0} mode={'OUTPUT'} />
             <pin pin={11} value={0} mode={'OUTPUT'} />
             <pin pin={12} value={0} mode={'OUTPUT'} />
             <pin pin={13} value={0} mode={'OUTPUT'} />
-          </Container>
+          </container>
         );
       }
     }
@@ -123,4 +121,3 @@ describe('ReactHardware Integration', () => {
     );
   });
 });
-

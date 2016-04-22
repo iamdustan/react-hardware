@@ -15,7 +15,6 @@ const server = http.createServer().listen(3000, () => {
 // socket.io config
 const io = socket(server);
 const {
-  Container,
   Button,
 } = ReactHardware;
 
@@ -122,7 +121,7 @@ class Jeoparty extends React.Component {
 
   render() {
     return (
-      <Container>
+      <container>
         <JeopartyLed pin={3} status={this.state.led1} />
         <JeopartyLed pin={6} status={this.state.led2} />
         <JeopartyLed pin={9} status={this.state.led3} />
@@ -130,7 +129,7 @@ class Jeoparty extends React.Component {
         <Button pin={2} onUp={this.onClick.bind(this, 1)} />
         <Button pin={5} onUp={this.onClick.bind(this, 2)} />
         <Button pin={8} onUp={this.onClick.bind(this, 3)} />
-      </Container>
+      </container>
     );
   }
 }
@@ -142,4 +141,3 @@ ReactHardware.render(
     console.log('Rendered <Jeoparty />');
   }
 );
-

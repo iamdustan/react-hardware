@@ -6,7 +6,7 @@ import {getPort} from '../port';
 import ReactHardware from '../../src';
 import React, {Component} from 'react';
 
-const {Container, Switch, Led} = ReactHardware;
+const {Switch, Led} = ReactHardware;
 
 class SwitchDemo extends Component {
   constructor() {
@@ -18,10 +18,10 @@ class SwitchDemo extends Component {
 
   render():ReactElement {
     return (
-      <Container>
+      <container>
         <Switch pin={8} onChange={this.toggle} />
         <Led pin={13} mode={'OUTPUT'} value={this.state.switchValue} />
-      </Container>
+      </container>
     );
   }
 }
@@ -33,4 +33,3 @@ ReactHardware.render(
     console.log('Rendered <SwitchDemo />');
   }
 );
-

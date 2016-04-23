@@ -3,11 +3,9 @@
  * Insert an LED into Pin 9 and Potentiometer into 'A1' on an Arduino Uno.
  */
 
-import {getPort} from '../port';
-import ReactHardware from '../../src';
 import React, {Component} from 'react';
-
-const {Led, Potentiometer} = ReactHardware;
+import {getPort} from '../port';
+import ReactHardware, {Led, Potentiometer} from '../../src';
 
 class PotentiometerDemo extends Component {
   constructor(props, context) {

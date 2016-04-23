@@ -8,9 +8,9 @@
  * Provided composite components like <Button /> use this to logic
  */
 
+import React, {Component} from 'react';
 import {getPort} from '../port';
 import ReactHardware from '../../src';
-import React, {Component} from 'react';
 
 type HardwareEvent = {
   value: number;
@@ -27,8 +27,9 @@ type P = {
 class Button extends Component {
   props: P;
   defaultProps: {};
+  onRead: (value:number) => any;
 
-  constructor(props, context) {
+  constructor(props:P, context:{}) {
     super(props, context);
 
     this.onRead = this.onRead.bind(this);
@@ -43,11 +44,11 @@ class Button extends Component {
     }
 
     if (typeof onChange === 'function') {
-      this.props.onChange({value, type: 'change'});
+      onChange({value, type: 'change'});
     }
   }
 
-  render():ReactElement {
+  render() {
     return (
       <pin
         pin={this.props.pin}
@@ -58,7 +59,7 @@ class Button extends Component {
   }
 }
 
-class App extends React.Component {
+class App extends Component {
   constructor() {
     super();
 
@@ -73,8 +74,8 @@ class App extends React.Component {
     return (
       <container>
         <Button pin={2} onChange={this.toggle} />
-        <led pin={11} mode={'OUTPUT'} value={this.state.on ? 1 : 0} />
-        <led pin={13} mode={'OUTPUT'} value={this.state.on ? 0 : 1} />
+        <pin pin={11} mode={'OUTPUT'} value={this.state.on ? 1 : 0} />
+        <pin pin={13} mode={'OUTPUT'} value={this.state.on ? 0 : 1} />
       </container>
     );
   }

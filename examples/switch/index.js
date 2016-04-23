@@ -2,11 +2,9 @@
  * An example using the <Switch /> component to toggle an Led on and off.
  */
 
-import {getPort} from '../port';
-import ReactHardware from '../../src';
 import React, {Component} from 'react';
-
-const {Switch, Led} = ReactHardware;
+import {getPort} from '../port';
+import ReactHardware, {Switch, Led} from '../../src';
 
 class SwitchDemo extends Component {
   constructor() {

@@ -1,20 +1,16 @@
-/* eslint-disable */
-
-'use strict';
+import React, {Component} from 'react';
+import ReactHardware, {render, unmountComponentAtNode, Button} from '../';
+import ReactHardwareMount from '../ReactHardwareMount';
 
 describe('ReactHardware Integration', () => {
-  const React = require('react');
-  const ReactHardware = require('../index')['default'];
-  const ReactHardwareMount = require('../ReactHardwareMount')['default'];
-
-  let Board;
-
-  beforeEach(() => {
-    ({Board} = ReactHardware);
-  });
-
   afterEach(() => {
     ReactHardwareMount._emptyCache();
+  });
+
+  it('should export ReactHardware as default and individual exports', () => {
+    expect(ReactHardware.Button).toBe(Button);
+    expect(ReactHardware.render).toBe(render);
+    expect(ReactHardware.unmountComponentAtNode).toBe(unmountComponentAtNode);
   });
 
   it('should handle a simple flow with reusing the root node', (done) => {
@@ -45,7 +41,7 @@ describe('ReactHardware Integration', () => {
           expect(props.value).toBe(1);
           expect(props.mode).toBe('INPUT');
 
-          ReactHardware.unmountComponentAtNode(container);
+          unmountComponentAtNode(container);
           done();
         }
       );
@@ -54,7 +50,7 @@ describe('ReactHardware Integration', () => {
 
   it('should render multiple children', (done) => {
     const container = '/dev/cu.usbmodem1451';
-    class TestApplication extends React.Component {
+    class TestApplication extends Component {
       render() {
         return (
           <container>
@@ -82,15 +78,13 @@ describe('ReactHardware Integration', () => {
 
   it('should support changing a child', (done) => {
     const container = '/dev/cu.usbmodem1451';
-    class OtherPin extends React.Component {
+    class OtherPin extends Component {
       render() {
-        return (
-          <pin pin={10} value={1} mode={'OUTPUT'} />
-        );
+        return <pin pin={10} value={1} mode={'OUTPUT'} />;
       }
     }
 
-    class TestApplication extends React.Component {
+    class TestApplication extends Component {
       constructor() {
         super();
 
@@ -106,12 +100,10 @@ describe('ReactHardware Integration', () => {
 
       render() {
         if (this.state.swapped) {
-          return <OtherPin ref={'other'} />
+          return <OtherPin ref={'other'} />;
         }
 
-        return (
-          <pin pin={10} value={0} mode={'OUTPUT'} />
-        );
+        return <pin pin={10} value={0} mode={'OUTPUT'} />;
       }
     }
 

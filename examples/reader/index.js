@@ -8,9 +8,9 @@
  * Provided composite components like <Button /> use this to logic
  */
 
+import React, {Component} from 'react';
 import {getPort} from '../port';
 import ReactHardware from '../../src';
-import React, {Component} from 'react';
 
 type HardwareEvent = {
   value: number;
@@ -62,6 +62,3 @@ ReactHardware.render(
     console.log('Rendered <%s />', Button.name);
   }
 );
-
-
-

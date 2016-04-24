@@ -26,6 +26,7 @@ export const GENERIC_VIEW_CONFIG = {
     pin: true,
     value: true,
     onRead: true,
+    config: true,
   },
   uiViewClassName: 'GenericComponent',
 };

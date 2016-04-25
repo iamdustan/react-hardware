@@ -3,9 +3,9 @@
  * Insert an LED into Pin 9 and run this example.
  */
 
+import React, {Component} from 'react';
 import {getPort} from '../port';
 import ReactHardware from '../../src';
-import React, {Component} from 'react';
 
 class FlashingLed extends Component {
   constructor(props, context) {

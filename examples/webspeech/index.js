@@ -53,4 +53,3 @@ ReactHardware.render(
     console.log('Rendered <%s />', VoiceControlledApplication.name);
   }
 );
-

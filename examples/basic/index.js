@@ -40,4 +40,3 @@ ReactHardware.render(
     console.log('Rendered <%s />', FlashingLed.name);
   }
 );
-

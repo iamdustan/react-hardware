@@ -112,4 +112,3 @@ ReactHardware.render(
     console.log('Rendered  ChangingComponentApplication');
   }
 );
-

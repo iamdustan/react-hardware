@@ -2,8 +2,8 @@
  * https://github.com/keithpops/jeoparty in React Hardware
  * TODO: actually implement the rest of the app
  */
-import React from 'react';
-import ReactHardware from '../../src';
+import React, {Component} from 'react';
+import ReactHardware, {Button} from '../../src';
 import {getPort} from '../port';
 import socket from 'socket.io';
 import http from 'http';
@@ -14,11 +14,8 @@ const server = http.createServer().listen(3000, () => {
 
 // socket.io config
 const io = socket(server);
-const {
-  Button,
-} = ReactHardware;
 
-class JeopartyLed extends React.Component {
+class JeopartyLed extends Component {
   constructor() {
     super();
 
@@ -51,7 +48,7 @@ class JeopartyLed extends React.Component {
   }
 }
 
-class Jeoparty extends React.Component {
+class Jeoparty extends Component {
   constructor() {
     super();
 

@@ -36,4 +36,3 @@ class Servo extends Component {
 }
 
 export default Servo;
-

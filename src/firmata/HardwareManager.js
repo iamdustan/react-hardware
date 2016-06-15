@@ -212,11 +212,24 @@ export const setPayloadForPin = (
   // console.log(`set pinMode of "%s" to "%s"`, payload.pin, payload.mode);
   const normalizedPin = analogToDigital(payload.pin);
   board.pinMode(normalizedPin, MODES[payload.mode]);
-  const communicationType = FIRMATA_COMMUNICATION_METHOD[MODES[payload.mode]];
-  if (typeof payload.value !== 'undefined') {
-    // console.log(`${communicationType}Write to "%s" with "%s"`, payload.pin, payload.value);
-    /* $FlowFixMe computed property call */
-    board[`${communicationType}Write`](payload.pin, +payload.value);
+  const communicationType = FIRMATA_COMMUNICATION_METHOD[MODES[payload.mode]].toLowerCase();
+
+  switch (communicationType) {
+    case 'servo':
+      board.servoConfig(normalizedPin, +payload.min, +payload.max);
+      board.servoWrite(normalizedPin, +payload.value);
+      break;
+    case 'digital':
+      board.digitalWrite(normalizedPin, +payload.value);
+      break;
+    case 'analog':
+      board.analogWrite(normalizedPin, +payload.value);
+      break;
+    // todo
+    // * i2c
+    // * debugString
+    // * serial
+    // * sysex
   }
 
   if (payload.onRead) {

@@ -56,7 +56,7 @@ class Application extends React.Component {
 }
 
 var PORT = '/dev/tty.usbmodem1411';
-ReactHardare.render(<Application />, PORT);
+ReactHardware.render(<Application />, PORT);
 ```
 
 While this is unquestionably more code than it’s Johnny-Five or Sketch

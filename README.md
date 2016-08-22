@@ -2,9 +2,6 @@
 
 [![Build Status](https://travis-ci.org/iamdustan/react-hardware.svg?branch=master)](https://travis-ci.org/iamdustan/react-hardware)
 
-> You are on the *rewrite* branch of an *alpha* software project. That should
-> tell you something about what to expect happening here. :)
-
 React Hardware enables you to build firmata-based hardware applications using a
 consistent developer experience based on JavaScript and React. The focus of
 React Hardware is on developer efficiency across all the platforms you care

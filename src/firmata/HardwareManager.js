@@ -137,7 +137,8 @@ export const setPayloadForPin = (
     return;
   }
 
-  const {board} = connection;
+  // backwards compatible with Stack
+  const board = connection.board || connection;
   const {MODES} = board;
 
   // console.log(`set pinMode of "%s" to "%s"`, payload.pin, payload.mode);
@@ -158,12 +159,14 @@ export const setPayloadForPin = (
  * NOTE: This is a leaky abstraction. It returns the direct Board IO instance.
  */
 export const getNativeNode = (
-  component:React$Component&{_rootNodeID:string}
-):typeof Board => {
+  component : React$Component&{_rootNodeID:string}
+) : Board | null => {
   const connection = findConnectionForRootId(component._rootNodeID);
 
   if (connection) {
     return connection.board;
+  } else {
+    return null;
   }
 };
 

@@ -2,7 +2,8 @@
  * @flow
  */
 
-import type {FirmataBoard} from './types';
+import type {Board} from 'firmata';
+
 import invariant from 'fbjs/lib/invariant';
 import warning from 'fbjs/lib/warning';
 
@@ -11,8 +12,6 @@ const assertValidProps = (
   tag : string,
   rawProps : Object
 ) => {
-  console.log('tag', tag);
-  console.log('rawProps', rawProps);
   // TODO: getDeclarationErrorAddendum() and getCurrentOwnerName()
   // should be added to the invariants
   invariant(
@@ -38,7 +37,8 @@ const ReactHardwareFiberComponent = {
     rootContainerElement : FirmataBoard,
     hostContext : string | null
   ) {
-    return tag;
+    // TODO: element should be a data structure that represents the “element”
+    return props;
   },
 
   setInitialProperties(

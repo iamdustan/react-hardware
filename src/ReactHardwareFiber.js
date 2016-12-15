@@ -1,11 +1,14 @@
 /** @flow */
 
+import type {Board} from 'firmata';
 import type {Fiber} from 'react-dom/lib/ReactFiber';
-import type {FirmataBoard} from './types';
 
 import ReactFiberReconciler from 'react-dom/lib/ReactFiberReconciler';
 import ReactHardwareFiberComponent from './ReactHardwareFiberComponent';
 import HardwareInstanceManager from './firmata/HardwareInstanceManager';
+import {
+  setPayloadForPin
+} from './firmata/HardwareManager';
 
 const {
   createElement,
@@ -15,7 +18,7 @@ const {
 
 const precacheFiberNode = (internalInstanceHandle, instance) => null; // TODO: ReactHardwareComponentTree
 
-type Container = FirmataBoard;
+type Container = Board;
 type Props = Object;
 type Instance = any; // TODO
 type TextInstance = any; // TODO
@@ -46,7 +49,8 @@ const HardwareRenderer = ReactFiberReconciler({
     parentInstance: Instance,
     child: Instance | TextInstance
   ) {
-    parentInstance.appendChild(child);
+    setPayloadForPin(parentInstance, payload);
+    // parentInstance.appendChild(child);
   },
 
   finalizeInitialChildren(
@@ -98,7 +102,9 @@ const HardwareRenderer = ReactFiberReconciler({
     parentInstance: Instance | Container,
     child: Instance | TextInstance
   ) {
-    parentInstance.appendChild(child);
+    console.log('appendChild', child);
+    setPayloadForPin(parentInstance, child);
+    // parentInstance.appendChild(child);
   },
 
   insertBefore(
@@ -129,7 +135,11 @@ function renderSubtreeIntoContainer(
   const root = HardwareInstanceManager.get(container);
   if (!root) {
     HardwareInstanceManager.connect(container, (error, root) => {
-      HardwareRenderer.mountContainer(element, root, parentComponent, callback);
+      if (error) {
+        console.log(error);
+      } else {
+        HardwareRenderer.mountContainer(element, root, parentComponent, callback);
+      }
     });
   } else {
     HardwareRenderer.updateContainer(element, root, parentComponent, callback);

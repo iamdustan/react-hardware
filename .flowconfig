@@ -1,4 +1,8 @@
 [ignore]
+# stop checking the stack reconciler in the new world :D
+.*/src/index.js
+.*/src/stack
+
 # Ignore react and fbjs where there are overlaps, but don't ignore
 # anything that react-native relies on
 .*/node_modules/fbjs.*

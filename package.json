@@ -41,11 +41,12 @@
   "homepage": "https://github.com/iamdustan/react-hardware",
   "dependencies": {
     "fbjs": "^0.8.0",
-    "firmata": "^0.11.3",
-    "react": "^15.0.0",
-    "serialport": "^2.0.6",
-    "setimmediate": "^1.0.4",
-    "ws": "^1.0.1"
+    "firmata": "^0.14.1",
+    "react": "http://react.zpao.com/builds/master/latest/react.tgz",
+    "react-dom": "http://react.zpao.com/builds/master/latest/react-dom.tgz",
+    "serialport": "^4.0.7",
+    "setimmediate": "^1.0.5",
+    "ws": "^1.1.1"
   },
   "devDependencies": {
     "babel-cli": "^6.6.4",

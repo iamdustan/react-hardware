@@ -5,4 +5,8 @@ export type HardwareEvent = {
   type: string;
 };
 
+declare class FirmataBoard extends EventEmitter {
+  constructor (port: string, options: Object, callback: Function): FirmataBoard
+}
+
 

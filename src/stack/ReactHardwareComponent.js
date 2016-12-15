@@ -5,11 +5,11 @@
 import ReactMultiChild from 'react/lib/ReactMultiChild';
 import ReactCurrentOwner from 'react/lib/ReactCurrentOwner';
 
-import {create, diff} from './attributePayload';
+import {create, diff} from '../attributePayload';
 import invariant from 'fbjs/lib/invariant';
 import warning from 'fbjs/lib/warning';
 
-import * as HardwareManager from './HardwareManager';
+import * as HardwareManager from '../firmata/HardwareManager';
 
 // TODO: typedef Transaction
 type ReactReconcileTransaction = any;

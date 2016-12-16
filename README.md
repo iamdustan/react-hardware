@@ -53,7 +53,7 @@ class Application extends React.Component {
 }
 
 var PORT = '/dev/tty.usbmodem1411';
-ReactHardware.render(<Application />, PORT);
+ReactHardware.render(<Application interval={1000} />, PORT);
 ```
 
 While this is unquestionably more code than it’s Johnny-Five or Sketch
@@ -76,6 +76,9 @@ class FlashingLed extends React.Component {
     this.state = {
       value: 0,
       _timer: null,
+    };
+    this.defaultProps = {
+      interval: 1000,
     };
   }
 

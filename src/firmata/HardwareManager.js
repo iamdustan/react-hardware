@@ -32,11 +32,11 @@ const FIRMATA_COMMUNICATION_METHOD = {
 };
 
 export type Connection = {
-  rootID: string;
-  status: 'CONNECTING' | 'CONNECTED';
-  component: ?React$Component;
-  board: typeof Board;
-  readers: {[pin:string]: (...args:any) => any};
+  rootID: string,
+  status: 'CONNECTING' | 'CONNECTED',
+  component: any, // ReactComponent
+  board: typeof Board,
+  readers: {[pin:string]: (...args:any) => any},
 };
 
 const deferredReader =
@@ -44,9 +44,9 @@ const deferredReader =
     (value) => connection.readers[pin].call(value);
 
 const setReader = (
-  connection:Connection,
-  communicationType:string,
-  payload:Object
+  connection : Connection,
+  communicationType : string,
+  payload : Object
 ) => {
   if (!connection.readers[payload.pin]) {
     const reader = deferredReader(connection, payload.pin);
@@ -80,8 +80,8 @@ const findConnectionForRootId:FindConnectionForRootId = (rootID) => {
  * configuration.
  */
 export const validatePayloadForPin = (
-  maybeConnection:string|Connection,
-  payload:Object
+  maybeConnection : string | Connection | typeof Board,
+  payload : Object
 ) => {
   if (payload == null) {
     return;
@@ -122,8 +122,8 @@ export const validatePayloadForPin = (
  * Sets a pin's values to the desired payload.
  */
 export const setPayloadForPin = (
-  maybeConnection:string|Connection,
-  payload:?Object
+  maybeConnection : string | Connection | typeof Board,
+  payload : ?Object
 ) => {
   if (payload == null) {
     return;

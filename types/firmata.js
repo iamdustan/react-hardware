@@ -26,6 +26,9 @@ declare module 'firmata' {
     constructor(port: Port, options: Options, callback: Function): Board;
     constructor(port: Port, callback: Function): Board;
 
+    // TODO
+    MODES: Object;
+
     reportVersion(callback: Function): void;
     queryFirmware(callback: Function): void;
     analogRead(pin: Pin, callback: Function): void;

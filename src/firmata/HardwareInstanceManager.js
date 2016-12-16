@@ -3,7 +3,6 @@
  * @flow
  */
 
-import type {FirmataBoard} from '../types';
 import {Board} from 'firmata';
 
 const connectionsByContainer = {};
@@ -37,11 +36,12 @@ function setup(port, callback) {
 const HardwareInstanceManager = {
   connect(
     port : ?string,
-    callback: (error : ?Error, root : FirmataBoard) => any
+    callback: (error : ?Error, root : typeof Board) => any
   ) {
     if (port == null) {
       console.info('Requesting port...');
       Board.requestPort((error, port) => {
+        console.log(error, port);
         if (error) {
           callback(error);
         } else {

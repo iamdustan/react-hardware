@@ -7,6 +7,8 @@ import type {Board} from 'firmata';
 import invariant from 'fbjs/lib/invariant';
 import warning from 'fbjs/lib/warning';
 
+type Instance = Object;
+
 // TODO: switch `tag` to pin MODE
 const assertValidProps = (
   tag : string,
@@ -34,33 +36,36 @@ const ReactHardwareFiberComponent = {
   createElement(
     tag: string,
     props : Object,
-    rootContainerElement : FirmataBoard,
+    rootContainerElement : Board,
     hostContext : string | null
   ) {
+    console.log('ReactHardwareFiberComponent.createElement');
     // TODO: element should be a data structure that represents the “element”
-    return props;
+    return Object.assign({}, props);
   },
 
   setInitialProperties(
-    element : string,
+    element : Instance,
     tag : string,
     rawProps : Object,
-    rootContainerElement : FirmataBoard
+    rootContainerElement : Board
   ) {
     assertValidProps(tag, rawProps);
     // this assumes I have an instance of a hardware node...
-    // updateProperties();
+    Object.assign(element, rawProps);
+    console.log('setInitialProperties', element);
   },
 
   updateProperties(
-    instance : string,
+    element : Instance,
     tag : string,
     lastRawProps : Object,
     nextRawProps : Object,
-    rootContainerElement : FirmataBoard
+    rootContainerElement : Board
   ) {
     assertValidProps(tag, nextRawProps);
-    updateProperties(/* TODO */);
+    Object.assign(element, nextRawProps);
+    console.log('updateProperties', element);
   },
 };
 

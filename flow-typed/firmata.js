@@ -21,13 +21,20 @@ type Byte = any; // FIXME
 // TOOD: fix these
 type Unknown = any;
 
+// TODO : can this be dynamic?
+type Modes = {[key: string]: number};
+type Pins = {
+  supportedModes: any,
+  mode: number,
+  value: number,
+  report: number,
+  analogChannel: number
+};
+
 declare module 'firmata' {
   declare class Board extends events$EventEmitter {
     constructor(port: Port, options: Options, callback: Function): Board;
     constructor(port: Port, callback: Function): Board;
-
-    // TODO
-    MODES: Object;
 
     reportVersion(callback: Function): void;
     queryFirmware(callback: Function): void;
@@ -170,6 +177,11 @@ declare module 'firmata' {
     // TODO: constrain these
     static SYSEX_RESPONSE: {[event: number]: Function};
     static MIDI_RESPONSE: {[event: number]: Function};
+
+    // TODO
+    MODES: Modes;
+    pins: Array<Pins>;
+
 
     // Expose encode/decode for custom sysex messages
     static encode(data: any): any;

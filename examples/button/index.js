@@ -71,6 +71,13 @@ class App extends Component {
   }
 
   render():ReactElement {
+    return [
+      <Button pin={2} onChange={this.toggle} />,
+      <pin pin={11} mode={'OUTPUT'} value={this.state.on ? 1 : 0} />,
+      <pin pin={13} mode={'OUTPUT'} value={this.state.on ? 0 : 1} />,
+    ];
+
+    /*
     return (
       <container>
         <Button pin={2} onChange={this.toggle} />
@@ -78,6 +85,7 @@ class App extends Component {
         <pin pin={13} mode={'OUTPUT'} value={this.state.on ? 0 : 1} />
       </container>
     );
+    */
   }
 }
 

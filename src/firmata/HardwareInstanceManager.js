@@ -4,8 +4,12 @@
  */
 
 import {Board} from 'firmata';
-
-const connectionsByContainer = {};
+import {
+  getConnection,
+  setupConnection,
+  updateConnection,
+  teardownConnection,
+} from './HardwareManager';
 
 function setup(port, callback) {
   console.info('Connecting to port "%s"', port);
@@ -14,10 +18,11 @@ function setup(port, callback) {
       console.info('Board setup error');
       callback(error);
     } else {
-      connectionsByContainer[port] = board;
+      updateConnection(port, board);
       callback(null, board);
     }
   });
+  setupConnection(port, board);
 
   board.on('error', (error) => {
     // TODO: look up docs/source code for this
@@ -28,7 +33,7 @@ function setup(port, callback) {
   board.on('close', () => {
     console.info('Board in port "%s" closed', port);
     // TODO: unmount React tree automatically when this happens.
-    delete connectionsByContainer[port];
+    teardownConnection(port);
   });
 
 }
@@ -55,7 +60,10 @@ const HardwareInstanceManager = {
 
   get(port : ?string) {
     if (port) {
-      return connectionsByContainer[port];
+      const connection = getConnection(port);
+      if (connection) {
+        return connection.board;
+      }
     }
   }
 };

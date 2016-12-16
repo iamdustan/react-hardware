@@ -4,12 +4,19 @@
 
 import type {Board} from 'firmata';
 
-import invariant from 'fbjs/lib/invariant';
-import warning from 'fbjs/lib/warning';
+// import invariant from 'fbjs/lib/invariant';
+// import warning from 'fbjs/lib/warning';
+import {
+  setPayloadForPin,
+  validatePayloadForPin
+} from '../firmata/HardwareManager';
+
+const assertValidProps = validatePayloadForPin;
 
 type Instance = Object;
 
 // TODO: switch `tag` to pin MODE
+/*
 const assertValidProps = (
   tag : string,
   rawProps : Object
@@ -31,6 +38,7 @@ const assertValidProps = (
     'A value should be provided'
   );
 };
+*/
 
 const ReactHardwareFiberComponent = {
   createElement(
@@ -39,7 +47,7 @@ const ReactHardwareFiberComponent = {
     rootContainerElement : Board,
     hostContext : string | null
   ) {
-    console.log('ReactHardwareFiberComponent.createElement');
+    // console.log('ReactHardwareFiberComponent.createElement');
     // TODO: element should be a data structure that represents the “element”
     return Object.assign({}, props);
   },
@@ -50,10 +58,11 @@ const ReactHardwareFiberComponent = {
     rawProps : Object,
     rootContainerElement : Board
   ) {
-    assertValidProps(tag, rawProps);
+    assertValidProps(rootContainerElement, rawProps);
     // this assumes I have an instance of a hardware node...
     Object.assign(element, rawProps);
-    console.log('setInitialProperties', element);
+    setPayloadForPin(rootContainerElement, element);
+    // console.log('setInitialProperties', element);
   },
 
   updateProperties(
@@ -63,9 +72,10 @@ const ReactHardwareFiberComponent = {
     nextRawProps : Object,
     rootContainerElement : Board
   ) {
-    assertValidProps(tag, nextRawProps);
+    assertValidProps(rootContainerElement, nextRawProps);
     Object.assign(element, nextRawProps);
-    console.log('updateProperties', element);
+    setPayloadForPin(rootContainerElement, element);
+    // console.log('updateProperties', element);
   },
 };
 

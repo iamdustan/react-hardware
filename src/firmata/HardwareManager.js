@@ -34,8 +34,8 @@ const FIRMATA_COMMUNICATION_METHOD = {
 export type Connection = {
   rootID: string,
   status: 'CONNECTING' | 'CONNECTED',
-  component: any, // ReactComponent
-  board: typeof Board,
+  component?: any, // ReactComponent
+  board: Board,
   readers: {[pin:string]: (...args:any) => any},
 };
 
@@ -44,10 +44,19 @@ const deferredReader =
     (value) => connection.readers[pin].call(value);
 
 const setReader = (
-  connection : Connection,
+  connection : Connection | Board,
   communicationType : string,
   payload : Object
 ) => {
+  if (typeof connection.setReader !== 'function') {
+    for (let c in connectionsByContainer) {
+      if (connectionsByContainer[c].board === connection) {
+        connection = connectionsByContainer[c];
+        break;
+      }
+    }
+  }
+
   if (!connection.readers[payload.pin]) {
     const reader = deferredReader(connection, payload.pin);
     connection.readers[payload.pin] = {reader, call: null};
@@ -61,11 +70,58 @@ const setReader = (
   connection.readers[payload.pin].call = payload.onRead;
 };
 
-export const connectionsByContainer:{[key:string]: Connection} = {};
+const connectionsByContainer:{[key:string]: Connection} = {};
+export const getConnection = (port : string) => {
+  return connectionsByContainer[port];
+};
+
+export const setupConnection = (
+  port : string,
+  board : null | Board
+) => {
+  const connection = {
+    rootID: port,
+    status: 'CONNECTING',
+    board,
+    readers: {},
+  };
+  connectionsByContainer[port] = connection;
+  return connection;
+};
+
+export const updateConnection = (
+  port : string,
+  board : Board
+) => {
+  const connection = connectionsByContainer[port];
+  if (!connection) {
+    throw new Error('Attempted to update non-existent connection for port ' + port);
+  }
+  connection.status = 'CONNECTING';
+  return connection;
+};
+
+export const teardownConnection = (
+  port : string,
+  board : Board
+) => {
+  const connection = connectionsByContainer[port];
+  if (!connection) {
+    console.warn(
+      'Attempted to teardown non-existent connection for port %s', 
+      port
+    );
+  } else {
+    connection.status = 'DISCONNECTED';
+    connection.board = null;
+    // TODO : memory leak. Remove these
+    connection.readers = null;
+    return connection;
+  }
+};
 
 // matches return value of the input value
-type FindConnectionForRootId = (rootID:string) => ?Connection;
-const findConnectionForRootId:FindConnectionForRootId = (rootID) => {
+const findConnectionForRootId = (rootID) => {
   for (const connection in connectionsByContainer) {
     if (connectionsByContainer[connection].rootID !== rootID) {
       continue;
@@ -80,14 +136,14 @@ const findConnectionForRootId:FindConnectionForRootId = (rootID) => {
  * configuration.
  */
 export const validatePayloadForPin = (
-  maybeConnection : string | Connection | typeof Board,
+  maybeConnection : string | Connection | Board,
   payload : Object
 ) => {
   if (payload == null) {
     return;
   }
 
-  const connection =  typeof maybeConnection === 'string'
+  const connection = typeof maybeConnection === 'string'
     ? findConnectionForRootId(maybeConnection)
     : maybeConnection;
 
@@ -97,7 +153,10 @@ export const validatePayloadForPin = (
     connection
   );
 
-  const {board} = connection;
+  const board : Board = (
+    connection.board ||
+    connection : any
+  );
   const {pins, MODES} = board;
 
   const mode = MODES[payload.mode];
@@ -122,7 +181,7 @@ export const validatePayloadForPin = (
  * Sets a pin's values to the desired payload.
  */
 export const setPayloadForPin = (
-  maybeConnection : string | Connection | typeof Board,
+  maybeConnection : string | Connection | Board,
   payload : ?Object
 ) => {
   if (payload == null) {
@@ -138,7 +197,7 @@ export const setPayloadForPin = (
   }
 
   // backwards compatible with Stack
-  const board = connection.board || connection;
+  const board : Board = (connection.board || connection : any);
   const {MODES} = board;
 
   // console.log(`set pinMode of "%s" to "%s"`, payload.pin, payload.mode);
@@ -147,6 +206,7 @@ export const setPayloadForPin = (
   const communicationType = FIRMATA_COMMUNICATION_METHOD[MODES[payload.mode]];
   if (typeof payload.value !== 'undefined') {
     // console.log(`${communicationType}Write to "%s" with "%s"`, payload.pin, payload.value);
+    // $FlowFixMe computed property call
     board[`${communicationType}Write`](payload.pin, +payload.value);
   }
 
@@ -159,7 +219,7 @@ export const setPayloadForPin = (
  * NOTE: This is a leaky abstraction. It returns the direct Board IO instance.
  */
 export const getNativeNode = (
-  component : React$Component&{_rootNodeID:string}
+  component : ReactComponent<*, *, *> & {_rootNodeID:string}
 ) : Board | null => {
   const connection = findConnectionForRootId(component._rootNodeID);
 

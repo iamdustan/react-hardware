@@ -42,7 +42,7 @@ const HardwareRenderer = ReactFiberReconciler({
     hostContext : string | null,
     internalInstanceHandle : Object,
   ): Instance {
-    console.log('createInstance');
+    // console.log('createInstance');
     const instance : Instance = createElement(type, props, rootContainerInstance, hostContext);
     precacheFiberNode(internalInstanceHandle, instance);
     return instance;

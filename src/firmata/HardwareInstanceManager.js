@@ -46,7 +46,6 @@ const HardwareInstanceManager = {
     if (port == null) {
       console.info('Requesting port...');
       Board.requestPort((error, port) => {
-        console.log(error, port);
         if (error) {
           callback(error);
         } else {

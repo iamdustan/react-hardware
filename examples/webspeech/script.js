@@ -102,7 +102,7 @@ class App extends Component<any, any, S> {
     this.setState({hearing: last(event.results)[0].transcript});
   }
 
-  render():ReactElement {
+  render() {
     if (this.state.error) {
       return (
         <div style={{background: 'yellow', padding: '0.75em', overflow: 'hidden'}}>

@@ -77,5 +77,5 @@ new http.createServer((req, res) => {
     });
   }
 }).listen(9000, '127.0.0.1', () => {
-  console.log('Speech recognizer webpack on localhost:8000');
+  console.log('Speech recognizer webpack on localhost:9000');
 });

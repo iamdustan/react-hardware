@@ -44,7 +44,7 @@ class Button extends Component {
     this.props.onChange({value, type: 'change'});
   }
 
-  render():ReactElement {
+  render() {
     return (
       <pin
         pin={this.props.pin}

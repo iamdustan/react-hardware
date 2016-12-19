@@ -38,7 +38,7 @@ class VoiceControlledApplication extends Component {
   render() {
     return (
       <pin
-        pin={9}
+        pin={11}
         value={this.state.value}
         mode={'PWM'}
       />

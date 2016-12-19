@@ -5,7 +5,7 @@
 import type {Board} from 'firmata';
 
 // import invariant from 'fbjs/lib/invariant';
-// import warning from 'fbjs/lib/warning';
+import warning from 'fbjs/lib/warning';
 import {
   setPayloadForPin,
   validatePayloadForPin
@@ -47,7 +47,16 @@ const ReactHardwareFiberComponent = {
     rootContainerElement : Board,
     hostContext : string | null
   ) {
-    // console.log('ReactHardwareFiberComponent.createElement');
+    // Deprecated path for when a `container` is hit which was a hack in stack
+    // for being unable to return an array from render.
+    if (tag === 'container') {
+      warning(false,
+        'The <container /> tag has been deprecated and will be removed in ' +
+        'the next release. ReactFiber supports returning an array from render()'
+      );
+      return rootContainerElement;
+    }
+
     // TODO: element should be a data structure that represents the “element”
     return Object.assign({}, props);
   },
@@ -58,6 +67,12 @@ const ReactHardwareFiberComponent = {
     rawProps : Object,
     rootContainerElement : Board
   ) {
+    // Deprecated path for when a `container` is hit which was a hack in stack
+    // for being unable to return an array from render.
+    if (tag === 'container') {
+      return;
+    }
+
     assertValidProps(rootContainerElement, rawProps);
     // this assumes I have an instance of a hardware node...
     Object.assign(element, rawProps);
@@ -72,6 +87,12 @@ const ReactHardwareFiberComponent = {
     nextRawProps : Object,
     rootContainerElement : Board
   ) {
+    // Deprecated path for when a `container` is hit which was a hack in stack
+    // for being unable to return an array from render.
+    if (tag === 'container') {
+      return;
+    }
+
     assertValidProps(rootContainerElement, nextRawProps);
     Object.assign(element, nextRawProps);
     setPayloadForPin(rootContainerElement, element);

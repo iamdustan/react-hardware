@@ -42,7 +42,6 @@ const HardwareRenderer = ReactFiberReconciler({
     hostContext : string | null,
     internalInstanceHandle : Object,
   ): Instance {
-    // console.log('createInstance');
     const instance : Instance = createElement(type, props, rootContainerInstance, hostContext);
     precacheFiberNode(internalInstanceHandle, instance);
     return instance;
@@ -105,6 +104,12 @@ const HardwareRenderer = ReactFiberReconciler({
     parentInstance: Instance | Container,
     child: Instance | TextInstance
   ) {
+    // Deprecated path for when a `container` is hit which was a hack in stack
+    // for being unable to return an array from render.
+    if (parentInstance === child) {
+      return;
+    }
+
     setPayloadForPin(parentInstance, child);
     // parentInstance.appendChild(child);
   },
@@ -118,7 +123,8 @@ const HardwareRenderer = ReactFiberReconciler({
   },
 
   removeChild(parentInstance : Instance | Container, child : Instance | TextInstance) : void {
-    parentInstance.removeChild(child);
+    console.warn('TODO: ReactHardwareRenderer.removeChild');
+    // parentInstance.removeChild(child);
   },
 
   scheduleAnimationCallback: process.nextTick,

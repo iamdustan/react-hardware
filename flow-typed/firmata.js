@@ -13,16 +13,15 @@ type Options = {
 type Pin = number;
 type Microsecond = number;
 type Millisecond = number;
-type Mode =
-  | string
-  | 'TODO';
+// TODO
+type Mode = {[mmode: string]: number};
 
 type Byte = any; // FIXME
 // TOOD: fix these
 type Unknown = any;
 
 // TODO : can this be dynamic?
-type Modes = {[key: string]: number};
+type Modes = {[key: string]: any};
 type Pins = {
   supportedModes: any,
   mode: number,
@@ -31,24 +30,28 @@ type Pins = {
   analogChannel: number
 };
 
+type Result<T> =
+  | (error : Error | null, value?: T) => void;
+  // | (error : null, root: T) => void;
+
 declare module 'firmata' {
   declare class Board extends events$EventEmitter {
-    constructor(port: Port, options: Options, callback: Function): Board;
-    constructor(port: Port, callback: Function): Board;
+    constructor(port: Port, options: Options, callback: Result<any>): Board;
+    constructor(port: Port, callback: Result<any>): Board;
 
-    reportVersion(callback: Function): void;
-    queryFirmware(callback: Function): void;
-    analogRead(pin: Pin, callback: Function): void;
+    reportVersion(callback: Result<any>): void;
+    queryFirmware(callback: Result<any>): void;
+    analogRead(pin: Pin, callback: Result<any>): void;
     analogWrite(pin: Pin, value: number): void;
     pwmWrite(pin: Pin, value: number): void;
     servoConfig(pin: Pin, min: number, max: number): void;
     servoWrite(pin: Pin, value: number): void;
     pinMode(pin: Pin, mode: Mode): void;
     digitalWrite(pin: Pin, value: number): void;
-    digitalRead(pin: Pin, callback: Function): void;
-    queryCapabilities(callback: Function): void;
-    queryAnalogMapping(callback: Function): void;
-    queryPinState(pin: Pin, callback: Function): void;
+    digitalRead(pin: Pin, callback: Result<any>): void;
+    queryCapabilities(callback: Result<any>): void;
+    queryAnalogMapping(callback: Result<any>): void;
+    queryPinState(pin: Pin, callback: Result<any>): void;
     sendString(str: string): void;
     sendI2CConfig(delay: Microsecond): void;
 
@@ -63,28 +66,28 @@ declare module 'firmata' {
     i2cWriteReg(address: number, register: number, byte: Byte): void;
     i2cWriteReg(address: number, register: number, byte: Byte): void;
 
-    sendI2CReadRequest(address: number, numBytes: number, callback: Function): void;
+    sendI2CReadRequest(address: number, numBytes: number, callback: Result<any>): void;
 
-    i2cRead(address: number, register: number, bytesToRead: number, callback: Function): void;
-    i2cRead(address: number, bytesToRead: number, callback: Function): void;
+    i2cRead(address: number, register: number, bytesToRead: number, callback: Result<any>): void;
+    i2cRead(address: number, bytesToRead: number, callback: Result<any>): void;
 
     i2cStop(address: number): void;
     i2cStop(options: {|bus: number, address: number|}): void;
 
-    i2cReadOnce(address: number, register: number, bytesToRead: number, callback: Function): void;
-    i2cReadOnce(address: number, bytesToRead: number, callback: Function): void;
+    i2cReadOnce(address: number, register: number, bytesToRead: number, callback: Result<any>): void;
+    i2cReadOnce(address: number, bytesToRead: number, callback: Result<any>): void;
 
     sendOneWireConfig(pin: Pin, enableParasiticPower: boolean): void;
-    sendOneWireSearch(pin: Pin, callback: Function): void;
-    sendOneWireAlarmsSearch(pin: Pin, callback: Function): void;
-    sendOneWireAlarmsSearch(pin: Pin, callback: Function): void;
+    sendOneWireSearch(pin: Pin, callback: Result<any>): void;
+    sendOneWireAlarmsSearch(pin: Pin, callback: Result<any>): void;
+    sendOneWireAlarmsSearch(pin: Pin, callback: Result<any>): void;
 
-    _sendOneWireSearch(type: Unknown, event: Unknown, pin: Pin, callback: Function): void;
-    sendOneWireRead(pin: Pin, device: Unknown, numBytesToRead: number, callback: Function): void;
+    _sendOneWireSearch(type: Unknown, event: Unknown, pin: Pin, callback: Result<any>): void;
+    sendOneWireRead(pin: Pin, device: Unknown, numBytesToRead: number, callback: Result<any>): void;
     sendOneWireReset(pin: Pin): void;
     sendOneWireWrite(pin: Pin, device: Unknown, data: Unknown): void;
     sendOneWireDelay(pin: Pin, delay: Microsecond): void;
-    sendOneWireWriteAndRead(pin: Pin, device: Unknown, data: Unknown, numBytesToRead: number, callback: Function): void;
+    sendOneWireWriteAndRead(pin: Pin, device: Unknown, data: Unknown, numBytesToRead: number, callback: Result<any>): void;
 
     // see http://firmata.org/wiki/Proposals#OneWire_Proposal
     _sendOneWireRequest(
@@ -110,7 +113,7 @@ declare module 'firmata' {
         pulseOut?: number,
         timeout?: number,
       |},
-      callback: Function
+      callback: Result<any>
     ): void;
 
     // TODO: refine this so motor3Pin and motor4Pin are only required if type == this.STEPPER.TYPE.FOUR_WIRE
@@ -131,14 +134,14 @@ declare module 'firmata' {
       speed: number,
       accel: number,
       decel: number,
-      callback: Function
+      callback: Result<any>
     ): void;
     stepperStep(
       deviceNum: number,
       direction: number, // TODO : enum of this.step.STEPPER.DIRECTION
       steps: number,
       speed: number,
-      callback: Function
+      callback: Result<any>
     ): void;
 
 
@@ -152,7 +155,7 @@ declare module 'firmata' {
     ): void;
 
     serialWrite(portId: number, inBytes: Array<*>): void;
-    serialRead(portId: number, maxBytesToRead: number, callback: Function): void;
+    serialRead(portId: number, maxBytesToRead: number, callback: Result<any>): void;
     serialStop(portId: number): void;
     serialClose(portId: number): void;
     serialFlush(portId: number): void;

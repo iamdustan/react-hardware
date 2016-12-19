@@ -31,20 +31,24 @@ const FIRMATA_COMMUNICATION_METHOD = {
   '127': 'IGNORE', // ignore
 };
 
-export type Connection = {
+type TConnection<T, B> = {|
+  status: T,
   rootID: string,
-  status: 'CONNECTING' | 'CONNECTED',
-  component?: any, // ReactComponent
-  board: Board,
-  readers: {[pin:string]: (...args:any) => any},
-};
+  board: B,
+  readers: {[pin:string]: {reader: Function, call: any}},
+|};
+
+export type Connection =
+  | TConnection<'CONNECTING', Board>
+  | TConnection<'CONNECTED', Board>
+  | TConnection<'DISCONNECTED', null>;
 
 const deferredReader =
   (connection, pin) =>
     (value) => connection.readers[pin].call(value);
 
 const setReader = (
-  connection : Connection | Board,
+  connection : Connection,
   communicationType : string,
   payload : Object
 ) => {
@@ -63,6 +67,7 @@ const setReader = (
 
     // map A0-A5 to the appropriate analog index for node-firmata
     const toNodeFirmataMapping = typeof payload.pin === 'string' ? parseInt(payload.pin.slice(1), 10) : payload.pin;
+    /* $FlowFixMe computed property call */
     connection.board[`${communicationType}Read`](toNodeFirmataMapping, reader);
     connection.readers[payload.pin].call = payload.onRead;
   }
@@ -71,15 +76,13 @@ const setReader = (
 };
 
 const connectionsByContainer:{[key:string]: Connection} = {};
-export const getConnection = (port : string) => {
-  return connectionsByContainer[port];
-};
+export const getConnection = (port : string) => connectionsByContainer[port];
 
 export const setupConnection = (
   port : string,
-  board : null | Board
+  board : Board
 ) => {
-  const connection = {
+  const connection: TConnection<'CONNECTING', Board> = {
     rootID: port,
     status: 'CONNECTING',
     board,
@@ -92,36 +95,43 @@ export const setupConnection = (
 export const updateConnection = (
   port : string,
   board : Board
-) => {
+): TConnection<'CONNECTED', Board> => {
   const connection = connectionsByContainer[port];
   if (!connection) {
     throw new Error('Attempted to update non-existent connection for port ' + port);
   }
-  connection.status = 'CONNECTING';
-  return connection;
+  return {
+    rootID: connection.rootID,
+    readers: connection.readers,
+    board: board,
+    status: 'CONNECTED'
+  };
 };
 
-export const teardownConnection = (
-  port : string,
-  board : Board
-) => {
+export const teardownConnection = (port : string): null | TConnection<'DISCONNECTED', null> => {
   const connection = connectionsByContainer[port];
   if (!connection) {
     console.warn(
       'Attempted to teardown non-existent connection for port %s', 
       port
     );
+    return null;
   } else {
-    connection.status = 'DISCONNECTED';
-    connection.board = null;
     // TODO : memory leak. Remove these
-    connection.readers = null;
-    return connection;
+    for (const reader in connection.readers) {
+      delete connection.readers[reader];
+    }
+    return {
+      status: 'DISCONNECTED',
+      board: null,
+      rootID: connection.rootID,
+      readers: connection.readers
+    };
   }
 };
 
 // matches return value of the input value
-const findConnectionForRootId = (rootID) => {
+const findConnectionForRootId = (rootID) : Connection | null => {
   for (const connection in connectionsByContainer) {
     if (connectionsByContainer[connection].rootID !== rootID) {
       continue;
@@ -129,6 +139,8 @@ const findConnectionForRootId = (rootID) => {
 
     return connectionsByContainer[connection];
   }
+
+  return null;
 };
 
 /**
@@ -136,7 +148,7 @@ const findConnectionForRootId = (rootID) => {
  * configuration.
  */
 export const validatePayloadForPin = (
-  maybeConnection : string | Connection | Board,
+  maybeConnection : string | Board,
   payload : Object
 ) => {
   if (payload == null) {
@@ -153,10 +165,7 @@ export const validatePayloadForPin = (
     connection
   );
 
-  const board : Board = (
-    connection.board ||
-    connection : any
-  );
+  const board : Board = (connection.board || connection : any);
   const {pins, MODES} = board;
 
   const mode = MODES[payload.mode];
@@ -206,12 +215,12 @@ export const setPayloadForPin = (
   const communicationType = FIRMATA_COMMUNICATION_METHOD[MODES[payload.mode]];
   if (typeof payload.value !== 'undefined') {
     // console.log(`${communicationType}Write to "%s" with "%s"`, payload.pin, payload.value);
-    // $FlowFixMe computed property call
+    /* $FlowFixMe computed property call */
     board[`${communicationType}Write`](payload.pin, +payload.value);
   }
 
   if (payload.onRead) {
-    setReader(connection, communicationType, payload);
+    setReader((connection : any), communicationType, payload);
   }
 };
 

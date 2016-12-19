@@ -1,5 +1,5 @@
 /**
- * @flow
+ *
  **/
 
 import ReactHardwareMount from './stack/ReactHardwareMount';

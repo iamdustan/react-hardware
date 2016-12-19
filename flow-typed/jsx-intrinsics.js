@@ -13,7 +13,7 @@ declare type $JSXIntrinsics = {
   pin: JSXHelper<{
     mode: 'INPUT'|'OUTPUT'|'ANALOG'|'PWM'| 'SERVO'|'SHIFT'|'I2C'|'ONEWIRE'|'STEPPER'|'IGNORE'|'UNKNOWN';
     pin: number|string;
-    value: number;
+    value?: number;
     onRead: ?(...arg:any) => any;
   }>;
 

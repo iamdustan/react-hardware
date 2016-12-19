@@ -38,10 +38,14 @@ function setup(port, callback) {
 
 }
 
+type Result<T, E> =
+  | (error : E | null, value?: T) => void;
+  // | (error : null, root: T) => void;
+
 const HardwareInstanceManager = {
   connect(
     port : ?string,
-    callback: (error : ?Error, root : typeof Board) => any
+    callback: Result<Board, Error>
   ) {
     if (port == null) {
       console.info('Requesting port...');
@@ -64,6 +68,7 @@ const HardwareInstanceManager = {
         return connection.board;
       }
     }
+    return null;
   }
 };
 

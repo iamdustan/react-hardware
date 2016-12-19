@@ -119,7 +119,9 @@ const HardwareRenderer = ReactFiberReconciler({
     child : Instance | TextInstance,
     beforeChild : Instance |  TextInstance
   ) {
-    parentInstance.insertBefore(child, beforeChild);
+    // This should probably never be called in Hardware.
+    console.warn('TODO: ReactHardwareRenderer.insertBefore');
+    // parentInstance.insertBefore(child, beforeChild);
   },
 
   removeChild(parentInstance : Instance | Container, child : Instance | TextInstance) : void {

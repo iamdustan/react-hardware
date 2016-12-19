@@ -2,6 +2,17 @@
 /* eslint-disable */
 
 type Port = string;
+
+type RequestPortCallbackObject = {
+  comName: Port,
+  manufacturer: string,
+  serialNumber: string,
+  pnpId: any,
+  locationId: string,
+  vendorId: string,
+  productId: string,
+};
+
 type Options = {
   reportVersionTimeout?: number,
   samplingInterval?: number,

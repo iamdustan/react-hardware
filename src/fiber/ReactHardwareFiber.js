@@ -150,6 +150,7 @@ function renderSubtreeIntoContainer(
       if (error) {
         console.log(error);
       } else {
+        console.log('mountContainer');
         HardwareRenderer.mountContainer(element, root, parentComponent, callback);
       }
     });

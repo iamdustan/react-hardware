@@ -14,6 +14,8 @@ const {
   updateProperties,
 } = ReactHardwareFiberComponent;
 
+// why four? no reason.
+const TIME_REMAINING = 4;
 const precacheFiberNode = (internalInstanceHandle, instance) => null; // TODO: ReactHardwareComponentTree
 
 type Container = Board;
@@ -131,9 +133,9 @@ const HardwareRenderer = ReactFiberReconciler({
 
   scheduleAnimationCallback: process.nextTick,
 
-  scheduleDeferredCallback: (fn) => setTimeout(fn, 16),
+  scheduleDeferredCallback: (fn) => setTimeout(fn, TIME_REMAINING, {timeRemaining() { return TIME_REMAINING; }}),
 
-  useSyncScheduling: true,
+  useSyncScheduling: false,
 });
 
 function renderSubtreeIntoContainer(

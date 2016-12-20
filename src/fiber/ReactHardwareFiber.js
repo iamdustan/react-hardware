@@ -24,6 +24,10 @@ type Instance = any; // TODO
 type TextInstance = any; // TODO
 
 const HardwareRenderer = ReactFiberReconciler({
+  getRootHostContext(rootContainerInstance : Board) : Board {
+    return rootContainerInstance;
+  },
+
   getChildHostContext(parentHostContext : string | null, type : string) : void {
     // Noop
   },

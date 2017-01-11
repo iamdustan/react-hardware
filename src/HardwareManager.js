@@ -53,7 +53,9 @@ const setReader = (
     connection.readers[payload.pin] = {reader, call: null};
 
     // map A0-A5 to the appropriate analog index for node-firmata
-    const toNodeFirmataMapping = typeof payload.pin === 'string' ? parseInt(payload.pin.slice(1), 10) : payload.pin;
+    const toNodeFirmataMapping =
+      typeof payload.pin === 'string' ? parseInt(payload.pin.slice(1), 10) : payload.pin;
+
     connection.board[`${communicationType}Read`](toNodeFirmataMapping, reader);
     connection.readers[payload.pin].call = payload.onRead;
   }
@@ -149,7 +151,11 @@ export const setPayloadForPin = (
     board[`${communicationType}Write`](payload.pin, +payload.value);
   }
 
-  if (payload.onRead) {
+  if (!!payload.config && communicationType.toLowerCase() === 'servo') {
+    board.servoConfig(payload.pin, +payload.config.min, +payload.config.max);
+  }
+
+  if (communicationType.toLowerCase() !== 'servo' && typeof payload.onRead === 'function') {
     setReader(connection, communicationType, payload);
   }
 };
@@ -166,4 +172,3 @@ export const getNativeNode = (
     return connection.board;
   }
 };
-

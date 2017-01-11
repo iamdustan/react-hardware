@@ -33,16 +33,19 @@ const LOW = 0;
 class Application extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      value: 0,
-      _timer: null,
-    };
+    this.state = {value: 0};
+    this._timer = null;
   }
 
   componentDidMount() {
-    this.state._timer = setInterval(_ => (
-      this.setState({value: this.state.value === HIGH ? LOW : HIGH})
+    this._timer = setInterval(_ => (
+      this.setState(prevState => ({value: prevState.value === HIGH ? LOW : HIGH}))
     ), this.props.interval);
+  }
+
+  componentDidUnmount() {
+    clearInterval(this._timer);
+    this._timer = null;
   }
 
   render() {
@@ -63,7 +66,7 @@ we introduced the concept of a flashing LED, hard-coded naively into the global
 state. Let’s now extract the idea of a flashing LED into something we can share
 with our team or even on npm.
 
-``` javascript
+``` jsx
 import React from 'react';
 import ReactHardware, {Board, Led} from 'react-hardware';
 
@@ -73,19 +76,22 @@ const LOW = 0;
 class FlashingLed extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      value: 0,
-      _timer: null,
-    };
+    this.state = {value: 0};
+    this._timer = null;
     this.defaultProps = {
       interval: 1000,
     };
   }
 
   componentDidMount() {
-    this.state._timer = setInterval(_ => (
-      this.setState({value: this.state.value === HIGH ? LOW : HIGH})
+    this._timer = setInterval(_ => (
+      this.setState(prevState => ({value: prevState.value === HIGH ? LOW : HIGH}))
     ), this.props.interval);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this._timer);
+    this._timer = null;
   }
 
   render() {

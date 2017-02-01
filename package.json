@@ -60,6 +60,7 @@
     "eslint": "^3.12.2",
     "eslint-plugin-react": "^6.8.0",
     "fbjs-scripts": "^0.7.1",
+    "flow-bin": "^0.38.0",
     "jasmine": "^2.4.1",
     "jasmine-es6": "0.1.8",
     "jasmine-spec-reporter": "^2.4.0",

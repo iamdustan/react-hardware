@@ -14,6 +14,7 @@ import {
 const assertValidProps = validatePayloadForPin;
 
 type Instance = Object;
+type Props = Object;
 
 // TODO: switch `tag` to pin MODE
 /*
@@ -40,6 +41,8 @@ const assertValidProps = (
 };
 */
 
+const IO_KEY = '__IO__';
+
 const ReactHardwareFiberComponent = {
   createElement(
     tag: string,
@@ -58,7 +61,7 @@ const ReactHardwareFiberComponent = {
     }
 
     // TODO: element should be a data structure that represents the “element”
-    return Object.assign({}, props);
+    return Object.assign({[IO_KEY]: rootContainerElement}, props);
   },
 
   setInitialProperties(
@@ -80,21 +83,33 @@ const ReactHardwareFiberComponent = {
     // console.log('setInitialProperties', element);
   },
 
-  updateProperties(
+  diffProperties(
     element : Instance,
     tag : string,
     lastRawProps : Object,
     nextRawProps : Object,
     rootContainerElement : Board
+  ) : void /*null | Array<mixed>*/ {
+
+  },
+
+  updateProperties(
+    element : Instance,
+    updatePayload : Array<mixed>,
+    type : string,
+    oldProps : Props,
+    newProps : Props,
+    internalInstanceHandle : Object,
   ) {
     // Deprecated path for when a `container` is hit which was a hack in stack
     // for being unable to return an array from render.
-    if (tag === 'container') {
+    if (newProps.tag === 'container') {
       return;
     }
 
-    assertValidProps(rootContainerElement, nextRawProps);
-    Object.assign(element, nextRawProps);
+    const rootContainerElement = element[IO_KEY];
+    assertValidProps(rootContainerElement, newProps);
+    Object.assign(element, newProps);
     setPayloadForPin(rootContainerElement, element);
     // console.log('updateProperties', element);
   },

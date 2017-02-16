@@ -1,23 +1,29 @@
 /** @flow */
 
 import type {Board} from 'firmata';
-import type {Fiber} from 'react-dom/lib/ReactFiber';
 
 import ReactFiberReconciler from 'react-dom/lib/ReactFiberReconciler';
 import ReactHardwareFiberComponent from './ReactHardwareFiberComponent';
 import HardwareInstanceManager from '../firmata/HardwareInstanceManager';
 import {setPayloadForPin} from '../firmata/HardwareManager';
+import {
+  injectInternals
+} from 'react-dom/lib/ReactFiberDevToolsHook';
+console.log('injectInternals', injectInternals);
 
 const {
   createElement,
   setInitialProperties,
+  // diffProperties,
   updateProperties,
 } = ReactHardwareFiberComponent;
 
 // why four? no reason.
 const TIME_REMAINING = 4;
 const precacheFiberNode = (internalInstanceHandle, instance) => null; // TODO: ReactHardwareComponentTree
+const emptyObject = {};
 
+type HostContext = any;
 type Container = Board;
 type Props = Object;
 type Instance = any; // TODO
@@ -70,20 +76,32 @@ const HardwareRenderer = ReactFiberReconciler({
     setInitialProperties(element, type, props, rootContainerInstance);
   },
 
-  prepareUpdate(domElement : Instance, oldProps : Props, newProps : Props) {
-    return true;
-  },
-
-  commitUpdate(
+  prepareUpdate(
     instance : Instance,
     type : string,
     oldProps : Props,
     newProps : Props,
     rootContainerInstance : Container,
-    internalInstanceHandle : Object
+    hostContext : HostContext,
+  ) : Object /*null | Array<mixed>*/ {
+    // TODO: diffing properties here allows the reconciler to reuse work
+    //  diffProperties(instance, type, oldProps, newProps, rootContainerInstance);//  diffProperties(instance, type, oldProps, newProps, rootContainerInstance);
+    return emptyObject;
+  },
+
+  commitUpdate(
+    instance : Instance,
+    updatePayload : Array<mixed>,
+    type : string,
+    oldProps : Props,
+    newProps : Props,
+    internalInstanceHandle : Object,
   ) : void {
-    precacheFiberNode(internalInstanceHandle, instance);
-    updateProperties(instance, type, oldProps, newProps, rootContainerInstance);
+    // Update the props handle so that we know which props are the ones with
+    // with current event handlers.
+    // TODO: uncomment this line : updateFiberProps(instance, newProps);
+    // Apply the diff to the DOM node.
+    updateProperties(instance, updatePayload, type, oldProps, newProps, internalInstanceHandle);
   },
 
   shouldSetTextContent(props: Props) : boolean {
@@ -156,8 +174,9 @@ function renderSubtreeIntoContainer(
       if (error) {
         console.log(error);
       } else {
-        console.log('mountContainer');
-        HardwareRenderer.mountContainer(element, root, parentComponent, callback);
+        const root = HardwareRenderer.createContainer(container);
+        HardwareRenderer.updateContainer(element, root, parentComponent, callback);
+        // HardwareRenderer.mountContainer(element, root, parentComponent, callback);
       }
     });
   }
@@ -181,6 +200,14 @@ const ReactHardware = {
 
   // TODO: unstable_createPortal(children : ReactNodeList, container : string, key : string | null) {}
 };
+
+if (typeof injectInternals === 'function') {
+  injectInternals({
+    findFiberByHostInstance: () => null,// ReactDOMComponentTree.getClosestInstanceFromNode,
+    findHostInstanceByFiber: HardwareRenderer.findHostInstance,
+  });
+}
+
 
 export default ReactHardware;
 

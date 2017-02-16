@@ -9,7 +9,8 @@
   "env": {
     "test": {
       "plugins": [
-        "./scripts/babel/test-deps"
+        "./scripts/babel/test-deps",
+        "transform-react-jsx-source"
       ]
     }
   }

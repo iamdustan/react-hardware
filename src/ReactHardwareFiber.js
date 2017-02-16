@@ -2,6 +2,7 @@
  * @flow
  **/
 
+import './devtools/setupDevtoolsFiber';
 import ReactHardwareFiber from './fiber/ReactHardwareFiber';
 import * as ReactHardwareComponents from './components';
 

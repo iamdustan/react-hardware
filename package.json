@@ -66,6 +66,7 @@
     "jasmine": "^2.4.1",
     "jasmine-es6": "0.1.8",
     "jasmine-spec-reporter": "^2.4.0",
-    "mock-firmata": "0.0.7"
+    "mock-firmata": "0.0.7",
+    "react-devtools": "^2.0.11"
   }
 }

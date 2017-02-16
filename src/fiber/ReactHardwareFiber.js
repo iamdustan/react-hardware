@@ -9,7 +9,6 @@ import {setPayloadForPin} from '../firmata/HardwareManager';
 import {
   injectInternals
 } from 'react-dom/lib/ReactFiberDevToolsHook';
-console.log('injectInternals', injectInternals);
 
 const {
   createElement,
@@ -203,7 +202,7 @@ const ReactHardware = {
 
 if (typeof injectInternals === 'function') {
   injectInternals({
-    findFiberByHostInstance: () => null,// ReactDOMComponentTree.getClosestInstanceFromNode,
+    findFiberByHostInstance: () => null,// ReactHardwareComponentTree.getClosestInstanceFromNode,
     findHostInstanceByFiber: HardwareRenderer.findHostInstance,
   });
 }

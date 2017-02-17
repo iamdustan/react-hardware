@@ -2,7 +2,6 @@
  * Change a component
  *
  * Demonstrate changing the React Component communicating in a given pin
- *
  */
 import React, {Component} from 'react';
 import {getPort} from '../port';
@@ -97,10 +96,10 @@ class Application extends React.Component {
 
   render() {
     if (this.state.swapped) {
-      return <PulsingLed pin={9} />;
+      return <PulsingLed pin={11} />;
     }
 
-    return <FlashingLed pin={9} />;
+    return <FlashingLed pin={11} />;
   }
 }
 

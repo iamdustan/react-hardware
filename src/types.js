@@ -5,4 +5,3 @@ export type HardwareEvent = {
   type: string;
 };
 
-

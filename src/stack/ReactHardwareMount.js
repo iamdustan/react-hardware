@@ -19,7 +19,7 @@ import {Board} from 'firmata';
 
 import ReactHardwareDefaultInjection from './ReactHardwareDefaultInjection';
 
-import {connectionsByContainer} from './HardwareManager';
+import {connectionsByContainer} from '../firmata/HardwareManager';
 
 const TRANSIENT_CONTAINER_IDENTIFIER = '__AutomaticallyDiscoveredPort';
 

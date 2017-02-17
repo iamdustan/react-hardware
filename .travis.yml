@@ -17,7 +17,7 @@ before_install:
       echo "Only docs were updated, stopping build process."
       exit 0
     else
-      npm install flow-bin@0.22
+      npm install flow-bin@0.36
     fi
 script:
 - |

@@ -3,7 +3,7 @@
  *
  * @flow
  */
-import './devtools/InitializeJavaScriptAppEngine';
+import '../devtools/InitializeJavaScriptAppEngine';
 import ReactInjection from 'react/lib/ReactInjection';
 import ReactDefaultBatchingStrategy from 'react/lib/ReactDefaultBatchingStrategy';
 import ReactComponentEnvironment from 'react/lib/ReactComponentEnvironment';

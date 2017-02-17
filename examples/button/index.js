@@ -6,6 +6,11 @@
  * and is as low level as you can get.
  *
  * Provided composite components like <Button /> use this to logic
+ *
+ * Setup your board with:
+ *   Push button on pin 2
+ *   LED on 11
+ *   LED on 13
  */
 
 import React, {Component} from 'react';
@@ -59,24 +64,25 @@ class Button extends Component {
   }
 }
 
+const Container = props => props.children;
+
 class App extends Component {
   constructor() {
     super();
 
     this.state = {on: false};
     this.toggle = (event:HardwareEvent) => {
-      console.log('toggle');
       this.setState({on: !this.state.on});
     };
   }
 
-  render():ReactElement {
+  render() {
     return (
-      <container>
+      <Container>
         <Button pin={2} onChange={this.toggle} />
         <pin pin={11} mode={'OUTPUT'} value={this.state.on ? 1 : 0} />
         <pin pin={13} mode={'OUTPUT'} value={this.state.on ? 0 : 1} />
-      </container>
+      </Container>
     );
   }
 }

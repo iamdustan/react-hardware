@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "johnny-five": "^0.10.6"
+  }
+}

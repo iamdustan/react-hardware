@@ -14,7 +14,7 @@ class SwitchDemo extends Component {
     this.toggle = (switchValue) => this.setState({switchValue});
   }
 
-  render():ReactElement {
+  render() {
     return (
       <container>
         <Switch pin={8} onChange={this.toggle} />

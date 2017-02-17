@@ -3,10 +3,9 @@
  * an environment variable or local, hard-coded value.
  */
 
-export const getPort = () => {
-  return (
-    process.env.REACT_HARDWARE_EXAMPLE_PORT ||
-    '/dev/cu.usbmodem1451'
-  );
-};
+export const getPort = () => (
+  process.env.REACT_HARDWARE_EXAMPLE_PORT ||
+  process.env.NODE_ENV === 'test'
+    ? '/dev/cu.usbmodem1451' : null
+);
 

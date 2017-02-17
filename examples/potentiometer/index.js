@@ -29,14 +29,14 @@ class PotentiometerDemo extends Component {
     this.setState({value});
   }
 
-  render(): ReactElement {
+  render() {
     return (
       <container>
         <Potentiometer
           pin={'A3'}
           onChange={this.onChange}
         />
-        <Led pin={9} mode={'PWM'} value={this.state.value} />
+        <Led pin={11} mode={'PWM'} value={this.state.value} />
       </container>
     );
   }

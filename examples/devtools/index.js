@@ -8,20 +8,34 @@ import {getPort} from '../port';
 import ReactHardware from '../../src';
 
 class FlashingLed extends Component {
-  constructor(props, context) {
-    super(props, context);
+  state = {
+    value: 1,
+  };
 
-    this.state = {value: 1};
-  }
+  update = () => {
+    this.setState({
+      value: this.state.value === 0 ? 1 : 0,
+    });
+  };
 
   componentDidMount() {
     setTimeout(() => {
-      setInterval(() => {
-        this.setState({
-          value: this.state.value === 0 ? 1 : 0,
-        });
-      }, 1000);
+      this.interval = setInterval(this.update, this.props.timer);
     }, this.props.delay);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.timer !== this.props.timer) {
+      this.updateTimer = true;
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.updateTimer) {
+      this.updateTimer = false;
+      clearInterval(this.interval);
+      this.interval = setInterval(this.update, this.props.timer);
+    }
   }
 
   render() {
@@ -35,7 +49,7 @@ class FlashingLed extends Component {
   }
 }
 
-FlashingLed.defaultProps = {delay: 0};
+FlashingLed.defaultProps = {delay: 0, timer: 1000};
 
 class PulsingLed extends Component {
   constructor(props, context) {
@@ -70,14 +84,12 @@ class PulsingLed extends Component {
   }
 }
 
-const Application = () => (
-  <container>
-    <PulsingLed pin={9} />
-    <PulsingLed pin={10} />
-    <FlashingLed pin={11} />
-    <FlashingLed pin={12} delay={1000} />
-  </container>
-);
+const Application = () => [
+  <PulsingLed pin={9} />,
+  <PulsingLed pin={10} />,
+  <FlashingLed pin={11} />,
+  <FlashingLed pin={12} delay={1000} />,
+];
 
 ReactHardware.render(
   <Application />,

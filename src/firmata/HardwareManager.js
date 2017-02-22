@@ -47,6 +47,14 @@ const deferredReader =
   (connection, pin) =>
     (value) => connection.readers[pin].call(value);
 
+const normalize = (value : string | number, board : Board) => (
+  typeof value === 'number' ? value
+  : value === 'HIGH' ? board.HIGH
+  : value === 'LOW' ? board.LOW
+  : +value
+);
+
+
 const setReader = (
   connection : Connection,
   communicationType : string,
@@ -217,13 +225,13 @@ export const setPayloadForPin = (
   switch (communicationType) {
     case 'servo':
       board.servoConfig(normalizedPin, +payload.min, +payload.max);
-      board.servoWrite(normalizedPin, +payload.value);
+      board.servoWrite(normalizedPin, normalize(payload.value, board));
       break;
     case 'digital':
-      board.digitalWrite(normalizedPin, +payload.value);
+      board.digitalWrite(normalizedPin, normalize(payload.value, board));
       break;
     case 'analog':
-      board.analogWrite(normalizedPin, +payload.value);
+      board.analogWrite(normalizedPin, normalize(payload.value, board));
       break;
     // todo
     // * i2c

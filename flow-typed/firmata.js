@@ -50,6 +50,9 @@ declare module 'firmata' {
     constructor(port: Port, options: Options, callback: Result<any>): Board;
     constructor(port: Port, callback: Result<any>): Board;
 
+    HIGH: number;
+    LOW: number;
+
     reportVersion(callback: Result<any>): void;
     queryFirmware(callback: Result<any>): void;
     analogRead(pin: Pin, callback: Result<any>): void;

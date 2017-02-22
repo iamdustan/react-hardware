@@ -1,0 +1,72 @@
+/**
+ * servo.
+ * This is a simple example of a servo animating open and closed.
+ */
+
+import React from 'react';
+import {getPort} from '../port';
+import ReactHardware from '../../src';
+import tweenState from 'react-tween-state';
+
+var SweepingServo = React.createClass({
+  mixins: [tweenState.Mixin],
+
+  getInitialState() {
+    return {value: this.props.duration[0]};
+  },
+
+  getDefaultProps() {
+    return {
+      range: [0, 180],
+      duration: 66.6666 * 20,
+    };
+  },
+
+  tween() {
+    this.tweenState('value', {
+      easing: tweenState.easingTypes.linear,
+      duration: this.props.duration,
+      endValue: this.state.value === this.props.range[0] ?
+        this.props.range[1] :
+        this.props.range[0],
+      onEnd: this.tween,
+    });
+  },
+
+  componentDidMount() {
+    this.tween();
+  },
+
+  render() {
+    const value = this.getTweeningValue('value');
+    return (
+      <pin
+        {...this.props}
+        mode={'SERVO'}
+        value={value}
+      />
+    );
+  },
+
+});
+
+class Application extends React.Component {
+  render():ReactElement {
+    return (
+      <SweepingServo
+        pin={9}
+        range={[0, 100]}
+        duration={1000}
+      />
+    );
+  }
+}
+
+ReactHardware.render(
+  <Application />,
+  getPort(),
+  (inst) => {
+    console.log('Rendered <%s />', 'SweepingServo');
+  }
+);
+

@@ -14,7 +14,7 @@ declare type $JSXIntrinsics = {
     mode: 'INPUT'|'OUTPUT'|'ANALOG'|'PWM'| 'SERVO'|'SHIFT'|'I2C'|'ONEWIRE'|'STEPPER'|'IGNORE'|'UNKNOWN';
     pin: number|string;
     value?: number;
-    onRead: ?(...arg:any) => any;
+    onRead?: (...arg:any) => any;
   }>;
 
   container: JSXHelper<{}>;

@@ -1,6 +1,7 @@
 /** @flow */
 import {Board} from 'firmata';
 import invariant from 'fbjs/lib/invariant';
+import warning from 'fbjs/lib/warning';
 import {analogToDigital} from './HardwarePinTranslations';
 
 /**
@@ -173,6 +174,15 @@ export const validatePayloadForPin = (
     connection
   );
 
+  if (typeof payload.pin !== 'number') {
+    warning(
+      false,
+      'Passed a payload without a pin! %s',
+      payload
+    );
+    return;
+  }
+
   const board : Board = (connection.board || connection : any);
   const {pins, MODES} = board;
 
@@ -215,7 +225,27 @@ export const setPayloadForPin = (
 
   // backwards compatible with Stack
   const board : Board = (connection.board || connection : any);
+
   const {MODES} = board;
+  if (typeof payload.pin !== 'number') {
+    if (payload.type === 'SERIAL') {
+      warning(
+        false,
+        'FIXME: implement serialRead/Write capabilities. %s',
+        JSON.stringify(payload)
+      );
+      // if (payload.value) board.serialWrite(/*txPin*/, payload.value);
+      // if (payload.onRead) board.serialRead(/*txPin*/, payload.onRead);
+    } else {
+      warning(
+        false,
+        'Attempted to set payload without a pin! %s',
+        JSON.stringify(payload)
+      );
+    }
+    return;
+  }
+
 
   // console.log(`set pinMode of "%s" to "%s"`, payload.pin, payload.mode);
   const normalizedPin = analogToDigital(payload.pin);

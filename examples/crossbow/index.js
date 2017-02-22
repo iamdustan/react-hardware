@@ -111,10 +111,36 @@ class Laser extends React.Component {
   }
 }
 
-// TODO
 class Joystick extends React.Component {
+  props : {
+    low: number,
+    high: number,
+    onMove: Function,
+    onFire: () => void,
+  };
+
+  reader = (data : 'FIRE' | string ) => {
+    if (data === 'FIRE') {
+      return this.props.onFire();
+    }
+
+    const coords = data.split('|').map(Number);
+    if (coords.length !== 2 || coords.some(Number.isNaN)) {
+      console.warning(
+        'WARNING: invalid Joystick command sent. Expected coords, received %s', data
+      );
+    } else {
+      return this.props.onMove(coords);
+    }
+  };
+
   render() {
-    return null;
+    return (
+      <pin
+        type="SERIAL"
+        onRead={this.reader}
+      />
+    );
   }
 }
 

@@ -42,12 +42,11 @@
   "dependencies": {
     "fbjs": "^0.8.6",
     "firmata": "^0.14.1",
-    "react": "16.0.0-alpha.2",
-    "react-devtools-core": "^2.0.12",
-    "react-dom": "16.0.0-alpha.2",
+    "react": "16.2.0",
+    "react-devtools-core": "^3.0.0",
+    "react-reconciler": "^0.7.0",
     "serialport": "^4.0.7",
-    "setimmediate": "^1.0.5",
-    "ws": "^1.1.1"
+    "setimmediate": "^1.0.5"
   },
   "devDependencies": {
     "babel-cli": "^6.6.4",
@@ -67,6 +66,6 @@
     "jasmine-es6": "0.1.8",
     "jasmine-spec-reporter": "^2.4.0",
     "mock-firmata": "0.0.7",
-    "react-devtools": "^2.0.11"
+    "react-devtools": "^3.0.0"
   }
 }

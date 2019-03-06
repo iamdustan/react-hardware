@@ -36,13 +36,7 @@ class PulsingLed extends Component {
   }
 
   render() {
-    return (
-      <pin
-        pin={this.props.pin}
-        value={this.state.value}
-        mode={'PWM'}
-      />
-    );
+    return <pin pin={this.props.pin} value={this.state.value} mode={'PWM'} />;
   }
 }
 
@@ -69,11 +63,7 @@ class FlashingLed extends Component {
 
   render() {
     return (
-      <pin
-        pin={this.props.pin}
-        value={this.state.value}
-        mode={'OUTPUT'}
-      />
+      <pin pin={this.props.pin} value={this.state.value} mode={'OUTPUT'} />
     );
   }
 }
@@ -87,7 +77,10 @@ class Application extends React.Component {
   }
 
   componentDidMount() {
-    this.interval = setInterval(_ => this.setState({swapped: !this.state.swapped}), 4000);
+    this.interval = setInterval(
+      _ => this.setState({swapped: !this.state.swapped}),
+      4000,
+    );
   }
   componentWillUnmount() {
     clearInterval(this.interval);
@@ -103,11 +96,6 @@ class Application extends React.Component {
   }
 }
 
-
-ReactHardware.render(
-  <Application />,
-  getPort(),
-  inst => {
-    console.log('Rendered  ChangingComponentApplication');
-  }
-);
+ReactHardware.render(<Application />, getPort(), inst => {
+  console.log('Rendered  ChangingComponentApplication');
+});

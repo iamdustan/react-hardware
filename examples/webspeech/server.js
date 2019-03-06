@@ -46,14 +46,16 @@ function compiled(err, stats) {
   }
 }
 
-
 new http.createServer((req, res) => {
   function reply(path, contents) {
     let contentType = '';
     switch (last(path.split('.'))) {
-      case 'js': contentType = 'application/javascript'; break;
+      case 'js':
+        contentType = 'application/javascript';
+        break;
       case 'html':
-      case '': contentType = 'text/html';
+      case '':
+        contentType = 'text/html';
     }
     res.writeHead(200, {
       'Content-Type': contentType + '; charset=utf-8',
@@ -63,7 +65,7 @@ new http.createServer((req, res) => {
 
   const maybeFile = path.join(
     __dirname,
-    (req.url === '' || req.url === '/') ? 'index.html' : req.url
+    req.url === '' || req.url === '/' ? 'index.html' : req.url,
   );
 
   try {

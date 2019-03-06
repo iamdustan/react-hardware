@@ -7,9 +7,8 @@ import * as ReactHardwareComponents from './components';
 const ReactHardware = Object.assign(
   {},
   ReactHardwareFiber,
-  ReactHardwareComponents
+  ReactHardwareComponents,
 );
 
 export * from './components';
 export default ReactHardware;
-

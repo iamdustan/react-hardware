@@ -19,7 +19,7 @@ class PotentiometerDemo extends Component {
     // fudge numbers with rounding for my potentiometer
     const POT_LOW = 15;
     const POT_HIGH = 960;
-    value = (value - POT_LOW) / POT_HIGH * 255;
+    value = ((value - POT_LOW) / POT_HIGH) * 255;
     if (value < 10) {
       value = 0;
     } else if (value > 255) {
@@ -32,20 +32,13 @@ class PotentiometerDemo extends Component {
   render() {
     return (
       <container>
-        <Potentiometer
-          pin={'A3'}
-          onChange={this.onChange}
-        />
+        <Potentiometer pin={'A3'} onChange={this.onChange} />
         <Led pin={11} mode={'PWM'} value={this.state.value} />
       </container>
     );
   }
 }
 
-ReactHardware.render(
-  <PotentiometerDemo />,
-  getPort(),
-  (inst) => {
-    console.log('Rendered <PotentiometerDemo />');
-  }
-);
+ReactHardware.render(<PotentiometerDemo />, getPort(), inst => {
+  console.log('Rendered <PotentiometerDemo />');
+});

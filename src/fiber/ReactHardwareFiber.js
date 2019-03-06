@@ -1,26 +1,26 @@
 /** @flow */
 
-import * as React from "react";
-import type { Board } from "firmata";
+import * as React from 'react';
+import type {Board} from 'firmata';
 
-import createReconciler from "react-reconciler";
-import ReactHardwareFiberComponent from "./ReactHardwareFiberComponent";
-import HardwareInstanceManager from "../firmata/HardwareInstanceManager";
-import { setPayloadForPin } from "../firmata/HardwareManager";
+import createReconciler from 'react-reconciler';
+import ReactHardwareFiberComponent from './ReactHardwareFiberComponent';
+import HardwareInstanceManager from '../firmata/HardwareInstanceManager';
+import {setPayloadForPin} from '../firmata/HardwareManager';
 import {
   now as ReactHardwareFrameSchedulingNow,
   cancelDeferredCallback as ReactHardwareFrameSchedulingCancelDeferredCallback,
   scheduleDeferredCallback as ReactHardwareFrameSchedulingScheduleDeferredCallback,
-  shouldYield as ReactHardwareFrameSchedulingShouldYield
-} from "./ReactHardwareFrameScheduling";
-import * as NoPersistence from "./HostConfigWithNoPersistence";
-import * as NoHydration from "./HostConfigWithNoHydration";
+  shouldYield as ReactHardwareFrameSchedulingShouldYield,
+} from './ReactHardwareFrameScheduling';
+import * as NoPersistence from './HostConfigWithNoPersistence';
+import * as NoHydration from './HostConfigWithNoHydration';
 
 const {
   createElement,
   setInitialProperties,
   diffProperties,
-  updateProperties
+  updateProperties,
 } = ReactHardwareFiberComponent;
 
 // why four? no reason.
@@ -39,7 +39,7 @@ const HardwareRenderer = createReconciler({
   ...NoHydration,
   appendInitialChild(
     parentInstance: Instance | Container,
-    child: Instance | TextInstance
+    child: Instance | TextInstance,
   ) {
     // Deprecated path for when a `container` is hit which was a hack in stack
     // for being unable to return an array from render.
@@ -55,13 +55,13 @@ const HardwareRenderer = createReconciler({
     props: Props,
     rootContainerInstance: Container,
     hostContext: string | null,
-    internalInstanceHandle: Object
+    internalInstanceHandle: Object,
   ): Instance {
     const instance: Instance = createElement(
       type,
       props,
       rootContainerInstance,
-      hostContext
+      hostContext,
     );
     precacheFiberNode(internalInstanceHandle, instance);
     return instance;
@@ -69,7 +69,7 @@ const HardwareRenderer = createReconciler({
 
   createTextInstance(
     text: string,
-    internalInstanceHandle: Object
+    internalInstanceHandle: Object,
   ): TextInstance {
     return text;
   },
@@ -79,19 +79,20 @@ const HardwareRenderer = createReconciler({
     type: string,
     props: Props,
     rootContainerInstance: Container,
-    hostContext: HostContext
+    hostContext: HostContext,
   ) {
-    setInitialProperties(parentInstance, type, props, rootContainerInstance);
+    setInitialProperties(parentInstance, type, props, hostContext);
   },
 
   getRootHostContext(rootContainerInstance: Board): Board {
+    return HardwareInstanceManager.get('/dev/tty.usbmodem1461101');
     return rootContainerInstance;
   },
 
   getChildHostContext(
     parentHostContext: HostContext,
     type: string,
-    rootContainerInstance: Container
+    rootContainerInstance: Container,
   ): HostContext {
     // maybe useful for portals?
     return parentHostContext;
@@ -115,16 +116,17 @@ const HardwareRenderer = createReconciler({
     oldProps: Props,
     newProps: Props,
     rootContainerInstance: Container,
-    hostContext: HostContext
+    hostContext: HostContext,
   ): null | Object {
+    return null;
     // diffing properties here allows the reconciler to reuse work
     return diffProperties(
       instance,
       type,
       oldProps,
       newProps,
-      rootContainerInstance
-    ); //  diffProperties(instance, type, oldProps, newProps, rootContainerInstance);
+      rootContainerInstance,
+    );
     // return emptyObject;
   },
 
@@ -153,10 +155,10 @@ const HardwareRenderer = createReconciler({
 
   // MUTATION
 
-  supportMutation: true,
+  supportsMutation: true,
   appendChild(
     parentInstance: Instance | Container,
-    child: Instance | TextInstance
+    child: Instance | TextInstance,
   ) {
     // Deprecated path for when a `container` is hit which was a hack in stack
     // for being unable to return an array from render.
@@ -170,7 +172,7 @@ const HardwareRenderer = createReconciler({
 
   appendChildToContainer(
     parentInstance: Instance,
-    child: Instance | TextInstance
+    child: Instance | TextInstance,
   ): void {
     setPayloadForPin(parentInstance, child);
     // parentInstance.appendChild(child);
@@ -179,7 +181,7 @@ const HardwareRenderer = createReconciler({
   commitTextUpdate(
     textInstance: TextInstance,
     oldText: string,
-    newText: string
+    newText: string,
   ) {
     // Noop / TODO
   },
@@ -188,8 +190,9 @@ const HardwareRenderer = createReconciler({
     instance: Instance,
     type: string,
     newProps: Props,
-    internalInstanceHandle: Object
+    internalInstanceHandle: Object,
   ): void {
+    console.log('commitMoutnt', type, newProps);
     // Noop / TODO
   },
 
@@ -199,7 +202,7 @@ const HardwareRenderer = createReconciler({
     type: string,
     oldProps: Props,
     newProps: Props,
-    internalInstanceHandle: Object
+    internalInstanceHandle: Object,
   ): void {
     // Update the props handle so that we know which props are the ones with
     // with current event handlers.
@@ -210,43 +213,43 @@ const HardwareRenderer = createReconciler({
       type,
       oldProps,
       newProps,
-      internalInstanceHandle
+      internalInstanceHandle,
     );
   },
 
   insertBefore(
     parentInstance: Instance | Container,
     child: Instance | TextInstance,
-    beforeChild: Instance | TextInstance
+    beforeChild: Instance | TextInstance,
   ) {
     // This should probably never be called in Hardware.
-    console.warn("TODO: ReactHardwareRenderer.insertBefore");
+    console.warn('TODO: ReactHardwareRenderer.insertBefore');
     // parentInstance.insertBefore(child, beforeChild);
   },
 
   insertInContainerBefore(
     parentInstance: Instance | Container,
     child: Instance | TextInstance,
-    beforeChild: Instance | TextInstance
+    beforeChild: Instance | TextInstance,
   ) {
     // This should probably never be called in Hardware.
-    console.warn("TODO: ReactHardwareRenderer.insertInContainerBefore");
+    console.warn('TODO: ReactHardwareRenderer.insertInContainerBefore');
     // parentInstance.insertBefore(child, beforeChild);
   },
 
   removeChild(
     parentInstance: Instance | Container,
-    child: Instance | TextInstance
+    child: Instance | TextInstance,
   ): void {
-    console.warn("TODO: ReactHardwareRenderer.removeChild");
+    console.warn('TODO: ReactHardwareRenderer.removeChild');
     // parentInstance.removeChild(child);
   },
 
   removeChildFromContainer(
     parentInstance: Container,
-    child: Instance | TextInstance
+    child: Instance | TextInstance,
   ): void {
-    console.warn("TODO: ReactHardwareRenderer.removeChildFromContainer");
+    console.warn('TODO: ReactHardwareRenderer.removeChildFromContainer');
     // parentInstance.removeChild(child);
   },
 
@@ -255,20 +258,20 @@ const HardwareRenderer = createReconciler({
   },
 
   hideInstance(element: Instance): void {
-    console.warn("TODO: ReactHardwareRenderer.hideInstance");
+    console.warn('TODO: ReactHardwareRenderer.hideInstance');
   },
 
   hideTextInstance(element: Instance): void {
-    console.warn("TODO: ReactHardwareRenderer.hideTextInstance");
+    console.warn('TODO: ReactHardwareRenderer.hideTextInstance');
   },
 
   unhideInstance(element: Instance): void {
-    console.warn("TODO: ReactHardwareRenderer.unhideInstance");
+    console.warn('TODO: ReactHardwareRenderer.unhideInstance');
   },
 
   unhideTextInstance(element: Instance): void {
-    console.warn("TODO: ReactHardwareRenderer.unhideTextInstance");
-  }
+    console.warn('TODO: ReactHardwareRenderer.unhideTextInstance');
+  },
 
   /*
   injectIntoDevTools({
@@ -282,7 +285,7 @@ function renderSubtreeIntoContainer(
   parentComponent: ?React.Component<any, any>,
   element: React.Element<any>,
   container: string,
-  callback: ?Function
+  callback: ?Function,
 ) {
   const root = HardwareInstanceManager.get(container);
   if (root) {
@@ -297,7 +300,7 @@ function renderSubtreeIntoContainer(
           element,
           root,
           parentComponent,
-          callback
+          callback,
         );
         // HardwareRenderer.mountContainer(element, root, parentComponent, callback);
       }
@@ -315,7 +318,7 @@ const ReactHardware = {
     if (root) {
       HardwareRenderer.unmountContainer(root);
     }
-  }
+  },
   // TODO: unstable_createPortal(children : ReactNodeList, container : string, key : string | null) {}
 };
 

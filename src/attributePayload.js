@@ -10,7 +10,7 @@ const diffProperties = (
   updatePayload: ?Object,
   prevProps: Object,
   nextProps: Object,
-  validAttributes: Object
+  validAttributes: Object,
 ) => {
   // first iterate through the next props
   for (const propKey in nextProps) {
@@ -53,11 +53,8 @@ const diffProperties = (
   return updatePayload;
 };
 
-type C = (props:Object, validAttributes:Object) => ?Object;
-export const create:C = (
-  props,
-  validAttributes
-) => {
+type C = (props: Object, validAttributes: Object) => ?Object;
+export const create: C = (props, validAttributes) => {
   let result = null;
   for (const p in props) {
     if (!validAttributes[p]) {
@@ -73,13 +70,7 @@ export const create:C = (
 export const diff = (
   prevProps: Object,
   nextProps: Object,
-  validAttributes: Object
+  validAttributes: Object,
 ) => {
-  return diffProperties(
-    null,
-    prevProps,
-    nextProps,
-    validAttributes
-  );
+  return diffProperties(null, prevProps, nextProps, validAttributes);
 };
-

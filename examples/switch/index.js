@@ -11,7 +11,7 @@ class SwitchDemo extends Component {
     super();
 
     this.state = {switchValue: false};
-    this.toggle = (switchValue) => this.setState({switchValue});
+    this.toggle = switchValue => this.setState({switchValue});
   }
 
   render() {
@@ -24,10 +24,6 @@ class SwitchDemo extends Component {
   }
 }
 
-ReactHardware.render(
-  <SwitchDemo />,
-  getPort(),
-  (inst) => {
-    console.log('Rendered <SwitchDemo />');
-  }
-);
+ReactHardware.render(<SwitchDemo />, getPort(), inst => {
+  console.log('Rendered <SwitchDemo />');
+});

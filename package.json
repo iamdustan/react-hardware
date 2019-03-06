@@ -45,6 +45,7 @@
     "@babel/preset-env": "^7.3.4",
     "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.0.0",
     "babel-plugin-transform-react-jsx-source": "^6.22.0",
     "firmata": "^2.0.0",
     "invariant": "2.2.4",
@@ -64,5 +65,10 @@
     "flow-bin": "^0.94.0",
     "mock-firmata": "0.2.0",
     "react-devtools": "^3.6.1"
+  },
+  "prettier": {
+    "bracketSpacing": false,
+    "singleQuote": true,
+    "trailingComma": "all"
   }
 }

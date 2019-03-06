@@ -23,20 +23,11 @@ class FlashingLed extends Component {
   }
 
   render() {
-    return (
-      <pin
-        pin={13}
-        value={this.state.value}
-        mode={'OUTPUT'}
-      />
-    );
+    console.log('render(%s)', this.state.value);
+    return <pin pin={13} value={this.state.value} mode={'OUTPUT'} />;
   }
 }
 
-ReactHardware.render(
-  <FlashingLed />,
-  getPort(),
-  (inst) => {
-    console.log('Rendered <%s />', FlashingLed.name);
-  }
-);
+ReactHardware.render(<FlashingLed />, getPort(), inst => {
+  console.log('Rendered <%s />', FlashingLed.name);
+});

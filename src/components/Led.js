@@ -11,13 +11,10 @@ import React, {Component} from 'react';
 
 class Led extends Component {
   render() {
-    return (
-      <pin {...this.props} />
-    );
+    return <pin {...this.props} />;
   }
 }
 
 Led.displayName = 'Led';
 
 export default Led;
-

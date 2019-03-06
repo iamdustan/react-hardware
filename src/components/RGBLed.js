@@ -1,13 +1,14 @@
 /** @flow */
-import React, {PropTypes, Component} from 'react';
+import * as React from 'react';
 import Led from './Led';
 
-class RGBLed extends Component {
+type Props = {
+  pins: Array<number>,
+  values: Array<number>,
+};
+class RGBLed extends React.PureComponent<Props> {
   render() {
-    const {
-      pins,
-      values,
-    } = this.props;
+    const {pins, values} = this.props;
 
     return (
       <container>
@@ -23,11 +24,11 @@ class RGBLed extends Component {
   }
 }
 
+/*
 RGBLed.propTypes = {
   pins: PropTypes.arrayOf(PropTypes.number).isRequired,
-  values: PropTypes.arrayOf(PropTypes.number).isRequired,
+  values: PropTypes.arrayOf(PropTypes.number).isRequired
 };
+*/
 
 export default RGBLed;
-
-

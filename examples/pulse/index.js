@@ -30,20 +30,10 @@ class PulsingLed extends Component {
   }
 
   render() {
-    return (
-      <pin
-        pin={11}
-        value={this.state.value}
-        mode={'PWM'}
-      />
-    );
+    return <pin pin={11} value={this.state.value} mode={'PWM'} />;
   }
 }
 
-ReactHardware.render(
-  <PulsingLed />,
-  getPort(),
-  (inst) => {
-    console.log('Rendered <%s />', PulsingLed.name);
-  }
-);
+ReactHardware.render(<PulsingLed />, getPort(), inst => {
+  console.log('Rendered <%s />', PulsingLed.name);
+});

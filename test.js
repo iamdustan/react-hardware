@@ -14,8 +14,7 @@ class App extends React.Component {
       this.setState({value: this.state.value ? 0 : 1});
     }, 1000);
   }
-
-  render() {
+render() {
     return (
       <pin
         pin={12}

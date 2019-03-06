@@ -12,24 +12,24 @@ import type {HardwareEvent} from '../types';
 import React, {Component} from 'react';
 
 type P = {
-  pin: number;
-  onChange: (event:HardwareEvent) => any;
-}
+  pin: number,
+  onChange: (event: HardwareEvent) => any,
+};
 
 class Switch extends Component {
   props: P;
   static defaultProps: {};
   value: number;
-  onRead: (value:number) => any;
+  onRead: (value: number) => any;
 
-  constructor(props:P, context:{}) {
+  constructor(props: P, context: {}) {
     super(props, context);
 
     this.value = -1;
     this.onRead = this.onRead.bind(this);
   }
 
-  onRead(value:number) {
+  onRead(value: number) {
     const {onChange} = this.props;
     if (value !== this.value) {
       this.value = value;
@@ -38,15 +38,8 @@ class Switch extends Component {
   }
 
   render() {
-    return (
-      <pin
-        pin={this.props.pin}
-        onRead={this.onRead}
-        mode={'INPUT'}
-      />
-    );
+    return <pin pin={this.props.pin} onRead={this.onRead} mode={'INPUT'} />;
   }
 }
 
 export default Switch;
-

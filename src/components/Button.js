@@ -13,24 +13,24 @@ import type {HardwareEvent} from '../types';
 import React, {Component} from 'react';
 
 type P = {
-  pin: number;
-  onChange: ?(event:HardwareEvent) => any;
-  onDown: ?(event:HardwareEvent) => any;
-  onUp: ?(event:HardwareEvent) => any;
-}
+  pin: number,
+  onChange: ?(event: HardwareEvent) => any,
+  onDown: ?(event: HardwareEvent) => any,
+  onUp: ?(event: HardwareEvent) => any,
+};
 
 class Button extends Component {
   props: P;
   defaultProps: {};
-  onRead: (value:number) => any;
+  onRead: (value: number) => any;
 
-  constructor(props:P, context:{}) {
+  constructor(props: P, context: {}) {
     super(props, context);
 
     this.onRead = this.onRead.bind(this);
   }
 
-  onRead(value:number) {
+  onRead(value: number) {
     const {onDown, onUp, onChange} = this.props;
     if (value === 1 && typeof onDown === 'function') {
       onDown({value, type: 'down'});
@@ -44,15 +44,8 @@ class Button extends Component {
   }
 
   render() {
-    return (
-      <pin
-        pin={this.props.pin}
-        onRead={this.onRead}
-        mode={'INPUT'}
-      />
-    );
+    return <pin pin={this.props.pin} onRead={this.onRead} mode={'INPUT'} />;
   }
 }
 
 export default Button;
-

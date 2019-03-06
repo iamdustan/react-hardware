@@ -1,6 +1,6 @@
 /** @flow */
 import {Board} from 'firmata';
-import invariant from 'fbjs/lib/invariant';
+import invariant from 'invariant';
 import {analogToDigital} from './HardwarePinTranslations';
 
 /**

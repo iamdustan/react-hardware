@@ -4,8 +4,8 @@
 
 import type {Board} from 'firmata';
 
-// import invariant from 'fbjs/lib/invariant';
-import warning from 'fbjs/lib/warning';
+// import invariant from 'invariant';
+import warning from 'warning';
 import {
   setPayloadForPin,
   validatePayloadForPin

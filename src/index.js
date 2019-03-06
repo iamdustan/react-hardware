@@ -1,9 +1,15 @@
 /* @flow */
 
-import FeatureFlags from './ReactHardwareFeatureFlags';
+import './devtools/setupDevtoolsFiber';
+import ReactHardwareFiber from './fiber/ReactHardwareFiber';
+import * as ReactHardwareComponents from './components';
 
-if (FeatureFlags.useFiber) {
-  module.exports = require('./ReactHardwareFiber');
-} else {
-  module.exports = require('./ReactHardwareStack');
-}
+const ReactHardware = Object.assign(
+  {},
+  ReactHardwareFiber,
+  ReactHardwareComponents
+);
+
+export * from './components';
+export default ReactHardware;
+

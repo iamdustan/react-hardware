@@ -43,7 +43,7 @@ class Application extends React.Component {
     ), this.props.interval);
   }
 
-  componentDidUnmount() {
+  componentWillUnmount() {
     clearInterval(this._timer);
     this._timer = null;
   }

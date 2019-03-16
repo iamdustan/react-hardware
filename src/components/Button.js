@@ -10,27 +10,17 @@
  * @flow
  **/
 import type {HardwareEvent} from '../types';
-import React, {Component} from 'react';
+import * as React from 'react';
 
-type P = {
+type Props = {
   pin: number,
   onChange: ?(event: HardwareEvent) => any,
   onDown: ?(event: HardwareEvent) => any,
   onUp: ?(event: HardwareEvent) => any,
 };
 
-class Button extends Component {
-  props: P;
-  defaultProps: {};
-  onRead: (value: number) => any;
-
-  constructor(props: P, context: {}) {
-    super(props, context);
-
-    this.onRead = this.onRead.bind(this);
-  }
-
-  onRead(value: number) {
+class Button extends React.Component<Props> {
+  onRead = (value: number) => {
     const {onDown, onUp, onChange} = this.props;
     if (value === 1 && typeof onDown === 'function') {
       onDown({value, type: 'down'});
@@ -41,7 +31,7 @@ class Button extends Component {
     if (typeof onChange === 'function') {
       onChange({value, type: 'change'});
     }
-  }
+  };
 
   render() {
     return <pin pin={this.props.pin} onRead={this.onRead} mode={'INPUT'} />;

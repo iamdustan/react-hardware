@@ -51,12 +51,10 @@ const setReader = (
   communicationType: string,
   payload: Object,
 ) => {
-  if (typeof connection.setReader !== 'function') {
-    for (let c in connectionsByContainer) {
-      if (connectionsByContainer[c].board === connection) {
-        connection = connectionsByContainer[c];
-        break;
-      }
+  for (let c in connectionsByContainer) {
+    if (connectionsByContainer[c].board === connection) {
+      connection = connectionsByContainer[c];
+      break;
     }
   }
 
@@ -95,42 +93,36 @@ export const updateConnection = (
   port: string,
   board: Board,
 ): TConnection<'CONNECTED', Board> => {
-  const connection = connectionsByContainer[port];
-  if (!connection) {
+  const conn = connectionsByContainer[port];
+  if (!conn) {
     throw new Error(
       'Attempted to update non-existent connection for port ' + port,
     );
   }
+  const connection: TConnection<'CONNECTED', Board> = (conn: any);
   connection.status = 'CONNECTED';
-  return {
-    rootID: connection.rootID,
-    readers: connection.readers,
-    board: board,
-    status: 'CONNECTED',
-  };
+  return connection;
 };
 
 export const teardownConnection = (
   port: string,
 ): null | TConnection<'DISCONNECTED', null> => {
-  const connection = connectionsByContainer[port];
-  if (!connection) {
+  const conn = connectionsByContainer[port];
+  if (!conn) {
     console.warn(
       'Attempted to teardown non-existent connection for port %s',
       port,
     );
     return null;
   } else {
+    const connection: TConnection<'DISCONNECTED', null> = (conn: any);
     // TODO : memory leak. Remove these
     for (const reader in connection.readers) {
       delete connection.readers[reader];
     }
-    return {
-      status: 'DISCONNECTED',
-      board: null,
-      rootID: connection.rootID,
-      readers: connection.readers,
-    };
+    connection.status === 'DISCONNECTED';
+    connection.board = null;
+    return connection;
   }
 };
 

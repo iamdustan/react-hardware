@@ -7,14 +7,9 @@
  * @flow
  **/
 
-import React, {Component} from 'react';
+import * as React from 'react';
 
-class Led extends Component {
-  render() {
-    return <pin {...this.props} />;
-  }
-}
-
+const Led = (props: *) => <pin {...props} />;
 Led.displayName = 'Led';
 
 export default Led;

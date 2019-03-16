@@ -85,7 +85,7 @@ const HardwareRenderer = createReconciler({
   },
 
   getRootHostContext(rootContainerInstance: Board): Board {
-    return HardwareInstanceManager.get('/dev/tty.usbmodem1461101');
+    // return HardwareInstanceManager.get('/dev/tty.usbmodem1461101');
     return rootContainerInstance;
   },
 
@@ -118,7 +118,6 @@ const HardwareRenderer = createReconciler({
     rootContainerInstance: Container,
     hostContext: HostContext,
   ): null | Object {
-    return null;
     // diffing properties here allows the reconciler to reuse work
     return diffProperties(
       instance,

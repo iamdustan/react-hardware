@@ -209,12 +209,10 @@ export const setPayloadForPin = (
   const board: Board = (connection.board || connection: any);
   const {MODES} = board;
 
-  // console.log(`set pinMode of "%s" to "%s"`, payload.pin, payload.mode);
   const normalizedPin = analogToDigital(payload.pin);
   board.pinMode(normalizedPin, MODES[payload.mode]);
   const communicationType = FIRMATA_COMMUNICATION_METHOD[MODES[payload.mode]];
   if (typeof payload.value !== 'undefined') {
-    // console.log(`${communicationType}Write to "%s" with "%s"`, payload.pin, payload.value);
     /* $FlowFixMe computed property call */
     board[`${communicationType}Write`](payload.pin, +payload.value);
   }

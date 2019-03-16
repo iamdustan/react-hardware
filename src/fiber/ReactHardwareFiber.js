@@ -271,30 +271,35 @@ const HardwareRenderer = createReconciler({
   unhideTextInstance(element: Instance): void {
     console.warn('TODO: ReactHardwareRenderer.unhideTextInstance');
   },
-
-  /*
-  injectIntoDevTools({
-    findFiberByHostInstance: () => null,// ReactHardwareComponentTree.getClosestInstanceFromNode,
-    // findHostInstanceByFiber: HardwareRenderer.findHostInstance,
-  }),
-  */
 });
 
+if (process.env.NODE_ENV !== 'production') {
+  HardwareRenderer.injectIntoDevTools({
+    findFiberByHostInstance: () => null, // ReactHardwareComponentTree.getClosestInstanceFromNode,
+    // findHostInstanceByFiber: HardwareRenderer.findHostInstance,
+  });
+}
 function renderSubtreeIntoContainer(
   parentComponent: ?React.Component<any, any>,
   element: React.Element<any>,
-  container: string,
+  maybeContainer: ?string,
   callback: ?Function,
 ) {
-  const root = HardwareInstanceManager.get(container);
+  const root = HardwareInstanceManager.get(maybeContainer);
   if (root) {
     HardwareRenderer.updateContainer(element, root, parentComponent, callback);
   } else {
-    HardwareInstanceManager.connect(container, (error, root) => {
+    HardwareInstanceManager.connect(maybeContainer, (error, container) => {
       if (error) {
         console.log(error);
       } else {
-        const root = HardwareRenderer.createContainer(container);
+        const isConcurrent = false;
+        const hydrate = false;
+        const root = HardwareRenderer.createContainer(
+          container,
+          isConcurrent,
+          hydrate,
+        );
         HardwareRenderer.updateContainer(
           element,
           root,

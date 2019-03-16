@@ -19,7 +19,6 @@ class FlashingLed extends React.Component<{}, {value: number}> {
   }
 
   render() {
-    console.log('render(%s)', this.state.value);
     return <pin pin={13} value={this.state.value} mode={'OUTPUT'} />;
   }
 }

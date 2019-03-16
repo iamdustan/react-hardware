@@ -36,12 +36,11 @@ function setup(port, callback) {
   }
 
   console.info('Connecting to port "%s"', port);
-  const board = new Board(port, (error, b) => {
+  const board = new Board(port, error => {
     if (error) {
       console.info('Board setup error');
       callback(error);
     } else {
-      console.log('updateConnection', port, error, b);
       updateConnection(port, board);
       callback(null, board);
     }

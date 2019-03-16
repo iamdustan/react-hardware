@@ -16,31 +16,6 @@ import {create, diff} from '../attributePayload';
 type Instance = Object;
 type Props = Object;
 
-// TODO: switch `tag` to pin MODE
-/*
-const assertValidProps = (
-  tag : string,
-  rawProps : Object
-) => {
-  // TODO: getDeclarationErrorAddendum() and getCurrentOwnerName()
-  // should be added to the invariants
-  invariant(
-    rawProps.pin != null,
-    'A pin must be provided'
-  );
-
-  invariant(
-    rawProps.mode != null,
-    'A mode must be provided'
-  );
-
-  warning(
-    rawProps.value != null,
-    'A value should be provided'
-  );
-};
-*/
-
 const IO_KEY = '__IO__';
 
 const ReactHardwareFiberComponent = {
@@ -77,13 +52,6 @@ const ReactHardwareFiberComponent = {
       return;
     }
 
-    console.log(
-      'setInitialProperties',
-      element,
-      tag,
-      rawProps,
-      rootContainerElement,
-    );
     assertValidProps(rootContainerElement, rawProps);
     // this assumes I have an instance of a hardware node...
     Object.assign(element, rawProps);
@@ -98,14 +66,7 @@ const ReactHardwareFiberComponent = {
     nextRawProps: Object,
     rootContainerElement: Board,
   ): void /*null | Array<mixed>*/ {
-    /*
     return nextRawProps;
-    return diff(lastRawProps, nextRawProps, {
-      pins: true,
-      values: true,
-      children: true
-    });
-    */
   },
 
   updateProperties(

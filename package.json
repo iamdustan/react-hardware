@@ -8,8 +8,6 @@
     "flow": "flow",
     "lint": "eslint .",
     "test": "./scripts/test",
-    "posttest": "npm run lint",
-    "postlint": "npm run flow",
     "prepublish": "npm run build",
     "build": "babel src -d lib",
     "example": "babel-node ./scripts/examples"
@@ -46,6 +44,7 @@
     "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.0.0",
+    "babel-eslint": "^10.0.1",
     "babel-plugin-transform-react-jsx-source": "^6.22.0",
     "firmata": "^2.0.0",
     "invariant": "2.2.4",

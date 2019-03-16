@@ -28,7 +28,7 @@ script:
     elif [ "$TEST_TYPE" = test ]; then
       npm test
     else
-      ./scripts/test $TEST_TYPE
+      npm test -- $TEST_TYPE
     fi
 env:
   - CXX=g++-4.8 TEST_TYPE=test

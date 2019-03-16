@@ -14,8 +14,7 @@
   "env": {
     "test": {
       "plugins": [
-        "./scripts/babel/test-deps",
-        "transform-react-jsx-source"
+        "./scripts/babel/test-deps"
       ]
     }
   }

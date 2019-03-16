@@ -7,7 +7,7 @@
   "scripts": {
     "flow": "flow",
     "lint": "eslint .",
-    "test": "./scripts/test",
+    "test": "jest",
     "prepublish": "npm run build",
     "build": "babel src -d lib",
     "example": "babel-node ./scripts/examples"

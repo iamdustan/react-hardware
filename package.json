@@ -37,6 +37,16 @@
   },
   "homepage": "https://github.com/iamdustan/react-hardware",
   "dependencies": {
+    "firmata": "^2.0.0",
+    "invariant": "2.2.4",
+    "react": "16.8.4",
+    "react-devtools-core": "^3.6.1",
+    "react-reconciler": "^0.20.2",
+    "serialport": "^7.1.4",
+    "setimmediate": "^1.0.5",
+    "warning": "4.0.3"
+  },
+  "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.4",
     "@babel/plugin-proposal-class-properties": "^7.3.4",
@@ -46,22 +56,12 @@
     "@babel/register": "^7.0.0",
     "babel-eslint": "^10.0.1",
     "babel-plugin-transform-react-jsx-source": "^6.22.0",
-    "firmata": "^2.0.0",
-    "invariant": "2.2.4",
-    "jest": "^24.1.0",
-    "prettier": "^1.16.4",
-    "react": "16.8.4",
-    "react-devtools-core": "^3.6.1",
-    "react-reconciler": "^0.20.2",
-    "serialport": "^7.1.4",
-    "setimmediate": "^1.0.5",
-    "warning": "4.0.3"
-  },
-  "devDependencies": {
     "commander": "^2.19.0",
     "eslint": "^5.15.1",
     "eslint-plugin-react": "^7.12.4",
     "flow-bin": "^0.94.0",
+    "jest": "^24.1.0",
+    "prettier": "^1.16.4",
     "mock-firmata": "0.2.0",
     "react-devtools": "^3.6.1"
   },

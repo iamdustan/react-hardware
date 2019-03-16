@@ -18,16 +18,22 @@ class VoiceControlledApplication extends Component {
     const MAX = 50;
     const STEP = MAX / 4;
     this.state = {value: 0};
-    ws.on('connection', (c) => {
+    ws.on('connection', c => {
       console.log('Connection received');
 
-      c.on('message', (message) => {
+      c.on('message', message => {
         console.log('received: %s', message);
         switch (message) {
-          case 'on': return this.setState({value: MAX});
-          case 'off': return this.setState({value: 0});
-          case 'dimmer': return this.setState({value: Math.max(this.state.value - STEP, 0)});
-          case 'brighter': return this.setState({value: Math.min(MAX, this.state.value + STEP)});
+          case 'on':
+            return this.setState({value: MAX});
+          case 'off':
+            return this.setState({value: 0});
+          case 'dimmer':
+            return this.setState({value: Math.max(this.state.value - STEP, 0)});
+          case 'brighter':
+            return this.setState({
+              value: Math.min(MAX, this.state.value + STEP),
+            });
         }
       });
 
@@ -36,20 +42,10 @@ class VoiceControlledApplication extends Component {
   }
 
   render() {
-    return (
-      <pin
-        pin={11}
-        value={this.state.value}
-        mode={'PWM'}
-      />
-    );
+    return <pin pin={11} value={this.state.value} mode={'PWM'} />;
   }
 }
 
-ReactHardware.render(
-  <VoiceControlledApplication />,
-  getPort(),
-  (inst) => {
-    console.log('Rendered <%s />', VoiceControlledApplication.name);
-  }
-);
+ReactHardware.render(<VoiceControlledApplication />, getPort(), inst => {
+  console.log('Rendered <%s />', VoiceControlledApplication.name);
+});

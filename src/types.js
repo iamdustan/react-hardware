@@ -1,7 +1,6 @@
 /** @flow */
 
 export type HardwareEvent = {
-  value: number;
-  type: string;
+  value: number,
+  type: string,
 };
-

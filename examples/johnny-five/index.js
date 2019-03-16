@@ -25,7 +25,6 @@ class BlinkingLed extends Component {
     }
   }
 
-
   render() {
     return null;
   }
@@ -34,8 +33,7 @@ class BlinkingLed extends Component {
 ReactHardware.render(
   <BlinkingLed port={11} period={500} />,
   new five.Board(),
-  (inst) => {
+  inst => {
     console.log('Rendered <%s />', BlinkingLed.name);
-  }
+  },
 );
-

@@ -1,7 +1,7 @@
 ---
 language: node_js
 node_js:
-- 5
+- 8
 cache:
   directories:
   - node_modules
@@ -17,7 +17,7 @@ before_install:
       echo "Only docs were updated, stopping build process."
       exit 0
     else
-      npm install flow-bin@0.36
+      npm install flow-bin@0.94
     fi
 script:
 - |
@@ -28,7 +28,7 @@ script:
     elif [ "$TEST_TYPE" = test ]; then
       npm test
     else
-      ./scripts/test $TEST_TYPE
+      npm test -- $TEST_TYPE
     fi
 env:
   - CXX=g++-4.8 TEST_TYPE=test

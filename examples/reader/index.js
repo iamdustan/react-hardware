@@ -13,16 +13,16 @@ import {getPort} from '../port';
 import ReactHardware from '../../src';
 
 type HardwareEvent = {
-  value: number;
-  type: string;
+  value: number,
+  type: string,
 };
 
 type P = {
-  pin: number;
-  onChange: ?(event:HardwareEvent) => any;
-  onDown: ?(event:HardwareEvent) => any;
-  onUp: ?(event:HardwareEvent) => any;
-}
+  pin: number,
+  onChange: ?(event: HardwareEvent) => any,
+  onDown: ?(event: HardwareEvent) => any,
+  onUp: ?(event: HardwareEvent) => any,
+};
 
 class Button extends Component {
   props: P;
@@ -34,7 +34,7 @@ class Button extends Component {
     this.onRead = this.onRead.bind(this);
   }
 
-  onRead(value:number) {
+  onRead(value: number) {
     if (value === 1) {
       this.props.onDown({value, type: 'down'});
     } else if (value === 0) {
@@ -45,20 +45,10 @@ class Button extends Component {
   }
 
   render() {
-    return (
-      <pin
-        pin={this.props.pin}
-        onRead={this.onRead}
-        mode={'INPUT'}
-      />
-    );
+    return <pin pin={this.props.pin} onRead={this.onRead} mode={'INPUT'} />;
   }
 }
 
-ReactHardware.render(
-  <Button />,
-  getPort(),
-  (inst) => {
-    console.log('Rendered <%s />', Button.name);
-  }
-);
+ReactHardware.render(<Button />, getPort(), inst => {
+  console.log('Rendered <%s />', Button.name);
+});

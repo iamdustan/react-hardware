@@ -11,4 +11,3 @@ if (typeof window === 'undefined') {
 if (!window.document) {
   setupDevtools();
 }
-

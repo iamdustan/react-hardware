@@ -11,5 +11,5 @@ const UNO_ANALOG_TO_DIGITAL = {
   A5: 19,
 };
 
-export const analogToDigital = (pin:string|number):number => UNO_ANALOG_TO_DIGITAL[pin] || +pin;
-
+export const analogToDigital = (pin: string | number): number =>
+  UNO_ANALOG_TO_DIGITAL[pin] || +pin;

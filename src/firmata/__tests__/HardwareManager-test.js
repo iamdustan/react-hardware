@@ -1,12 +1,7 @@
-
 import {Firmata} from 'mock-firmata';
-import {
-  setPayloadForPin,
-  validatePayloadForPin,
-} from '../HardwareManager';
+import {setPayloadForPin, validatePayloadForPin} from '../HardwareManager';
 
 describe('HardwareManager', () => {
-
   describe('validatePayloadForPin', () => {
     let hw;
     beforeEach(() => {
@@ -22,7 +17,7 @@ describe('HardwareManager', () => {
             pin: 0,
             value: 255,
             mode: 'DIGITAL',
-          }
+          },
         );
       }).not.toThrow();
     });
@@ -30,7 +25,7 @@ describe('HardwareManager', () => {
     it('should throw for invalid pins', () => {
       const error = new Error(
         'Unsupported mode "ANALOG" for pin "0".\n' +
-        'Supported modes are: "DIGITAL"'
+          'Supported modes are: "DIGITAL"',
       );
       error.name = 'Invariant Violation';
 
@@ -41,7 +36,7 @@ describe('HardwareManager', () => {
             pin: 0,
             value: 255,
             mode: 'ANALOG',
-          }
+          },
         );
       }).toThrow(error);
     });
@@ -49,7 +44,7 @@ describe('HardwareManager', () => {
     it('should list all valid pins', () => {
       const error = new Error(
         'Unsupported mode "PWM" for pin "17".\n' +
-        'Supported modes are: "INPUT", "OUTPUT", "ANALOG", "SERVO"'
+          'Supported modes are: "INPUT", "OUTPUT", "ANALOG", "SERVO"',
       );
       error.name = 'Invariant Violation';
 
@@ -60,7 +55,7 @@ describe('HardwareManager', () => {
             pin: 17,
             value: 255,
             mode: 'PWM',
-          }
+          },
         );
       }).toThrow(error);
     });
@@ -85,16 +80,10 @@ describe('HardwareManager', () => {
         mode: 'INPUT',
       };
 
-      setPayloadForPin(
-        {board: hw, readers: []},
-        payload
-      );
+      setPayloadForPin({board: hw, readers: []}, payload);
 
       expect(hw.pinMode).toHaveBeenCalled();
-      expect(hw.digitalWrite).toHaveBeenCalledWith(
-        payload.pin,
-        payload.value
-      );
+      expect(hw.digitalWrite).toHaveBeenCalledWith(payload.pin, payload.value);
     });
 
     it('should handle setting up read handlers', () => {
@@ -110,10 +99,7 @@ describe('HardwareManager', () => {
       setPayloadForPin(connection, payload);
 
       expect(hw.pinMode).toHaveBeenCalled();
-      expect(hw.digitalWrite).toHaveBeenCalledWith(
-        payload.pin,
-        payload.value
-      );
+      expect(hw.digitalWrite).toHaveBeenCalledWith(payload.pin, payload.value);
 
       expect(hw.digitalRead.calls.first().args[0]).toBe(payload.pin);
       expect(connection.readers[0].call).toBe(payload.onRead);
@@ -139,7 +125,10 @@ describe('HardwareManager', () => {
 
       expect(hw.pinMode).toHaveBeenCalled();
 
-      expect(hw.digitalRead).toHaveBeenCalledWith(initialPayload.pin, initialPayload.onRead);
+      expect(hw.digitalRead).toHaveBeenCalledWith(
+        initialPayload.pin,
+        initialPayload.onRead,
+      );
       hw.emit('digital-read-0', Infinity);
       expect(before).toHaveBeenCalledWith(Infinity);
 

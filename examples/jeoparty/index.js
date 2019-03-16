@@ -39,12 +39,7 @@ class JeopartyLed extends Component {
   }
 
   render() {
-    return (
-      <led
-        {...this.props}
-        {...this.state}
-      />
-    );
+    return <led {...this.props} {...this.state} />;
   }
 }
 
@@ -67,12 +62,12 @@ class Jeoparty extends Component {
 
   componentDidMount() {
     // on a socket connection
-    io.sockets.on('connection', (socket) => {
+    io.sockets.on('connection', socket => {
       // Player Button LEDs
       // strobe
       socket.on('led-strobe-1', () => this.setState({led1: 'strobe'}));
       socket.on('led-strobe-2', () => this.setState({led2: 'strobe'}));
-      socket.on('led-strobe-3',  () => this.setState({led3: 'strobe'}));
+      socket.on('led-strobe-3', () => this.setState({led3: 'strobe'}));
 
       // on
       socket.on('led-on-all', () => {
@@ -92,7 +87,6 @@ class Jeoparty extends Component {
       socket.on('led-off-2', () => this.setState({led2: 'off'}));
       socket.on('led-off-3', () => this.setState({led3: 'off'}));
 
-
       // All LED Strobe
       socket.on('led-strobe-all', () => {
         this.setState({led1: 'strobe'});
@@ -103,7 +97,6 @@ class Jeoparty extends Component {
           this.setState({led3: 'strobe'});
         }, 140);
       });
-
 
       // LED off
       socket.on('led-stop', () => {
@@ -131,10 +124,6 @@ class Jeoparty extends Component {
   }
 }
 
-ReactHardware.render(
-  <Jeoparty />,
-  getPort(),
-  (inst) => {
-    console.log('Rendered <Jeoparty />');
-  }
-);
+ReactHardware.render(<Jeoparty />, getPort(), inst => {
+  console.log('Rendered <Jeoparty />');
+});

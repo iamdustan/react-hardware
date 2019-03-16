@@ -14,49 +14,31 @@
  **/
 
 import type {HardwareEvent} from '../types';
-import React, {Component} from 'react';
+import * as React from 'react';
 
-type P = {
-  pin: number;
-  onChange: (event:HardwareEvent) => any;
-  threshold: number;
-}
-
-type D = {
-  threshold: number;
+type Props = {
+  pin: number,
+  onChange: (event: HardwareEvent) => any,
+  threshold: number,
 };
 
-class Potentiometer extends Component {
-  props: P;
-  static defaultProps:D = {threshold: 5};
-  value: number;
-  onRead: (value:number) => any;
+class Potentiometer extends React.Component<Props> {
+  value = -1;
 
-  constructor(props:P, context:{}) {
-    super(props, context);
-
-    this.value = -1;
-    this.onRead = this.onRead.bind(this);
-  }
-
-  onRead(value:number):void {
+  onRead = (value: number) => {
     const {onChange} = this.props;
-    if (value !== this.value && Math.abs(value - this.value) > this.props.threshold) {
+    if (
+      value !== this.value &&
+      Math.abs(value - this.value) > this.props.threshold
+    ) {
       this.value = value;
       onChange({value, type: 'change'});
     }
-  }
+  };
 
   render() {
-    return (
-      <pin
-        pin={this.props.pin}
-        mode={'ANALOG'}
-        onRead={this.onRead}
-      />
-    );
+    return <pin pin={this.props.pin} mode={'ANALOG'} onRead={this.onRead} />;
   }
 }
 
 export default Potentiometer;
-

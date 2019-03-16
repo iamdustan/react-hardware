@@ -40,11 +40,7 @@ class FlashingLed extends Component {
 
   render() {
     return (
-      <pin
-        pin={this.props.pin}
-        value={this.state.value}
-        mode={'OUTPUT'}
-      />
+      <pin pin={this.props.pin} value={this.state.value} mode={'OUTPUT'} />
     );
   }
 }
@@ -74,13 +70,7 @@ class PulsingLed extends Component {
   }
 
   render() {
-    return (
-      <pin
-        pin={this.props.pin}
-        value={this.state.value}
-        mode={'PWM'}
-      />
-    );
+    return <pin pin={this.props.pin} value={this.state.value} mode={'PWM'} />;
   }
 }
 
@@ -91,10 +81,6 @@ const Application = () => [
   <FlashingLed pin={12} delay={1000} />,
 ];
 
-ReactHardware.render(
-  <Application />,
-  getPort(),
-  (inst) => {
-    console.log('Rendered <%s />', 'Devtools demonstration');
-  }
-);
+ReactHardware.render(<Application />, getPort(), inst => {
+  console.log('Rendered <%s />', 'Devtools demonstration');
+});

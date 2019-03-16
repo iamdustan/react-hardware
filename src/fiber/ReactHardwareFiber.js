@@ -1,19 +1,25 @@
 /** @flow */
 
+import * as React from 'react';
 import type {Board} from 'firmata';
 
-import ReactFiberReconciler from 'react-dom/lib/ReactFiberReconciler';
+import createReconciler from 'react-reconciler';
 import ReactHardwareFiberComponent from './ReactHardwareFiberComponent';
 import HardwareInstanceManager from '../firmata/HardwareInstanceManager';
 import {setPayloadForPin} from '../firmata/HardwareManager';
 import {
-  injectInternals
-} from 'react-dom/lib/ReactFiberDevToolsHook';
+  now as ReactHardwareFrameSchedulingNow,
+  cancelDeferredCallback as ReactHardwareFrameSchedulingCancelDeferredCallback,
+  scheduleDeferredCallback as ReactHardwareFrameSchedulingScheduleDeferredCallback,
+  shouldYield as ReactHardwareFrameSchedulingShouldYield,
+} from './ReactHardwareFrameScheduling';
+import * as NoPersistence from './HostConfigWithNoPersistence';
+import * as NoHydration from './HostConfigWithNoHydration';
 
 const {
   createElement,
   setInitialProperties,
-  // diffProperties,
+  diffProperties,
   updateProperties,
 } = ReactHardwareFiberComponent;
 
@@ -28,104 +34,130 @@ type Props = Object;
 type Instance = any; // TODO
 type TextInstance = any; // TODO
 
-const HardwareRenderer = ReactFiberReconciler({
-  getRootHostContext(rootContainerInstance : Board) : Board {
-    return rootContainerInstance;
+const HardwareRenderer = createReconciler({
+  ...NoPersistence,
+  ...NoHydration,
+  appendInitialChild(
+    parentInstance: Instance | Container,
+    child: Instance | TextInstance,
+  ) {
+    // Deprecated path for when a `container` is hit which was a hack in stack
+    // for being unable to return an array from render.
+    if (parentInstance === child) {
+      return;
+    }
+
+    setPayloadForPin(parentInstance, child);
+    // parentInstance.appendChild(child);
   },
-
-  getChildHostContext(parentHostContext : string | null, type : string) : void {
-    // Noop
-  },
-
-
-  prepareForCommit() : void {
-    // Noop
-  },
-
-  resetAfterCommit() : void {
-    // Noop
-  },
-
   createInstance(
-    type : string,
-    props : Props,
-    rootContainerInstance : Container,
-    hostContext : string | null,
-    internalInstanceHandle : Object,
+    type: string,
+    props: Props,
+    rootContainerInstance: Container,
+    hostContext: string | null,
+    internalInstanceHandle: Object,
   ): Instance {
-    const instance : Instance = createElement(type, props, rootContainerInstance, hostContext);
+    const instance: Instance = createElement(
+      type,
+      props,
+      rootContainerInstance,
+      hostContext,
+    );
     precacheFiberNode(internalInstanceHandle, instance);
     return instance;
   },
 
-  appendInitialChild(
-    parentInstance: Instance,
-    child: Instance | TextInstance
-  ) {
-    setPayloadForPin(parentInstance, child);
-    // parentInstance.appendChild(child);
-  },
-
-  finalizeInitialChildren(
-    element : Instance,
-    type : string,
-    props : Props,
-    rootContainerInstance : Container
-  ) {
-    setInitialProperties(element, type, props, rootContainerInstance);
-  },
-
-  prepareUpdate(
-    instance : Instance,
-    type : string,
-    oldProps : Props,
-    newProps : Props,
-    rootContainerInstance : Container,
-    hostContext : HostContext,
-  ) : Object /*null | Array<mixed>*/ {
-    // TODO: diffing properties here allows the reconciler to reuse work
-    //  diffProperties(instance, type, oldProps, newProps, rootContainerInstance);//  diffProperties(instance, type, oldProps, newProps, rootContainerInstance);
-    return emptyObject;
-  },
-
-  commitUpdate(
-    instance : Instance,
-    updatePayload : Array<mixed>,
-    type : string,
-    oldProps : Props,
-    newProps : Props,
-    internalInstanceHandle : Object,
-  ) : void {
-    // Update the props handle so that we know which props are the ones with
-    // with current event handlers.
-    // TODO: uncomment this line : updateFiberProps(instance, newProps);
-    // Apply the diff to the DOM node.
-    updateProperties(instance, updatePayload, type, oldProps, newProps, internalInstanceHandle);
-  },
-
-  shouldSetTextContent(props: Props) : boolean {
-    return false;
-  },
-
-  resetTextContent(element: Instance) : void {
-    // NOOP
-  },
-
-  createTextInstance(text : string, internalInstanceHandle : Object) : TextInstance {
+  createTextInstance(
+    text: string,
+    internalInstanceHandle: Object,
+  ): TextInstance {
     return text;
   },
 
-  commitTextUpdate(
-    textInstance : TextInstance,
-    oldText : string,
-    newText : string
+  finalizeInitialChildren(
+    parentInstance: Instance,
+    type: string,
+    props: Props,
+    rootContainerInstance: Container,
+    hostContext: HostContext,
   ) {
+    setInitialProperties(parentInstance, type, props, hostContext);
+  },
+
+  getRootHostContext(rootContainerInstance: Board): Board {
+    // return HardwareInstanceManager.get('/dev/tty.usbmodem1461101');
+    return rootContainerInstance;
+  },
+
+  getChildHostContext(
+    parentHostContext: HostContext,
+    type: string,
+    rootContainerInstance: Container,
+  ): HostContext {
+    // maybe useful for portals?
+    return parentHostContext;
+  },
+
+  getPublicInstance(instance: Instance): * {
+    return instance;
+  },
+
+  prepareForCommit(containerInfo: Container): void {
     // Noop
   },
 
+  prepareForCommit(): void {
+    // Noop
+  },
+
+  prepareUpdate(
+    instance: Instance,
+    type: string,
+    oldProps: Props,
+    newProps: Props,
+    rootContainerInstance: Container,
+    hostContext: HostContext,
+  ): null | Object {
+    // diffing properties here allows the reconciler to reuse work
+    return diffProperties(
+      instance,
+      type,
+      oldProps,
+      newProps,
+      rootContainerInstance,
+    );
+    // return emptyObject;
+  },
+
+  resetAfterCommit(): void {
+    // Noop
+  },
+
+  now: ReactHardwareFrameSchedulingNow,
+  isPrimaryRenderer: true,
+  scheduleDeferredCallback: ReactHardwareFrameSchedulingScheduleDeferredCallback,
+  cancelDeferredCallback: ReactHardwareFrameSchedulingCancelDeferredCallback,
+  shouldYield: ReactHardwareFrameSchedulingShouldYield,
+  scheduleTimeout: setTimeout,
+  cancelTimeout: clearTimeout,
+  noTimeout: -1,
+  schedulePassiveEffects: ReactHardwareFrameSchedulingScheduleDeferredCallback,
+  cancelPassiveEffects: ReactHardwareFrameSchedulingCancelDeferredCallback,
+
+  shouldDeprioritizeSubtree(type: string, props: Props): boolean {
+    return false;
+  },
+
+  shouldSetTextContent(props: Props): boolean {
+    return false;
+  },
+
+  // MUTATION
+
+  supportsMutation: true,
   appendChild(
     parentInstance: Instance | Container,
-    child: Instance | TextInstance
+    child: Instance | TextInstance,
   ) {
     // Deprecated path for when a `container` is hit which was a hack in stack
     // for being unable to return an array from render.
@@ -137,44 +169,143 @@ const HardwareRenderer = ReactFiberReconciler({
     // parentInstance.appendChild(child);
   },
 
+  appendChildToContainer(
+    parentInstance: Instance,
+    child: Instance | TextInstance,
+  ): void {
+    setPayloadForPin(parentInstance, child);
+    // parentInstance.appendChild(child);
+  },
+
+  commitTextUpdate(
+    textInstance: TextInstance,
+    oldText: string,
+    newText: string,
+  ) {
+    // Noop / TODO
+  },
+
+  commitMount(
+    instance: Instance,
+    type: string,
+    newProps: Props,
+    internalInstanceHandle: Object,
+  ): void {
+    console.log('commitMoutnt', type, newProps);
+    // Noop / TODO
+  },
+
+  commitUpdate(
+    instance: Instance,
+    updatePayload: Object,
+    type: string,
+    oldProps: Props,
+    newProps: Props,
+    internalInstanceHandle: Object,
+  ): void {
+    // Update the props handle so that we know which props are the ones with
+    // with current event handlers.
+    // Apply the diff to the host node.
+    updateProperties(
+      instance,
+      updatePayload,
+      type,
+      oldProps,
+      newProps,
+      internalInstanceHandle,
+    );
+  },
+
   insertBefore(
-    parentInstance : Instance | Container,
-    child : Instance | TextInstance,
-    beforeChild : Instance |  TextInstance
+    parentInstance: Instance | Container,
+    child: Instance | TextInstance,
+    beforeChild: Instance | TextInstance,
   ) {
     // This should probably never be called in Hardware.
     console.warn('TODO: ReactHardwareRenderer.insertBefore');
     // parentInstance.insertBefore(child, beforeChild);
   },
 
-  removeChild(parentInstance : Instance | Container, child : Instance | TextInstance) : void {
+  insertInContainerBefore(
+    parentInstance: Instance | Container,
+    child: Instance | TextInstance,
+    beforeChild: Instance | TextInstance,
+  ) {
+    // This should probably never be called in Hardware.
+    console.warn('TODO: ReactHardwareRenderer.insertInContainerBefore');
+    // parentInstance.insertBefore(child, beforeChild);
+  },
+
+  removeChild(
+    parentInstance: Instance | Container,
+    child: Instance | TextInstance,
+  ): void {
     console.warn('TODO: ReactHardwareRenderer.removeChild');
     // parentInstance.removeChild(child);
   },
 
-  scheduleAnimationCallback: process.nextTick,
+  removeChildFromContainer(
+    parentInstance: Container,
+    child: Instance | TextInstance,
+  ): void {
+    console.warn('TODO: ReactHardwareRenderer.removeChildFromContainer');
+    // parentInstance.removeChild(child);
+  },
 
-  scheduleDeferredCallback: (fn) => setTimeout(fn, TIME_REMAINING, {timeRemaining() { return TIME_REMAINING; }}),
+  resetTextContent(element: Instance): void {
+    // NOOP
+  },
 
-  useSyncScheduling: false,
+  hideInstance(element: Instance): void {
+    console.warn('TODO: ReactHardwareRenderer.hideInstance');
+  },
+
+  hideTextInstance(element: Instance): void {
+    console.warn('TODO: ReactHardwareRenderer.hideTextInstance');
+  },
+
+  unhideInstance(element: Instance): void {
+    console.warn('TODO: ReactHardwareRenderer.unhideInstance');
+  },
+
+  unhideTextInstance(element: Instance): void {
+    console.warn('TODO: ReactHardwareRenderer.unhideTextInstance');
+  },
 });
 
+if (process.env.NODE_ENV !== 'production') {
+  HardwareRenderer.injectIntoDevTools({
+    findFiberByHostInstance: () => null, // ReactHardwareComponentTree.getClosestInstanceFromNode,
+    // findHostInstanceByFiber: HardwareRenderer.findHostInstance,
+  });
+}
 function renderSubtreeIntoContainer(
-  parentComponent : ?ReactComponent<any, any, any>,
-  element : ReactElement<any>,
-  container : string,
-  callback: ?Function
+  parentComponent: ?React.Component<any, any>,
+  element: React.Element<any>,
+  maybeContainer: ?string,
+  callback: ?Function,
 ) {
-  const root = HardwareInstanceManager.get(container);
+  const root = HardwareInstanceManager.get(maybeContainer);
   if (root) {
     HardwareRenderer.updateContainer(element, root, parentComponent, callback);
   } else {
-    HardwareInstanceManager.connect(container, (error, root) => {
+    HardwareInstanceManager.connect(maybeContainer, (error, container) => {
       if (error) {
         console.log(error);
       } else {
-        const root = HardwareRenderer.createContainer(container);
-        HardwareRenderer.updateContainer(element, root, parentComponent, callback);
+        const isConcurrent = false;
+        const hydrate = false;
+        const root = HardwareRenderer.createContainer(
+          container,
+          isConcurrent,
+          hydrate,
+        );
+        HardwareRenderer.updateContainer(
+          element,
+          root,
+          parentComponent,
+          callback,
+        );
         // HardwareRenderer.mountContainer(element, root, parentComponent, callback);
       }
     });
@@ -182,31 +313,17 @@ function renderSubtreeIntoContainer(
 }
 
 const ReactHardware = {
-  render(
-    element : ReactElement<any>,
-    container : string,
-    callback : ?Function
-  ) {
+  render(element: ReactElement<any>, container: string, callback: ?Function) {
     return renderSubtreeIntoContainer(null, element, container, callback);
   },
 
-  unmountComponentAtNode(container : string) {
+  unmountComponentAtNode(container: string) {
     const root = HardwareInstanceManager.get(container);
     if (root) {
       HardwareRenderer.unmountContainer(root);
     }
   },
-
   // TODO: unstable_createPortal(children : ReactNodeList, container : string, key : string | null) {}
 };
 
-if (typeof injectInternals === 'function') {
-  injectInternals({
-    findFiberByHostInstance: () => null,// ReactHardwareComponentTree.getClosestInstanceFromNode,
-    findHostInstanceByFiber: HardwareRenderer.findHostInstance,
-  });
-}
-
-
 export default ReactHardware;
-

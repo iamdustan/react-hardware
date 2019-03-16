@@ -7,7 +7,8 @@ function setupDevtools() {
   var closeListeners = [];
   var ws = new WS('ws://localhost:8097/devtools');
   // this is accessed by the eval'd backend code
-  var FOR_BACKEND = { // eslint-disable-line no-unused-vars
+  var FOR_BACKEND = {
+    // eslint-disable-line no-unused-vars
     wall: {
       listen(fn) {
         messageListeners.push(fn);
@@ -54,7 +55,9 @@ function setupDevtools() {
     }
     if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.inject !== 'function') {
       console.log('__REACT_DEVTOOLS_GLOBAL_HOOK__.inject is not a function!');
-      console.log('This could mean you’re attempting to inject for a second time.');
+      console.log(
+        'This could mean you’re attempting to inject for a second time.',
+      );
     } else {
       __REACT_DEVTOOLS_GLOBAL_HOOK__.inject({
         CurrentOwner: require('react/lib/ReactCurrentOwner'),

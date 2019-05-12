@@ -10,6 +10,7 @@ declare type $JSXIntrinsics = {
         | 'INPUT'
         | 'OUTPUT'
         | 'ANALOG'
+        | 'PULLUP'
         | 'PWM'
         | 'SERVO'
         | 'SHIFT'

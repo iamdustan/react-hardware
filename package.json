@@ -36,6 +36,10 @@
     "url": "https://github.com/iamdustan/react-hardware/issues"
   },
   "homepage": "https://github.com/iamdustan/react-hardware",
+  "jest": {
+    "resetMocks": true,
+    "roots": ["src"]
+  },
   "dependencies": {
     "firmata": "^2.0.0",
     "invariant": "2.2.4",
@@ -61,9 +65,10 @@
     "eslint-plugin-react": "^7.12.4",
     "flow-bin": "^0.94.0",
     "jest": "^24.1.0",
-    "prettier": "^1.16.4",
     "mock-firmata": "0.2.0",
-    "react-devtools": "^3.6.1"
+    "prettier": "^1.16.4",
+    "react-devtools": "^3.6.1",
+    "react-test-renderer": "^16.8.6"
   },
   "prettier": {
     "bracketSpacing": false,

@@ -27,6 +27,7 @@ const FIRMATA_COMMUNICATION_METHOD = {
   '6': 'i2c', // i2c
   '7': 'UNKNOWN', // onewire
   '8': 'UNKNOWN', // stepper
+  '11': 'digital', // input, internal pull-up
   '16': 'UNKNOWN', // unknown
   '127': 'IGNORE', // ignore
 };
